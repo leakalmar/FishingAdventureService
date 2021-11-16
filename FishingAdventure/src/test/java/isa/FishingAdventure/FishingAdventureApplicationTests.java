@@ -1,0 +1,13 @@
+package isa.FishingAdventure;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class FishingAdventureApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}
