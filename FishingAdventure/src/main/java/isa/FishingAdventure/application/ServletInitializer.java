@@ -1,4 +1,4 @@
-package isa.FishingAdventure;
+package isa.FishingAdventure.application;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
