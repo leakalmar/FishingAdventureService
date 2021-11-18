@@ -1,97 +1,81 @@
 package isa.FishingAdventure.model;
+
 import java.util.*;
 
 public class Boat extends ServiceProfile {
+
    private String type;
    private int length;
    private int motorNumber;
    private double motorPower;
    private double maxSpeed;
    private int capacity;
-   
+
    public BoatOwner boatOwner;
-   
+
    public Set<NavigationEquipment> navigationEquipment;
    public Set<FishingEquipment> fishingEquipment;
-   
-   
-   public Set<NavigationEquipment> getNavigationEquipment() {
-      if (navigationEquipment == null)
-         navigationEquipment = new java.util.HashSet<NavigationEquipment>();
-      return navigationEquipment;
+
+   public Boat(int serviceId, String name, int description, double cancellationRule, double rating, Location location,
+         Set<Appointment> appointments, Set<Rule> rules, Set<AdditionalService> additionalServices) {
+      super(serviceId, name, description, cancellationRule, rating, location, appointments, rules, additionalServices);
+
    }
-   
-   public java.util.Iterator getIteratorNavigationEquipment() {
-      if (navigationEquipment == null)
-         navigationEquipment = new java.util.HashSet<NavigationEquipment>();
-      return navigationEquipment.iterator();
+
+   public String getType() {
+      return this.type;
    }
-   
-   public void setNavigationEquipment(Set<NavigationEquipment> newNavigationEquipment) {
-      removeAllNavigationEquipment();
-      for (java.util.Iterator iter = newNavigationEquipment.iterator(); iter.hasNext();)
-         addNavigationEquipment((NavigationEquipment)iter.next());
+
+   public void setType(String type) {
+      this.type = type;
    }
-   
-   public void addNavigationEquipment(NavigationEquipment newNavigationEquipment) {
-      if (newNavigationEquipment == null)
-         return;
-      if (this.navigationEquipment == null)
-         this.navigationEquipment = new java.util.HashSet<NavigationEquipment>();
-      if (!this.navigationEquipment.contains(newNavigationEquipment))
-         this.navigationEquipment.add(newNavigationEquipment);
+
+   public int getLength() {
+      return this.length;
    }
-   
-   public void removeNavigationEquipment(NavigationEquipment oldNavigationEquipment) {
-      if (oldNavigationEquipment == null)
-         return;
-      if (this.navigationEquipment != null)
-         if (this.navigationEquipment.contains(oldNavigationEquipment))
-            this.navigationEquipment.remove(oldNavigationEquipment);
+
+   public void setLength(int length) {
+      this.length = length;
    }
-   
-   public void removeAllNavigationEquipment() {
-      if (navigationEquipment != null)
-         navigationEquipment.clear();
+
+   public int getMotorNumber() {
+      return this.motorNumber;
    }
-   public Set<FishingEquipment> getFishingEquipment() {
-      if (fishingEquipment == null)
-         fishingEquipment = new java.util.HashSet<FishingEquipment>();
-      return fishingEquipment;
+
+   public void setMotorNumber(int motorNumber) {
+      this.motorNumber = motorNumber;
    }
-   
-   public java.util.Iterator getIteratorFishingEquipment() {
-      if (fishingEquipment == null)
-         fishingEquipment = new java.util.HashSet<FishingEquipment>();
-      return fishingEquipment.iterator();
+
+   public double getMotorPower() {
+      return this.motorPower;
    }
-   
-   public void setFishingEquipment(Set<FishingEquipment> newFishingEquipment) {
-      removeAllFishingEquipment();
-      for (java.util.Iterator iter = newFishingEquipment.iterator(); iter.hasNext();)
-         addFishingEquipment((FishingEquipment)iter.next());
+
+   public void setMotorPower(double motorPower) {
+      this.motorPower = motorPower;
    }
-   
-   public void addFishingEquipment(FishingEquipment newFishingEquipment) {
-      if (newFishingEquipment == null)
-         return;
-      if (this.fishingEquipment == null)
-         this.fishingEquipment = new java.util.HashSet<FishingEquipment>();
-      if (!this.fishingEquipment.contains(newFishingEquipment))
-         this.fishingEquipment.add(newFishingEquipment);
+
+   public double getMaxSpeed() {
+      return this.maxSpeed;
    }
-   
-   public void removeFishingEquipment(FishingEquipment oldFishingEquipment) {
-      if (oldFishingEquipment == null)
-         return;
-      if (this.fishingEquipment != null)
-         if (this.fishingEquipment.contains(oldFishingEquipment))
-            this.fishingEquipment.remove(oldFishingEquipment);
+
+   public void setMaxSpeed(double maxSpeed) {
+      this.maxSpeed = maxSpeed;
    }
-   
-   public void removeAllFishingEquipment() {
-      if (fishingEquipment != null)
-         fishingEquipment.clear();
+
+   public int getCapacity() {
+      return this.capacity;
+   }
+
+   public void setCapacity(int capacity) {
+      this.capacity = capacity;
+   }
+
+   public BoatOwner getBoatOwner() {
+      return this.boatOwner;
+   }
+
+   public void setBoatOwner(BoatOwner boatOwner) {
+      this.boatOwner = boatOwner;
    }
 
 }
