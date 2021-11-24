@@ -1,49 +1,85 @@
 package isa.FishingAdventure.model;
 
+import javax.persistence.*;
+
+@Entity
 public class Address {
-   private int adressId;
-   private String country;
-   private String city;
-   private String street;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer addressId;
+
+    @Column(name = "country", nullable = false)
+    private String country;
+
+    @Column(name = "city", nullable = false)
+    private String city;
+
+    @Column(name = "street", nullable = false)
+    private String street;
+
+    @OneToOne(mappedBy = "address")
+    private Location location;
+
+    @OneToOne(mappedBy = "address")
+    private User user;
+
+    public Address(Integer addressId, String country, String city, String street) {
+        this.addressId = addressId;
+        this.country = country;
+        this.city = city;
+        this.street = street;
+    }
+
+    public Address() {
+    }
+
+    public Integer getAddressId() {
+        return this.addressId;
+    }
+
+    public void setAddressId(Integer addressId) {
+        this.addressId = addressId;
+    }
+
+    public String getCountry() {
+        return this.country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getCity() {
+        return this.city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getStreet() {
+        return this.street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
 
 
-   public Address(int adressId, String country, String city, String street) {
-      this.adressId = adressId;
-      this.country = country;
-      this.city = city;
-      this.street = street;
-   }
+    public Location getLocation() {
+        return location;
+    }
 
-   public int getAdressId() {
-      return this.adressId;
-   }
+    public void setLocation(Location location) {
+        this.location = location;
+    }
 
-   public void setAdressId(int adressId) {
-      this.adressId = adressId;
-   }
+    public User getUser() {
+        return user;
+    }
 
-   public String getCountry() {
-      return this.country;
-   }
-
-   public void setCountry(String country) {
-      this.country = country;
-   }
-
-   public String getCity() {
-      return this.city;
-   }
-
-   public void setCity(String city) {
-      this.city = city;
-   }
-
-   public String getStreet() {
-      return this.street;
-   }
-
-   public void setStreet(String street) {
-      this.street = street;
-   }
+    public void setUser(User user) {
+        this.user = user;
+    }
 
 }

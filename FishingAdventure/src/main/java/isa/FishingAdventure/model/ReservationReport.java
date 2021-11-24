@@ -1,29 +1,50 @@
 package isa.FishingAdventure.model;
 
+import javax.persistence.*;
+
+@Entity
 public class ReservationReport {
-   private String report;
-   
-   public Reservation reservation;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-   public ReservationReport(String report, Reservation reservation) {
-      this.report = report;
-      this.reservation = reservation;
-   }
+    @Column(name = "report", nullable = false)
+    private String report;
 
-   public String getReport() {
-      return this.report;
-   }
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "reservationId", referencedColumnName = "reservationId")
+    public Reservation reservation;
 
-   public void setReport(String report) {
-      this.report = report;
-   }
+    public ReservationReport(String report, Reservation reservation) {
+        this.report = report;
+        this.reservation = reservation;
+    }
 
-   public Reservation getReservation() {
-      return this.reservation;
-   }
+    public ReservationReport() {
+    }
 
-   public void setReservation(Reservation reservation) {
-      this.reservation = reservation;
-   }
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getReport() {
+        return this.report;
+    }
+
+    public void setReport(String report) {
+        this.report = report;
+    }
+
+    public Reservation getReservation() {
+        return this.reservation;
+    }
+
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
+    }
 
 }

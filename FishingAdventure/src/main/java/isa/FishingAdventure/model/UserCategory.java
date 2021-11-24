@@ -1,48 +1,67 @@
 package isa.FishingAdventure.model;
 
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+
+@Entity
 public class UserCategory {
-   private int id;
-   private double points;
-   private UserCategoryName category;
-   private double percentage;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-   public UserCategory(int id, double points, UserCategoryName category, double percentage) {
-      this.id = id;
-      this.points = points;
-      this.category = category;
-      this.percentage = percentage;
-   }
+    @Column(name = "points", nullable = false)
+    private double points;
 
-   public int getId() {
-      return this.id;
-   }
+    @Column(name = "category", nullable = false)
+    private UserCategoryName category;
 
-   public void setId(int id) {
-      this.id = id;
-   }
+    @Column(name = "percentage", nullable = false)
+    private double percentage;
 
-   public double getPoints() {
-      return this.points;
-   }
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private final Set<User> users = new HashSet<User>();
 
-   public void setPoints(double points) {
-      this.points = points;
-   }
+    public UserCategory(Integer id, double points, UserCategoryName category, double percentage) {
+        this.id = id;
+        this.points = points;
+        this.category = category;
+        this.percentage = percentage;
+    }
 
-   public UserCategoryName getCategory() {
-      return this.category;
-   }
+    public UserCategory() {
+    }
 
-   public void setCategory(UserCategoryName category) {
-      this.category = category;
-   }
+    public Integer getId() {
+        return this.id;
+    }
 
-   public double getPercentage() {
-      return this.percentage;
-   }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-   public void setPercentage(double percentage) {
-      this.percentage = percentage;
-   }
+    public double getPoints() {
+        return this.points;
+    }
+
+    public void setPoints(double points) {
+        this.points = points;
+    }
+
+    public UserCategoryName getCategory() {
+        return this.category;
+    }
+
+    public void setCategory(UserCategoryName category) {
+        this.category = category;
+    }
+
+    public double getPercentage() {
+        return this.percentage;
+    }
+
+    public void setPercentage(double percentage) {
+        this.percentage = percentage;
+    }
 
 }

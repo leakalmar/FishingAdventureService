@@ -1,28 +1,53 @@
 package isa.FishingAdventure.model;
 
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+
+@Entity
 public class NavigationEquipment {
-   private int id;
-   private String name;
 
-   public NavigationEquipment(int id, String name) {
-      this.id = id;
-      this.name = name;
-   }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-   public int getId() {
-      return this.id;
-   }
+    @Column(name = "name", nullable = false)
+    private String name;
 
-   public void setId(int id) {
-      this.id = id;
-   }
+    @ManyToMany(mappedBy = "navigationEquipment")
+    private Set<Boat> boats = new HashSet<Boat>();
 
-   public String getName() {
-      return this.name;
-   }
+    public NavigationEquipment(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
-   public void setName(String name) {
-      this.name = name;
-   }
+    public NavigationEquipment() {
+    }
+
+    public Integer getId() {
+        return this.id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Set<Boat> getBoats() {
+        return boats;
+    }
+
+    public void setBoats(Set<Boat> boats) {
+        this.boats = boats;
+    }
+
 
 }

@@ -1,102 +1,153 @@
 package isa.FishingAdventure.model;
-import java.util.*;
 
-public class ServiceProfile {
-   private int serviceId;
-   private String name;
-   private int description;
-   private double cancellationRule;
-   private double rating;
-   
-   public Location location;
-   public Set<Appointment> appointments;
-   public Set<Rule> rules;
-   public Set<AdditionalService> additionalServices;
-   
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
-   public ServiceProfile(int serviceId, String name, int description, double cancellationRule, double rating, Location location, Set<Appointment> appointments, Set<Rule> rules, Set<AdditionalService> additionalServices) {
-      this.serviceId = serviceId;
-      this.name = name;
-      this.description = description;
-      this.cancellationRule = cancellationRule;
-      this.rating = rating;
-      this.location = location;
-      this.appointments = appointments;
-      this.rules = rules;
-      this.additionalServices = additionalServices;
-   }
+import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
 
-   public int getServiceId() {
-      return this.serviceId;
-   }
+@Entity
+@Inheritance(strategy = TABLE_PER_CLASS)
+public abstract class ServiceProfile {
+    @Id
+    @SequenceGenerator(name = "mySeqGenV1", sequenceName = "mySeqV1", initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenV1")
+    private Integer serviceId;
 
-   public void setServiceId(int serviceId) {
-      this.serviceId = serviceId;
-   }
+    @Column(name = "name", nullable = false)
+    private String name;
 
-   public String getName() {
-      return this.name;
-   }
+    @Column(name = "description", nullable = false)
+    private int description;
 
-   public void setName(String name) {
-      this.name = name;
-   }
+    @Column(name = "cancellationRule", nullable = false)
+    private double cancellationRule;
 
-   public int getDescription() {
-      return this.description;
-   }
+    @Column(name = "rating", nullable = false)
+    private double rating;
 
-   public void setDescription(int description) {
-      this.description = description;
-   }
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "locationId", referencedColumnName = "locationId")
+    public Location location;
 
-   public double getCancellationRule() {
-      return this.cancellationRule;
-   }
+    @OneToMany(mappedBy = "serviceProfile", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Appointment> appointments;
 
-   public void setCancellationRule(double cancellationRule) {
-      this.cancellationRule = cancellationRule;
-   }
+    @ManyToMany
+    @JoinTable(name = "rulesInServiceProfile",
+            joinColumns = @JoinColumn(name = "serviceId", referencedColumnName = "serviceId"),
+            inverseJoinColumns = @JoinColumn(name = "ruleId", referencedColumnName = "id"))
+    private Set<Rule> rules;
 
-   public double getRating() {
-      return this.rating;
-   }
+    @OneToMany(mappedBy = "serviceProfiles", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<AdditionalService> additionalServices;
 
-   public void setRating(double rating) {
-      this.rating = rating;
-   }
+    @ManyToMany(mappedBy = "subscriptions")
+    private Set<Client> subscribedClients = new HashSet<Client>();
 
-   public Location getLocation() {
-      return this.location;
-   }
+    @OneToMany(mappedBy = "serviceProfile", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Image> images = new HashSet<Image>();
 
-   public void setLocation(Location location) {
-      this.location = location;
-   }
+    public ServiceProfile(Integer serviceId, String name, int description, double cancellationRule, double rating, Location location, Set<Appointment> appointments, Set<Rule> rules, Set<AdditionalService> additionalServices) {
+        this.serviceId = serviceId;
+        this.name = name;
+        this.description = description;
+        this.cancellationRule = cancellationRule;
+        this.rating = rating;
+        this.location = location;
+        this.appointments = appointments;
+        this.rules = rules;
+        this.additionalServices = additionalServices;
+    }
 
-   public Set<Appointment> getAppointments() {
-      return this.appointments;
-   }
+    public ServiceProfile() {
+    }
 
-   public void setAppointments(Set<Appointment> appointments) {
-      this.appointments = appointments;
-   }
+    public Integer getServiceId() {
+        return this.serviceId;
+    }
 
-   public Set<Rule> getRules() {
-      return this.rules;
-   }
+    public void setServiceId(Integer serviceId) {
+        this.serviceId = serviceId;
+    }
 
-   public void setRules(Set<Rule> rules) {
-      this.rules = rules;
-   }
+    public String getName() {
+        return this.name;
+    }
 
-   public Set<AdditionalService> getAdditionalServices() {
-      return this.additionalServices;
-   }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-   public void setAdditionalServices(Set<AdditionalService> additionalServices) {
-      this.additionalServices = additionalServices;
-   }
-   
+    public int getDescription() {
+        return this.description;
+    }
 
+    public void setDescription(int description) {
+        this.description = description;
+    }
+
+    public double getCancellationRule() {
+        return this.cancellationRule;
+    }
+
+    public void setCancellationRule(double cancellationRule) {
+        this.cancellationRule = cancellationRule;
+    }
+
+    public double getRating() {
+        return this.rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
+    public Location getLocation() {
+        return this.location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public Set<Appointment> getAppointments() {
+        return this.appointments;
+    }
+
+    public void setAppointments(Set<Appointment> appointments) {
+        this.appointments = appointments;
+    }
+
+    public Set<Rule> getRules() {
+        return this.rules;
+    }
+
+    public void setRules(Set<Rule> rules) {
+        this.rules = rules;
+    }
+
+    public Set<AdditionalService> getAdditionalServices() {
+        return this.additionalServices;
+    }
+
+    public void setAdditionalServices(Set<AdditionalService> additionalServices) {
+        this.additionalServices = additionalServices;
+    }
+
+    public Set<Client> getSubscribedClients() {
+        return subscribedClients;
+    }
+
+    public void setSubscribedClients(Set<Client> subscribedClients) {
+        this.subscribedClients = subscribedClients;
+    }
+
+    public Set<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(Set<Image> images) {
+        this.images = images;
+    }
 }

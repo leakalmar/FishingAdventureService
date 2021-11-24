@@ -1,98 +1,163 @@
 package isa.FishingAdventure.model;
+
+import javax.persistence.*;
 import java.time.Duration;
-import java.util.*;
+import java.util.Date;
+import java.util.Set;
 
+@Entity
 public class Appointment {
-   private int appointmentId;
-   private double discount;
-   private boolean isReserved;
-   private Date startDate;
-   private Date endDate;
-   private Duration duration;
-   private int maxPersons;
-   private double price;
-   
-   public Set<AdditionalService> chosenServices;
-   
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer appointmentId;
 
-   public Appointment(int appointmentId, double discount, boolean isReserved, Date startDate, Date endDate, Duration duration, int maxPersons, double price, Set<AdditionalService> chosenServices) {
-      this.appointmentId = appointmentId;
-      this.discount = discount;
-      this.isReserved = isReserved;
-      this.startDate = startDate;
-      this.endDate = endDate;
-      this.duration = duration;
-      this.maxPersons = maxPersons;
-      this.price = price;
-      this.chosenServices = chosenServices;
-   }
+    @Column(name = "discount", nullable = false)
+    private double discount;
 
-   public int getAppointmentId() {
-      return this.appointmentId;
-   }
+    @Column(name = "isReserved", nullable = false)
+    private boolean isReserved;
 
-   public void setAppointmentId(int appointmentId) {
-      this.appointmentId = appointmentId;
-   }
+    @Column(name = "startDate", nullable = false)
+    private Date startDate;
 
-   public double getDiscount() {
-      return this.discount;
-   }
+    @Column(name = "endDate", nullable = false)
+    private Date endDate;
 
-   public void setDiscount(double discount) {
-      this.discount = discount;
-   }
+    @Column(name = "duration", nullable = false)
+    private Duration duration;
 
-   public boolean isIsReserved() {
-      return this.isReserved;
-   }
+    @Column(name = "maxPersons", nullable = false)
+    private int maxPersons;
 
-   public boolean getIsReserved() {
-      return this.isReserved;
-   }
+    @Column(name = "price", nullable = false)
+    private double price;
 
-   public void setIsReserved(boolean isReserved) {
-      this.isReserved = isReserved;
-   }
+    @ManyToMany
+    @JoinTable(name = "appointmentServices",
+            joinColumns = @JoinColumn(name = "appointmentId", referencedColumnName = "appointmentId"),
+            inverseJoinColumns = @JoinColumn(name = "additionalServiceId", referencedColumnName = "id"))
+    public Set<AdditionalService> chosenServices;
 
-   public Date getStartDate() {
-      return this.startDate;
-   }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "serviceProfileId")
+    public ServiceProfile serviceProfile;
 
-   public void setStartDate(Date startDate) {
-      this.startDate = startDate;
-   }
+    @OneToOne(mappedBy = "appointment")
+    private Reservation reservation;
 
-   public Date getEndDate() {
-      return this.endDate;
-   }
 
-   public void setEndDate(Date endDate) {
-      this.endDate = endDate;
-   }
+    public Appointment(Integer appointmentId, double discount, boolean isReserved, Date startDate, Date endDate, Duration duration, int maxPersons, double price, Set<AdditionalService> chosenServices) {
+        this.appointmentId = appointmentId;
+        this.discount = discount;
+        this.isReserved = isReserved;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.duration = duration;
+        this.maxPersons = maxPersons;
+        this.price = price;
+        this.chosenServices = chosenServices;
+    }
 
-   public Duration getDuration() {
-      return this.duration;
-   }
+    public Appointment() {
+    }
 
-   public void setDuration(Duration duration) {
-      this.duration = duration;
-   }
+    public Integer getAppointmentId() {
+        return this.appointmentId;
+    }
 
-   public int getMaxPersons() {
-      return this.maxPersons;
-   }
+    public void setAppointmentId(Integer appointmentId) {
+        this.appointmentId = appointmentId;
+    }
 
-   public void setMaxPersons(int maxPersons) {
-      this.maxPersons = maxPersons;
-   }
+    public double getDiscount() {
+        return this.discount;
+    }
 
-   public double getPrice() {
-      return this.price;
-   }
+    public void setDiscount(double discount) {
+        this.discount = discount;
+    }
 
-   public void setPrice(double price) {
-      this.price = price;
-   }
-   
+    public boolean isIsReserved() {
+        return this.isReserved;
+    }
+
+    public boolean getIsReserved() {
+        return this.isReserved;
+    }
+
+    public void setIsReserved(boolean isReserved) {
+        this.isReserved = isReserved;
+    }
+
+    public Date getStartDate() {
+        return this.startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return this.endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public Duration getDuration() {
+        return this.duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public int getMaxPersons() {
+        return this.maxPersons;
+    }
+
+    public void setMaxPersons(int maxPersons) {
+        this.maxPersons = maxPersons;
+    }
+
+    public double getPrice() {
+        return this.price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public boolean isReserved() {
+        return isReserved;
+    }
+
+    public void setReserved(boolean reserved) {
+        isReserved = reserved;
+    }
+
+    public Set<AdditionalService> getChosenServices() {
+        return chosenServices;
+    }
+
+    public void setChosenServices(Set<AdditionalService> chosenServices) {
+        this.chosenServices = chosenServices;
+    }
+
+    public ServiceProfile getServiceProfile() {
+        return serviceProfile;
+    }
+
+    public void setServiceProfile(ServiceProfile serviceProfile) {
+        this.serviceProfile = serviceProfile;
+    }
+
+    public Reservation getReservation() {
+        return reservation;
+    }
+
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
+    }
 }

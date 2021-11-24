@@ -1,39 +1,62 @@
 package isa.FishingAdventure.model;
 
+import javax.persistence.*;
+
+@Entity
 public class Review {
-   private String content;
-   private int rating;
-   
-   public Reservation reservation;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-   public Review(String content, int rating, Reservation reservation) {
-      this.content = content;
-      this.rating = rating;
-      this.reservation = reservation;
-   }
+    @Column(name = "content", nullable = false)
+    private String content;
 
-   public String getContent() {
-      return this.content;
-   }
+    @Column(name = "rating", nullable = false)
+    private int rating;
 
-   public void setContent(String content) {
-      this.content = content;
-   }
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "reservationId", referencedColumnName = "reservationId")
+    public Reservation reservation;
 
-   public int getRating() {
-      return this.rating;
-   }
+    public Review(String content, int rating, Reservation reservation) {
+        this.content = content;
+        this.rating = rating;
+        this.reservation = reservation;
+    }
 
-   public void setRating(int rating) {
-      this.rating = rating;
-   }
+    public Review() {
+    }
 
-   public Reservation getReservation() {
-      return this.reservation;
-   }
+    public Integer getId() {
+        return id;
+    }
 
-   public void setReservation(Reservation reservation) {
-      this.reservation = reservation;
-   }
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getContent() {
+        return this.content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public int getRating() {
+        return this.rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    public Reservation getReservation() {
+        return this.reservation;
+    }
+
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
+    }
 
 }

@@ -1,39 +1,51 @@
 package isa.FishingAdventure.model;
 
+import javax.persistence.*;
+
+@Entity
 public class Image {
-   private int id;
-   private String path;
-   
-   public ServiceProfile serviceProfile;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-   public Image(int id, String path, ServiceProfile serviceProfile) {
-      this.id = id;
-      this.path = path;
-      this.serviceProfile = serviceProfile;
-   }
+    @Column(name = "path", nullable = false)
+    private String path;
 
-   public int getId() {
-      return this.id;
-   }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "serviceProfileId")
+    public ServiceProfile serviceProfile;
 
-   public void setId(int id) {
-      this.id = id;
-   }
+    public Image(Integer id, String path, ServiceProfile serviceProfile) {
+        this.id = id;
+        this.path = path;
+        this.serviceProfile = serviceProfile;
+    }
 
-   public String getPath() {
-      return this.path;
-   }
+    public Image() {
+    }
 
-   public void setPath(String path) {
-      this.path = path;
-   }
+    public Integer getId() {
+        return this.id;
+    }
 
-   public ServiceProfile getServiceProfile() {
-      return this.serviceProfile;
-   }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-   public void setServiceProfile(ServiceProfile serviceProfile) {
-      this.serviceProfile = serviceProfile;
-   }
+    public String getPath() {
+        return this.path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public ServiceProfile getServiceProfile() {
+        return this.serviceProfile;
+    }
+
+    public void setServiceProfile(ServiceProfile serviceProfile) {
+        this.serviceProfile = serviceProfile;
+    }
 
 }

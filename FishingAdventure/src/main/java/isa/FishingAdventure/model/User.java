@@ -1,123 +1,157 @@
 package isa.FishingAdventure.model;
 
-public class User {
-   private int userId;
-   private String email;
-   private String password;
-   private String name;
-   private String surname;
-   private String phoneNumber;
-   private UserType userType;
-   private double points;
-   private UserCategory category;
-   private boolean activated;
-   
-   public Address address;
+import javax.persistence.*;
 
-   public User(int userId, String email, String password, String name, String surname, String phoneNumber, UserType userType, double points, UserCategory category, boolean activated, Address address) {
-      this.userId = userId;
-      this.email = email;
-      this.password = password;
-      this.name = name;
-      this.surname = surname;
-      this.phoneNumber = phoneNumber;
-      this.userType = userType;
-      this.points = points;
-      this.category = category;
-      this.activated = activated;
-      this.address = address;
-   }
+import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
 
-   public int getUserId() {
-      return this.userId;
-   }
+@Entity
+@Inheritance(strategy = TABLE_PER_CLASS)
+public abstract class User {
+    @Id
+    @SequenceGenerator(name = "mySeqGenV1", sequenceName = "mySeqV1", initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenV1")
+    private Integer userId;
 
-   public void setUserId(int userId) {
-      this.userId = userId;
-   }
+    @Column(name = "email", nullable = false)
+    private String email;
 
-   public String getEmail() {
-      return this.email;
-   }
+    @Column(name = "password", nullable = false)
+    private String password;
 
-   public void setEmail(String email) {
-      this.email = email;
-   }
+    @Column(name = "name", nullable = false)
+    private String name;
 
-   public String getPassword() {
-      return this.password;
-   }
+    @Column(name = "surname", nullable = false)
+    private String surname;
 
-   public void setPassword(String password) {
-      this.password = password;
-   }
+    @Column(name = "phoneNumber", nullable = false)
+    private String phoneNumber;
 
-   public String getName() {
-      return this.name;
-   }
+    @Column(name = "userType", nullable = false)
+    private UserType userType;
 
-   public void setName(String name) {
-      this.name = name;
-   }
+    @Column(name = "points", nullable = false)
+    private double points;
 
-   public String getSurname() {
-      return this.surname;
-   }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "catagoryId")
+    private UserCategory category;
 
-   public void setSurname(String surname) {
-      this.surname = surname;
-   }
+    @Column(name = "activated", nullable = false)
+    private boolean activated;
 
-   public String getPhoneNumber() {
-      return this.phoneNumber;
-   }
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "addressId", referencedColumnName = "addressId")
+    public Address address;
 
-   public void setPhoneNumber(String phoneNumber) {
-      this.phoneNumber = phoneNumber;
-   }
+    public User(Integer userId, String email, String password, String name, String surname, String phoneNumber, UserType userType, double points, UserCategory category, boolean activated, Address address) {
+        this.userId = userId;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.surname = surname;
+        this.phoneNumber = phoneNumber;
+        this.userType = userType;
+        this.points = points;
+        this.category = category;
+        this.activated = activated;
+        this.address = address;
+    }
 
-   public UserType getUserType() {
-      return this.userType;
-   }
 
-   public void setUserType(UserType userType) {
-      this.userType = userType;
-   }
+    public User() {
+    }
 
-   public double getPoints() {
-      return this.points;
-   }
+    public Integer getUserId() {
+        return this.userId;
+    }
 
-   public void setPoints(double points) {
-      this.points = points;
-   }
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
 
-   public UserCategory getCategory() {
-      return this.category;
-   }
+    public String getEmail() {
+        return this.email;
+    }
 
-   public void setCategory(UserCategory category) {
-      this.category = category;
-   }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-   public boolean isActivated() {
-      return this.activated;
-   }
+    public String getPassword() {
+        return this.password;
+    }
 
-   public boolean getActivated() {
-      return this.activated;
-   }
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-   public void setActivated(boolean activated) {
-      this.activated = activated;
-   }
+    public String getName() {
+        return this.name;
+    }
 
-   public Address getAddress() {
-      return this.address;
-   }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-   public void setAddress(Address address) {
-      this.address = address;
-   }
+    public String getSurname() {
+        return this.surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getPhoneNumber() {
+        return this.phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public UserType getUserType() {
+        return this.userType;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
+    }
+
+    public double getPoints() {
+        return this.points;
+    }
+
+    public void setPoints(double points) {
+        this.points = points;
+    }
+
+    public UserCategory getCategory() {
+        return this.category;
+    }
+
+    public void setCategory(UserCategory category) {
+        this.category = category;
+    }
+
+    public boolean isActivated() {
+        return this.activated;
+    }
+
+    public boolean getActivated() {
+        return this.activated;
+    }
+
+    public void setActivated(boolean activated) {
+        this.activated = activated;
+    }
+
+    public Address getAddress() {
+        return this.address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
 }

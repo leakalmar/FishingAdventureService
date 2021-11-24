@@ -1,28 +1,50 @@
 package isa.FishingAdventure.model;
 
+import javax.persistence.*;
+
+@Entity
 public class Room {
-   private int roomId;
-   private int bedNumber;
 
-   public Room(int roomId, int bedNumber) {
-      this.roomId = roomId;
-      this.bedNumber = bedNumber;
-   }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer roomId;
 
-   public int getRoomId() {
-      return this.roomId;
-   }
+    @Column(name = "bedNumber", nullable = false)
+    private int bedNumber;
 
-   public void setRoomId(int roomId) {
-      this.roomId = roomId;
-   }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "vacationHomeId")
+    private VacationHome vacationHome;
 
-   public int getBedNumber() {
-      return this.bedNumber;
-   }
+    public Room(Integer roomId, int bedNumber) {
+        this.roomId = roomId;
+        this.bedNumber = bedNumber;
+    }
 
-   public void setBedNumber(int bedNumber) {
-      this.bedNumber = bedNumber;
-   }
+    public Room() {
+    }
 
+    public Integer getRoomId() {
+        return this.roomId;
+    }
+
+    public void setRoomId(Integer roomId) {
+        this.roomId = roomId;
+    }
+
+    public int getBedNumber() {
+        return this.bedNumber;
+    }
+
+    public void setBedNumber(int bedNumber) {
+        this.bedNumber = bedNumber;
+    }
+
+    public VacationHome getVacationHome() {
+        return vacationHome;
+    }
+
+    public void setVacationHome(VacationHome vacationHome) {
+        this.vacationHome = vacationHome;
+    }
 }

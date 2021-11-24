@@ -1,8 +1,8 @@
 package isa.FishingAdventure.model;
 
 public enum UserCategoryName {
-   REGULAR,
-   SILVER,
-   GOLD;
+    REGULAR,
+    SILVER,
+    GOLD
 
 }
