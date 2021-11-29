@@ -1,4 +1,5 @@
 <template>
+  <nav-bar></nav-bar>
   <div id="nav">
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link> |
@@ -6,6 +7,13 @@
   </div>
   <router-view/>
 </template>
+
+<script>
+import NavBar from '@/components/NavBar.vue';
+export default {
+  components: {"nav-bar": NavBar}
+}
+</script>
 
 <style>
 #app {
