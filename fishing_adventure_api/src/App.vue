@@ -1,18 +1,19 @@
 <template>
   <nav-bar></nav-bar>
-  <div id="nav">
+  <!-- <div id="nav">
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link> |
     <router-link to="/profile">Profile</router-link>
-  </div>
-  <router-view/>
+  </div> -->
+  <router-view />
+  <div class="container"></div>
 </template>
 
 <script>
-import NavBar from '@/components/NavBar.vue';
+import NavBar from "@/components/NavBar.vue";
 export default {
-  components: {"nav-bar": NavBar}
-}
+  components: { "nav-bar": NavBar },
+};
 </script>
 
 <style>
@@ -22,18 +23,14 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  overflow-x: hidden;
 }
 
-#nav {
-  padding: 30px;
+h1 {
+  color: #0b4f6e;
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+p {
+  color: white;
 }
 </style>
