@@ -1,18 +1,18 @@
 <template>
-  <nav-bar></nav-bar>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link> |
-    <router-link to="/profile">Profile</router-link>
-  </div>
-  <router-view/>
+  <NavBar></NavBar>
+  <router-view />
+  <Footer></Footer>
 </template>
 
 <script>
-import NavBar from '@/components/NavBar.vue';
+import NavBar from "@/components/NavBar.vue";
+import Footer from "@/components/Footer.vue";
 export default {
-  components: {"nav-bar": NavBar}
-}
+  components: {
+    NavBar,
+    Footer,
+  },
+};
 </script>
 
 <style>
@@ -22,18 +22,34 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  overflow-x: hidden;
 }
 
-#nav {
-  padding: 30px;
+.btn-outline-primary {
+  color: white !important;
+  border-color: white !important;
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+.btn-outline-primary:hover {
+  color: black !important;
+  border-color: black !important;
+  background-color: white !important;
 }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
+.btn-outline-primary:focus-visible,
+.btn-outline-primary:focus {
+  box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.575) !important;
+}
+
+h1 {
+  color: #0b4f6e;
+}
+
+p {
+  color: white;
+}
+
+h6 {
+  color: white;
 }
 </style>
