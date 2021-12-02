@@ -2,7 +2,6 @@
   <div class="d-block">
     <div class="container">
       <span>
-        <p id="text1">Welcome to</p>
         <img src="@/assets/logo_white.png" id="text2" />
       </span>
     </div>
@@ -10,19 +9,15 @@
   <div class="home">
     <HomeComponent />
   </div>
-  <Footer></Footer>
 </template>
 
 <script>
-// @ is an alias to /src
 import HomeComponent from "@/components/HomeComponent.vue";
-import Footer from "@/components/Footer.vue";
 
 export default {
   name: "Home",
   components: {
     HomeComponent,
-    Footer,
   },
 };
 </script>

@@ -31,15 +31,23 @@
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                Bookings
+                Explore
               </a>
               <ul
                 class="dropdown-menu text-center dropdown-menu-dark"
                 aria-labelledby="navbarScrollingDropdown"
               >
-                <li><a class="dropdown-item" href="#">Boats</a></li>
-                <li><a class="dropdown-item" href="#">Cottages</a></li>
-                <li><a class="dropdown-item" href="#">Adventures</a></li>
+                <li><a class="dropdown-item" href="search">All</a></li>
+                <li><hr class="dropdown-divider" /></li>
+                <li><a class="dropdown-item" href="search/boats">Boats</a></li>
+                <li>
+                  <a class="dropdown-item" href="search/cottages">Cottages</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="search/adventures"
+                    >Adventures</a
+                  >
+                </li>
               </ul>
             </li>
           </ul>
