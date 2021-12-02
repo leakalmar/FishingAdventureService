@@ -254,7 +254,6 @@
 </template>
 
 <script>
-import "@/css/registerModal.css";
 export default {
   name: "RegisterModal",
   data: function () {
@@ -341,4 +340,4 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped src="@/css/registerModal.css"></style>
