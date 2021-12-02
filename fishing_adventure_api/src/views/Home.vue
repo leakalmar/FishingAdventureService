@@ -70,7 +70,6 @@ export default {
 
 #text2 {
   margin-top: 20px;
-  margin-right: 10%;
   width: 50vh;
   animation: animation2 0.75s ease-out 1s forwards;
 }

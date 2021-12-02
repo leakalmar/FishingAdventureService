@@ -43,14 +43,30 @@
               </ul>
             </li>
           </ul>
+          <div class="d-flex">
+            <button
+              type="button"
+              class="btn btn-outline-primary"
+              data-bs-toggle="modal"
+              data-bs-target="#LogInModal"
+            >
+              Register / Log In
+            </button>
+          </div>
         </div>
       </div>
     </nav>
   </div>
+  <register-modal></register-modal>
 </template>
 
 <script>
-export default {};
+import RegisterModal from "@/components/RegisterModal.vue";
+
+export default {
+  components: { "register-modal": RegisterModal },
+  name: "NavBar",
+};
 </script>
 
 <style lang="scss" scoped></style>

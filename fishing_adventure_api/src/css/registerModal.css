@@ -1,0 +1,201 @@
+/** Bootstrap Dark Modal Styles **/
+
+.modal-open .modal,
+.btn:focus {
+    outline: none !important;
+}
+
+.modal-dialog .modal-content {
+    background: #1e2021;
+}
+
+.modal.dark .modal-body {
+    background: #1e2021;
+    outline: none;
+    margin: 0 10%;
+}
+
+.modal.dark .modal-header {
+    background: #1e2021;
+    border-bottom: 1px solid #44474b;
+    outline: none;
+}
+
+.modal.dark .modal-header h1,
+.modal.dark .modal-header h2,
+.modal.dark .modal-header h3,
+.modal.dark .modal-header h4 {
+    color: #ccc;
+}
+
+.modal.dark .modal-footer {
+    background: #1e2021;
+    border-top: 1px solid #44474b;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    justify-content: center;
+}
+
+.modal h5 {
+    color: white;
+}
+
+.nav-tabs .nav-item.show .nav-link,
+.nav-tabs .nav-link.active {
+    background-color: #1e2021;
+    border: 0;
+    color: white;
+}
+
+.nav-tabs {
+    margin-left: 30%;
+    border: 0;
+}
+
+.nav-tabs .nav-link:focus {
+    border: 0;
+}
+
+.nav-tabs .nav-link:focus,
+.nav-tabs .nav-link:hover,
+.nav-tabs .nav-link:focus-visible {
+    outline: 0 !important;
+    border: 0;
+    color: white;
+}
+
+:focus-visible {
+    outline: 0 !important;
+}
+
+.nav-link {
+    color: gray;
+}
+
+.nav-tabs .nav-link {
+    border: 0;
+}
+
+label {
+    color: rgba(255, 255, 255, 0.74);
+}
+
+.form-control,
+.form-control:focus {
+    background-color: #1e2021;
+    border: 0;
+    border-bottom: 1px solid #ced4da;
+    border-radius: 0;
+    color: white;
+    padding: 6px 12px 0 12px;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 0 0.25rem #ced4da28;
+}
+
+.login-inputs {
+    display: block;
+    margin: 15px auto 0 auto;
+    background-color: transparent;
+    width: 100%;
+    border-width: 0;
+    border-bottom-width: 1px;
+    border-color: white;
+    padding: 2px 20px;
+    color: white;
+    font-size: 17px;
+}
+
+.login-inputs-select {
+    display: block;
+    margin: 15px auto 0 auto;
+    background-color: transparent;
+    width: 58%;
+    border-width: 0;
+    border-bottom-width: 1px;
+    border-color: white;
+    padding: 2px 16px;
+    color: white;
+    font-size: 17px;
+}
+
+.login-inputs-select option {
+    background-color: rgba(44, 53, 63, 1);
+    color: white;
+}
+
+.login-inputs-select:focus {
+    border-width: 1px;
+}
+
+.col {
+    margin: 15px 3%;
+    width: 80%;
+}
+
+.fas {
+    padding: 5px;
+}
+
+.modal-open .modal[data-v-76cb98ca],
+.btn[data-v-76cb98ca]:focus {
+    border-radius: 0 !important;
+}
+
+.btn-group>.btn-group:not(:first-child),
+.btn-group>.btn:not(:first-child) {
+    margin-left: 10px;
+}
+
+.radio-btn:checked {
+    background-color: white;
+    color: black;
+    border: 0;
+}
+
+.btn-check:active+.btn-outline-primary,
+.btn-check:checked+.btn-outline-primary,
+.btn-outline-primary.active,
+.btn-outline-primary.dropdown-toggle.show,
+.btn-outline-primary:active {
+    color: black !important;
+    background-color: white;
+    border-color: white !important;
+}
+
+.btn-group,
+.btn-group-vertical {
+    flex-wrap: nowrap;
+    width: 100%;
+    flex-direction: column;
+}
+
+.form-control {
+    background-color: #393c3f73;
+}
+
+.form-floating>.form-control {
+    height: 100px;
+}
+
+.modal-header .btn-close {
+    background: transparent;
+    color: white;
+}
+
+.modal-header .btn-close .fas {
+    padding: 0;
+    font-weight: 200;
+}
+
+.btn-close:focus {
+    outline: 0;
+    box-shadow: none;
+}
+
+.btn .btn-outline-primary:focus {
+    outline: 0;
+    box-shadow: none!important;
+}
