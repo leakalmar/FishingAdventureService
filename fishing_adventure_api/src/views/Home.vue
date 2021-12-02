@@ -2,6 +2,7 @@
   <div class="d-block">
     <div class="container">
       <span>
+        <p id="text1">Welcome to</p>
         <img src="@/assets/logo_white.png" id="text2" />
       </span>
     </div>

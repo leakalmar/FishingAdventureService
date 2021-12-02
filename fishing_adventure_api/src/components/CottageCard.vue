@@ -1,0 +1,94 @@
+<template>
+  <div>
+    <div class="card mb-3 bg-dark mt-3" style="width: 60%; margin: auto">
+      <div class="row g-0">
+        <div class="col-md-4 w-80 shadow-none">
+          <img
+            src="@/assets/c2.jpg"
+            class="img-fluid rounded-start shadow-none"
+          />
+        </div>
+        <div class="col-md-8 shadow-none">
+          <div class="card-body shadow-none">
+            <div class="card-text shadow-none" style="display: flex">
+              <h5 class="card-title shadow-none">Villa Madam</h5>
+              <p class="advertiserTitle shadow-none">@oglasivac</p>
+              <p
+                class="shadow-none"
+                style="
+                  margin: 0;
+                  text-align: right;
+                  margin-left: auto;
+                  color: #c79e2c;
+                "
+              >
+                <i class="fas fa-star shadow-none"> 5.0</i>
+              </p>
+            </div>
+            <p class="card-text text-left shadow-none">
+              It is a long established fact that a reader will be distracted by
+              the readable content of a page when looking at its layout.
+            </p>
+            <div class="card-text fw-bold shadow-none" style="display: flex">
+              <p class="shadow-none" style="margin: 0">
+                341 Preston Street, Pheonix
+              </p>
+              <p
+                class="shadow-none"
+                style="margin: 0; text-align: right; margin-left: auto"
+              >
+                <i class="fas fa-dollar-sign shadow-none">50.00</i>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {};
+</script>
+<style scoped>
+.img-fluid {
+  height: 100%;
+}
+h5 {
+  color: white;
+}
+p {
+  color: gray;
+}
+@media (min-width: 768px) {
+  .col-md-4 {
+    flex: 0 0 auto;
+    width: 25%;
+  }
+}
+@media (min-width: 768px) {
+  .col-md-8 {
+    flex: 0 0 auto;
+    width: 74.666667%;
+  }
+}
+div {
+  text-align: left;
+}
+
+.row {
+  align-items: center;
+}
+.card :hover {
+  cursor: pointer;
+  box-shadow: 2px 2px 15px 2px rgba(187, 178, 178, 0.664);
+}
+
+.advertiserTitle {
+  background-color: rgba(128, 128, 128, 0.226);
+  color: gray;
+  padding: 2px;
+  border-radius: 5px;
+  margin-left: 3%;
+}
+</style>
