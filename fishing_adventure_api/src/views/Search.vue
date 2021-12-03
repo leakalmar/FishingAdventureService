@@ -2,7 +2,17 @@
   <div>
     <div class="title">
       <h1>Find your perfect vacation</h1>
-      <i class="far fa-home fa-3x"></i>
+      <i class="far fa-home fa-3x" style="font-family: 'Font Awesome 5 Pro'"></i
+      ><i
+        v-if="searching == '' || searching == 'boats'"
+        class="far fa-anchor fa-3x"
+        style="font-family: 'Font Awesome 5 Pro'"
+      ></i>
+      <i
+        v-if="searching == '' || searching == 'adventures'"
+        class="far fa-fish fa-3x"
+        style="font-family: 'Font Awesome 5 Pro'"
+      ></i>
     </div>
     <div class="input-group pb-3 pt-3" style="background-color: #212529">
       <form class="container">

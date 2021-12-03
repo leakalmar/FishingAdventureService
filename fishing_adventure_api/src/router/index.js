@@ -13,12 +13,6 @@ const routes = [{
             import ('../views/Profile.vue')
     },
     {
-        path: '/about',
-        name: 'About',
-        component: () =>
-            import ('../views/About.vue')
-    },
-    {
         path: '/search',
         name: 'Search',
         component: () =>
@@ -44,6 +38,12 @@ const routes = [{
             component: () =>
                 import ('../views/Search.vue')
         }]
+    },
+    {
+        path: '/cottages',
+        name: 'MyCottages',
+        component: () =>
+            import ('../views/MyCottages.vue')
     }
 ]
 const router = createRouter({

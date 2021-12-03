@@ -8,11 +8,30 @@
             class="img-fluid rounded-start shadow-none"
           />
         </div>
-        <div class="col-md-8 shadow-none">
+
+        <div class="col-md-8 shadow-none" name="main-col">
           <div class="card-body shadow-none">
             <div class="card-text shadow-none" style="display: flex">
               <h5 class="card-title shadow-none">Villa Madam</h5>
-              <p class="advertiserTitle shadow-none">@oglasivac</p>
+              <p class="advertiserTitle shadow-none">@jeamsDean</p>
+              <p
+                v-if="path == 'mycottages'"
+                class="shadow-none"
+                style="
+                  margin: 0;
+                  text-align: right;
+                  margin-left: auto;
+                  color: #832626;
+                "
+              >
+                <i class="fas fa-minus-square fa-lg shadow-none"></i>
+              </p>
+            </div>
+            <div class="card-text shadow-none" style="display: flex">
+              <p class="card-text text-left shadow-none">
+                It is a long established fact that a reader will be distracted
+                by the readable content of a page when looking at its layout.
+              </p>
               <p
                 class="shadow-none"
                 style="
@@ -20,15 +39,12 @@
                   text-align: right;
                   margin-left: auto;
                   color: #c79e2c;
+                  width: 30%;
                 "
               >
                 <i class="fas fa-star shadow-none"> 5.0</i>
               </p>
             </div>
-            <p class="card-text text-left shadow-none">
-              It is a long established fact that a reader will be distracted by
-              the readable content of a page when looking at its layout.
-            </p>
             <div class="card-text fw-bold shadow-none" style="display: flex">
               <p class="shadow-none" style="margin: 0">
                 341 Preston Street, Pheonix
@@ -48,7 +64,23 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data: function () {
+    return {
+      path: "",
+    };
+  },
+  mounted: function () {
+    console.log("da");
+    if (window.location.href.includes("/search/cottages")) {
+      console.log("daa");
+      this.path = "searchcottages";
+    } else if (window.location.href.includes("/cottages")) {
+      console.log("dsaa");
+      this.path = "mycottages";
+    }
+  },
+};
 </script>
 <style scoped>
 .img-fluid {
