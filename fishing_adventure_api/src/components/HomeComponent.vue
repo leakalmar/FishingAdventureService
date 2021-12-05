@@ -98,5 +98,6 @@ export default {
 .col :hover {
   cursor: pointer;
   box-shadow: 2px 2px 15px 2px rgba(187, 178, 178, 0.664);
+  transition: 0.5s;
 }
 </style>

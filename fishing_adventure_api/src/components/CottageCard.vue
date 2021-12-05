@@ -17,19 +17,13 @@
               <p class="advertiserTitle shadow-none">@jeamsDean</p>
               <p
                 v-if="path == 'mycottages'"
-                class="shadow-none"
-                style="
-                  margin: 0;
-                  text-align: right;
-                  margin-left: auto;
-                  color: #832626;
-                "
+                class="top-right-corner shadow-none"
               >
                 <i class="fas fa-minus-square fa-lg shadow-none"></i>
               </p>
             </div>
             <div class="card-text shadow-none" style="display: flex">
-              <div>
+              <div class="shadow-none">
                 <p class="card-text text-left shadow-none mb-1">
                   It is a long established fact that a reader will be distracted
                   by the readable content of a page when looking at its layout.
@@ -121,6 +115,7 @@ div {
 .card :hover {
   cursor: pointer;
   box-shadow: 2px 2px 15px 2px rgba(187, 178, 178, 0.664);
+  transition: 0.5s;
 }
 
 .advertiserTitle {
@@ -129,5 +124,19 @@ div {
   padding: 2px;
   border-radius: 5px;
   margin-left: 3%;
+}
+.advertiserTitle:hover {
+  box-shadow: 3px 5px 0px 0px rgb(22 20 20 / 66%) !important;
+  transition: 0.5s;
+}
+.top-right-corner {
+  margin: 0;
+  text-align: right;
+  margin-left: auto;
+  color: #832626;
+}
+.top-right-corner i:hover {
+  box-shadow: 3px 5px 0px 0px rgb(22 20 20 / 66%) !important;
+  transition: 0.5s;
 }
 </style>

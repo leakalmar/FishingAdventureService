@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div class="card mb-3 bg-dark mt-3" style="width: 65%; margin: auto">
+    <div
+      class="card mb-3 bg-dark mt-3"
+      style="width: 65%; margin: auto; background-color: #7e000c3d !important"
+    >
       <div class="row g-0">
         <div class="col-md-4 shadow-none">
           <img
@@ -14,8 +17,8 @@
           <div class="card-body shadow-none">
             <div class="card-text shadow-none" style="display: flex">
               <h5 class="card-title shadow-none">Villa Madam</h5>
-              <p class="reservationStatus shadow-none">
-                <b class="shadow-none">Panding</b>
+              <p class="discountStatus shadow-none">
+                <b class="shadow-none"> {{ discount }}% OFF</b>
               </p>
             </div>
             <div
@@ -25,18 +28,10 @@
               <div class="shadow-none" style="width: 100%">
                 <div class="row shadow-none">
                   <p class="card-text text-left shadow-none col-md-4">
-                    Client:
-                  </p>
-                  <p class="advertiserTitle shadow-none col-md-6">
-                    @alexaLopez
-                  </p>
-                </div>
-                <div class="row shadow-none">
-                  <p class="card-text text-left shadow-none col-md-4">
-                    Period:
+                    Offer duration:
                   </p>
                   <p class="card-text text-left shadow-none col-md-8">
-                    {{ date }}
+                    {{ duration }}
                   </p>
                 </div>
                 <div class="row shadow-none">
@@ -76,20 +71,8 @@
               </div>
 
               <div class="manageReservation shadow-none">
-                <button
-                  class="btn btn-primary shadow-none mb-2"
-                  style="background-color: #0c442a; border-color: #0c442a"
-                >
-                  Create
-                </button>
-                <button
-                  class="btn btn-primary shadow-none"
-                  style="
-                    background-color: rgb(94 23 30);
-                    border-color: rgb(94 23 30);
-                  "
-                >
-                  Reject
+                <button class="btn btn-outline-primary shadow-none mb-2">
+                  Close
                 </button>
               </div>
             </div>
@@ -105,6 +88,8 @@ export default {
   data: function () {
     return {
       date: "12/20/2021 - 12/25/2021",
+      discount: "50",
+      duration: "24 hours",
     };
   },
 };
@@ -173,11 +158,11 @@ div {
   padding: 1rem 0 1rem 1rem;
 }
 
-.reservationStatus {
+.discountStatus {
   margin: auto 0px auto auto;
   text-align: right;
   padding: 0 10px;
-  background-color: #09b1a966;
+  background-color: #b1090966;
   width: 30%;
   text-align: center;
   color: white;
@@ -185,9 +170,8 @@ div {
   text-decoration: bold;
 }
 
-.btn-primary:hover,
-.advertiserTitle:hover {
-  box-shadow: 3px 5px 0px 0px rgb(22 20 20 / 66%) !important;
+.btn-primary:hover {
+  box-shadow: 2px 2px 10px 0px rgb(22 20 20 / 66%) !important;
   transition: 0.5s;
 }
 
