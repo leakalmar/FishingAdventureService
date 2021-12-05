@@ -8,7 +8,10 @@
       ></i>
     </div>
     <div class="input-group pb-3 pt-3" style="background-color: #212529">
-      <form class="container" style="display: flex">
+      <div class="container" style="display: flex">
+        <button type="button" class="btn btn-outline-primary text-nowrap me-2">
+          New cottage
+        </button>
         <div class="input-group">
           <input
             class="form-control me-2"
@@ -43,7 +46,7 @@
             </div>
           </div>
         </div>
-      </form>
+      </div>
     </div>
     <div style="margin-top: 5%">
       <CottageCard v-for="index in 10" :key="index"></CottageCard>

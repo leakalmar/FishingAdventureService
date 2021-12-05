@@ -74,9 +74,7 @@
                   >
                 </li>
                 <li>
-                  <a class="dropdown-item" href="/search/reservations"
-                    >Reservations</a
-                  >
+                  <a class="dropdown-item" href="/reservations">Reservations</a>
                 </li>
               </ul>
             </li>

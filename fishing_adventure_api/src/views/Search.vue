@@ -23,7 +23,12 @@
           aria-label="Search"
         />
         <Datepicker
-          style="width: 100%; margin-right: 10px"
+          style="
+            width: 100%;
+            margin-right: 10px;
+            border: 1px solid white;
+            border-radius: 5px;
+          "
           dark
           id="picker"
           v-model="date"

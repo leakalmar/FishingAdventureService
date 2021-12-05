@@ -1,9 +1,10 @@
 <template>
   <div>
-    <div class="card mb-3 bg-dark mt-3" style="width: 60%; margin: auto">
+    <div class="card mb-3 bg-dark mt-3" style="width: 65%; margin: auto">
       <div class="row g-0">
-        <div class="col-md-4 w-80 shadow-none">
+        <div class="col-md-4 shadow-none">
           <img
+            style="width: 100%; height: 225px; object-fit: cover"
             src="@/assets/c2.jpg"
             class="img-fluid rounded-start shadow-none"
           />
@@ -28,10 +29,15 @@
               </p>
             </div>
             <div class="card-text shadow-none" style="display: flex">
-              <p class="card-text text-left shadow-none">
-                It is a long established fact that a reader will be distracted
-                by the readable content of a page when looking at its layout.
-              </p>
+              <div>
+                <p class="card-text text-left shadow-none mb-1">
+                  It is a long established fact that a reader will be distracted
+                  by the readable content of a page when looking at its layout.
+                </p>
+                <p class="card-text text-left shadow-none mb-3">
+                  Available: {{ availableDate }}
+                </p>
+              </div>
               <p
                 class="shadow-none"
                 style="
@@ -68,6 +74,7 @@ export default {
   data: function () {
     return {
       path: "",
+      availableDate: "12/01/2021 11:00 - 12/25/2021 8:00",
     };
   },
   mounted: function () {

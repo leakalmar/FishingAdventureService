@@ -44,6 +44,12 @@ const routes = [{
         name: 'MyCottages',
         component: () =>
             import ('../views/MyCottages.vue')
+    },
+    {
+        path: '/reservations',
+        name: 'HomeOwnerReservations',
+        component: () =>
+            import ('../views/HomeOwnerReservations.vue')
     }
 ]
 const router = createRouter({
