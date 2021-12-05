@@ -7,30 +7,48 @@
         style="font-family: 'Font Awesome 5 Pro'"
       ></i>
     </div>
-    <div class="input-group pb-3 pt-3" style="background-color: #212529">
-      <div class="container" style="display: flex">
-        <button type="button" class="btn btn-outline-primary text-nowrap me-2">
-          New cottage
-        </button>
-        <div class="input-group">
+    <div
+      style="
+        background-color: #212529;
+        padding: 15px;
+        text-align: -webkit-center;
+      "
+    >
+      <div
+        class="container w-100 row row-cols-1 row-cols-sm-1 row-cols-md-4"
+        style="justify-content: space-evenly; align-items: center"
+      >
+        <div class="col-md-2">
+          <button
+            type="button"
+            class="btn btn-outline-primary text-nowrap me-2"
+          >
+            New cottage
+          </button>
+        </div>
+        <div class="col-md-3">
           <input
             class="form-control me-2"
             type="search"
             placeholder="Search"
             aria-label="Search"
           />
+        </div>
+        <div class="col-md-4">
           <div style="display: flex">
             <span class="input-group-text">Price</span>
             <input
-              class="form-control me-2"
+              class="form-control"
               type="search"
               placeholder="Enter price.."
               aria-label="Enter price.."
             />
           </div>
+        </div>
+        <div class="col-md-3">
           <div style="display: flex">
             <span class="input-group-text">Rating</span>
-            <div class="rating-div form-control">
+            <div class="rating-div form-control" style="min-width: 135px">
               <div class="rating">
                 <input type="radio" name="star" id="star1" value="5" />
                 <label for="star1"></label>
