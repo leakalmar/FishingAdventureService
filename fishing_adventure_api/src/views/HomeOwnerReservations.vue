@@ -33,6 +33,16 @@
           range
           :enableTimePicker="false"
         ></Datepicker>
+        <select
+          class="form-select form-select-dark form-select-sm text-white bg-dark"
+          aria-label=".form-select-sm example"
+        >
+          <option selected>All statuses</option>
+          <option value="1">Panding</option>
+          <option value="2">Current</option>
+          <option value="3">Former</option>
+          <option value="3">Rejected</option>
+        </select>
       </div>
     </div>
     <div style="margin-top: 5%">
