@@ -14,8 +14,15 @@
           <div class="card-body shadow-none">
             <div class="card-text shadow-none" style="display: flex">
               <h5 class="card-title shadow-none">Villa Madam</h5>
-              <p class="reservationStatus shadow-none">
+              <p class="reservationStatus shadow-none" v-if="review != true">
                 <b class="shadow-none">Panding</b>
+              </p>
+              <p
+                class="reservationStatus shadow-none"
+                style="background-color: #0c442a"
+                v-if="review == true"
+              >
+                <b class="shadow-none">Finished</b>
               </p>
             </div>
             <div
@@ -77,12 +84,14 @@
 
               <div class="manageReservation shadow-none">
                 <button
+                  v-if="review != true"
                   class="btn btn-primary shadow-none mb-2"
                   style="background-color: #0c442a; border-color: #0c442a"
                 >
                   Create
                 </button>
                 <button
+                  v-if="review != true"
                   class="btn btn-primary shadow-none"
                   style="
                     background-color: rgb(94 23 30);
@@ -90,6 +99,16 @@
                   "
                 >
                   Reject
+                </button>
+                <button
+                  v-if="review == true"
+                  class="btn btn-primary shadow-none"
+                  style="
+                    background-color: rgb(255 217 0 / 59%);
+                    border-color: rgb(255 217 0 / 59%);
+                  "
+                >
+                  Review
                 </button>
               </div>
             </div>
@@ -102,6 +121,7 @@
 
 <script>
 export default {
+  props: ["review"],
   data: function () {
     return {
       date: "12/20/2021 - 12/25/2021",

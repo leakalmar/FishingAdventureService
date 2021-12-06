@@ -50,8 +50,9 @@
               <option selected>All statuses</option>
               <option value="1">Panding</option>
               <option value="2">Current</option>
-              <option value="3">Former</option>
-              <option value="3">Rejected</option>
+              <option value="3">Review</option>
+              <option value="4">Former</option>
+              <option value="5">Rejected</option>
             </select>
           </div>
         </div>
@@ -59,7 +60,13 @@
     </div>
     <div style="margin-top: 5%">
       <CottageReservationCard
-        v-for="index in 10"
+        :review="false"
+        v-for="index in 5"
+        :key="index"
+      ></CottageReservationCard>
+      <CottageReservationCard
+        :review="true"
+        v-for="index in 2"
         :key="index"
       ></CottageReservationCard>
     </div>

@@ -28,8 +28,30 @@
                   It is a long established fact that a reader will be distracted
                   by the readable content of a page when looking at its layout.
                 </p>
-                <p class="card-text text-left shadow-none mb-3">
-                  Available: {{ availableDate }}
+                <p
+                  class="card-text text-left shadow-none mb-3 flex-column d-flex flex-md-row"
+                  style="align-items: center"
+                >
+                  Available:
+                  <Datepicker
+                    style="
+                      margin-left: 2%;
+                      margin-top: 2%;
+                      border: 1px solid white;
+                      border-radius: 5px;
+                      width: 100%;
+                      box-shadow: none !important;
+                    "
+                    dark
+                    id="picker"
+                    v-model="date"
+                    range
+                    :partialRange="false"
+                    placeholder="Select date"
+                    :enableTimePicker="true"
+                    minutesIncrement="15"
+                    :minDate="new Date()"
+                  ></Datepicker>
                 </p>
               </div>
               <p
@@ -51,7 +73,12 @@
               </p>
               <p
                 class="shadow-none"
-                style="margin: 0; text-align: right; margin-left: auto"
+                style="
+                  margin: 0;
+                  text-align: right;
+                  margin-left: auto;
+                  font-size: x-large;
+                "
               >
                 <i class="fas fa-dollar-sign shadow-none">50.00</i>
               </p>
@@ -64,11 +91,23 @@
 </template>
 
 <script>
+import { ref, onMounted } from "vue";
 export default {
+  setup() {
+    const date = ref();
+
+    onMounted(() => {
+      const startDate = new Date(2021, 12, 5, 14);
+      const endDate = new Date(2021, 12, 15, 11);
+      date.value = [startDate, endDate];
+    });
+    return {
+      date,
+    };
+  },
   data: function () {
     return {
       path: "",
-      availableDate: "12/01/2021 11:00 - 12/25/2021 8:00",
     };
   },
   mounted: function () {

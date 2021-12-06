@@ -70,7 +70,7 @@
                 <li><a class="dropdown-item" href="/calendar">Calander</a></li>
                 <li>
                   <a class="dropdown-item" href="/specialOffers"
-                    >SpecialOffers</a
+                    >Special Offers</a
                   >
                 </li>
                 <li>
