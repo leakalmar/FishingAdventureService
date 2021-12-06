@@ -1,0 +1,385 @@
+<template>
+  <div>
+    <div class="card mb-3 bg-dark mt-3" style="width: 80%; margin: auto">
+      <div class="row g-0">
+        <div class="col-md-4 shadow-none">
+          <img
+            width="100"
+            height="225"
+            style="width: 100%; object-fit: cover; position: relative"
+            src="@/assets/advertizer.png"
+            class="img-fluid rounded-start shadow-none overlay"
+          />
+        </div>
+        <div class="col-md-8 shadow-none" name="main-col">
+          <div class="card-body shadow-none p-0">
+            <div
+              class="btn-group"
+              role="group"
+              aria-label="Basic radio toggle button group"
+            >
+              <input
+                type="radio"
+                class="btn-check"
+                name="btnradio"
+                id="btnradio1"
+                value="1"
+                v-model="readioChecked"
+                autocomplete="off"
+              />
+              <label class="btn navigation-btn" for="btnradio1">About me</label>
+
+              <input
+                type="radio"
+                class="btn-check"
+                name="btnradio"
+                id="btnradio2"
+                value="2"
+                v-model="readioChecked"
+                autocomplete="off"
+              />
+              <label class="btn navigation-btn" for="btnradio2">Account</label>
+            </div>
+            <div class="container" style="min-height: 320px">
+              <div
+                v-if="readioChecked == '1'"
+                class="card-text shadow-none info-container"
+                style=""
+              >
+                <div
+                  class="shadow-none"
+                  style="width: 100%; padding: 20px; text-align: left"
+                >
+                  <div class="row shadow-none">
+                    <p class="card-text text-left shadow-none col-md-3">
+                      Name:
+                    </p>
+                    <input
+                      disabled
+                      type="text"
+                      v-model="name"
+                      name="aboutMe"
+                      class="shadow-none login-inputs col-md-8 mb-2"
+                    />
+                  </div>
+                  <div class="row shadow-none">
+                    <p class="card-text text-left shadow-none col-md-3">
+                      Description:
+                    </p>
+                    <textarea
+                      name="aboutMe"
+                      v-model="description"
+                      style="
+                        min-height: 100px;
+                        margin-bottom: 20px;
+                        resize: none;
+                      "
+                      disabled
+                      class="shadow-none login-inputs col-md-8"
+                    />
+                  </div>
+                  <div class="row shadow-none">
+                    <p class="card-text text-left shadow-none col-md-3">
+                      Phonenumber:
+                    </p>
+                    <input
+                      name="aboutMe"
+                      type="text"
+                      v-model="phonenumber"
+                      disabled
+                      class="shadow-none login-inputs col-md-8 mb-2"
+                    />
+                  </div>
+                  <div class="row shadow-none">
+                    <p class="card-text text-left shadow-none col-md-3">
+                      Address:
+                    </p>
+                    <input
+                      name="aboutMe"
+                      type="text"
+                      v-model="address"
+                      disabled
+                      class="shadow-none login-inputs col-md-8 mb-2"
+                    />
+                  </div>
+                  <div class="row shadow-none">
+                    <button
+                      id="editAboutMe"
+                      class="btn btn-primary col-md-4"
+                      v-on:click="enableAboutMe"
+                    >
+                      Edit settings
+                    </button>
+                    <button
+                      id="saveAboutMe"
+                      style="display: none"
+                      class="btn btn-primary col-md-4"
+                      v-on:click="saveAboutMe"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div
+                v-if="readioChecked == '2'"
+                class="card-text shadow-none info-container"
+                style=""
+              >
+                <div class="shadow-none" style="width: 100%; padding: 40px">
+                  <div class="row shadow-none">
+                    <p class="card-text text-left shadow-none col-md-3">
+                      Account:
+                    </p>
+                    <input
+                      type="text"
+                      name="account"
+                      v-model="account"
+                      disabled
+                      class="shadow-none login-inputs col-md-8 mb-2"
+                    />
+                  </div>
+                  <div class="row shadow-none">
+                    <p class="card-text text-left shadow-none col-md-3">
+                      Password:
+                    </p>
+                    <input
+                      name="account"
+                      disabled
+                      type="password"
+                      class="login-inputs col-md-8 mb-2"
+                      placeholder="Enter new password"
+                      v-model="password1"
+                    />
+                  </div>
+                  <div class="row shadow-none">
+                    <p class="card-text text-left shadow-none col-md-3">
+                      Password:
+                    </p>
+                    <input
+                      name="account"
+                      disabled
+                      type="password"
+                      class="login-inputs col-md-8 mb-2"
+                      placeholder="Enter new password again"
+                      v-model="password2"
+                    />
+                  </div>
+                  <div class="row shadow-none mt-5">
+                    <div class="col-md-20">
+                      <button
+                        class="btn btn-primary col-md-4"
+                        id="editAccount"
+                        v-on:click="enableAccount"
+                      >
+                        Edit settings
+                      </button>
+                      <button
+                        id="saveAccount"
+                        style="display: none"
+                        class="btn btn-primary col-md-4"
+                        v-on:click="saveAccount"
+                      >
+                        Save
+                      </button>
+                      <span class="col-md-4 m-0 me-2"></span>
+                      <button
+                        id="deleteAccount"
+                        class="btn btn-primary col-md-4"
+                        style="
+                          background-color: rgb(94, 23, 30);
+                          border-color: rgb(94, 23, 30);
+                        "
+                      >
+                        Delete account
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  mounted: function () {
+    let element = document.getElementById("btnradio1");
+    element.checked = true;
+    this.readioChecked = "1";
+  },
+  data: function () {
+    return {
+      password1: "",
+      password2: "",
+      readioChecked: "",
+      name: "Derek Hayward",
+      account: "darek.hayward@gmail.com",
+      phonenumber: "347-393-6833",
+      address: "3293 Cantebury Drive, Garden City",
+      description:
+        "All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable.",
+    };
+  },
+  methods: {
+    enableAboutMe: function () {
+      var elements = document.getElementsByName("aboutMe");
+      var editBtn = document.getElementById("editAboutMe");
+      var saveBtn = document.getElementById("saveAboutMe");
+      saveBtn.style.display = "unset";
+      editBtn.style.display = "none";
+      for (let element of elements) {
+        element.disabled = false;
+      }
+    },
+    saveAboutMe: function () {
+      var elements = document.getElementsByName("aboutMe");
+      var editBtn = document.getElementById("editAboutMe");
+      editBtn.style.display = "unset";
+      var saveBtn = document.getElementById("saveAboutMe");
+      saveBtn.style.display = "none";
+      for (let element of elements) {
+        element.disabled = true;
+      }
+    },
+    enableAccount: function () {
+      var elements = document.getElementsByName("account");
+      var editBtn = document.getElementById("editAccount");
+      var saveBtn = document.getElementById("saveAccount");
+      var deleteBtn = document.getElementById("deleteAccount");
+      saveBtn.style.display = "unset";
+      editBtn.style.display = "none";
+      deleteBtn.style.display = "none";
+      for (let element of elements) {
+        element.disabled = false;
+      }
+    },
+    saveAccount: function () {
+      var elements = document.getElementsByName("account");
+      var editBtn = document.getElementById("editAccount");
+      var saveBtn = document.getElementById("saveAccount");
+      var deleteBtn = document.getElementById("deleteAccount");
+      editBtn.style.display = "unset";
+      saveBtn.style.display = "none";
+      deleteBtn.style.display = "unset";
+      for (let element of elements) {
+        element.disabled = true;
+      }
+      this.password1 = "";
+      this.password2 = "";
+    },
+  },
+};
+</script>
+
+<style scoped>
+.img-fluid {
+  width: 100%;
+  height: 100%;
+}
+.overlay {
+  background-image: url(../assets/backgroun1.png);
+}
+
+.navigation-btn {
+  border: 0;
+  background-color: transparent;
+  color: white;
+  border-bottom: 0.5px solid white;
+  font-size: 18px;
+}
+
+.navigation-btn:hover {
+  transition: 0.2s;
+  font-size: 19px;
+}
+
+.btn-check:checked + .navigation-btn {
+  transition: 0.2s;
+  font-weight: bold;
+  font-size: 18.5px;
+}
+.login-inputs {
+  height: 20%;
+  display: block;
+  background-color: transparent;
+  border-width: 0;
+  border-bottom-width: 0.5px;
+  border-color: white;
+  color: white;
+}
+
+.login-inputs:disabled {
+  border-color: gray;
+  color: gray;
+}
+
+.login-inputs-select {
+  display: block;
+  margin: 15px auto 0 auto;
+  background-color: transparent;
+  width: 58%;
+  border-width: 0;
+  border-bottom-width: 1px;
+  border-color: white;
+  padding: 2px 16px;
+  color: white;
+  font-size: 17px;
+}
+
+.login-inputs-select option {
+  background-color: rgba(44, 53, 63, 1);
+  color: white;
+}
+
+.login-inputs-select:focus {
+  border-width: 1px;
+}
+
+#text1 {
+  color: white;
+  letter-spacing: 8px;
+  font-size: 20px;
+  animation: animation2 0.75s ease-out 0s forwards;
+}
+
+#text2 {
+  margin-top: 20px;
+  width: 50vh;
+  animation: animation2 0.75s ease-out 1s forwards;
+}
+@keyframes animation1 {
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes animation2 {
+  100% {
+    opacity: 1;
+    left: 0px;
+  }
+}
+
+.info-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  left: 50px;
+  opacity: 0;
+  animation: animation2 0.2s ease-out 0s forwards;
+}
+
+.row {
+  justify-content: center;
+}
+
+.btn-primary {
+  background-color: #131517f3;
+  border-color: #131517f3;
+}
+</style>
