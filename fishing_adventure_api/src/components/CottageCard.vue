@@ -34,6 +34,7 @@
                 >
                   Available:
                   <Datepicker
+                    v-if="path == 'mycottages'"
                     style="
                       margin-left: 2%;
                       margin-top: 2%;
@@ -51,6 +52,27 @@
                     :enableTimePicker="true"
                     minutesIncrement="15"
                     :minDate="new Date()"
+                  ></Datepicker>
+                  <Datepicker
+                    v-if="path != 'mycottages'"
+                    style="
+                      margin-left: 2%;
+                      margin-top: 2%;
+                      border: 1px solid white;
+                      border-radius: 5px;
+                      width: 100%;
+                      box-shadow: none !important;
+                    "
+                    dark
+                    id="picker"
+                    v-model="date"
+                    range
+                    :partialRange="false"
+                    placeholder="Select date"
+                    :enableTimePicker="true"
+                    minutesIncrement="15"
+                    :minDate="new Date()"
+                    disabled
                   ></Datepicker>
                 </p>
               </div>
@@ -92,10 +114,10 @@
 
 <script>
 import { ref, onMounted } from "vue";
+
 export default {
   setup() {
     const date = ref();
-
     onMounted(() => {
       const startDate = new Date(2021, 12, 5, 14);
       const endDate = new Date(2021, 12, 15, 11);
@@ -111,12 +133,9 @@ export default {
     };
   },
   mounted: function () {
-    console.log("da");
     if (window.location.href.includes("/search/cottages")) {
-      console.log("daa");
       this.path = "searchcottages";
     } else if (window.location.href.includes("/cottages")) {
-      console.log("dsaa");
       this.path = "mycottages";
     }
   },

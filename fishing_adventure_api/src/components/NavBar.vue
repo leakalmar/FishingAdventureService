@@ -91,7 +91,18 @@
           </div>
 
           <div class="d-flex" v-if="loggedInUser != ''">
-            <button type="button" class="btn btn-outline-primary">
+            <button
+              type="button"
+              class="btn btn-outline-primary me-2"
+              v-on:click="openProfile"
+            >
+              Log out
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-primary"
+              v-on:click="openProfile"
+            >
               <i class="fas fa-user"></i>
             </button>
           </div>
@@ -112,6 +123,11 @@ export default {
     return {
       loggedInUser: "homeOwner",
     };
+  },
+  methods: {
+    openProfile: function () {
+      window.location.href = "/profile";
+    },
   },
 };
 </script>
