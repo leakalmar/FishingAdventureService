@@ -1,9 +1,16 @@
 <template>
-  <div></div>
+  <div>
+    <UserInfo></UserInfo>
+    <HomeOwnerStatistics></HomeOwnerStatistics>
+  </div>
 </template>
 
 <script>
-export default {};
+import UserInfo from "@/components/UserInfo.vue";
+import HomeOwnerStatistics from "@/components/HomeOwnerStatistics.vue";
+export default {
+  components: { UserInfo, HomeOwnerStatistics },
+};
 </script>
 
 <style scoped></style>

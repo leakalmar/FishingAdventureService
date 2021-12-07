@@ -52,4 +52,28 @@ p {
 h6 {
   color: white;
 }
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 5px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.25);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(44, 53, 63, 1);
+  box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.25);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.493);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.315);
+}
+
+.btn-primary:hover {
+  box-shadow: 3px 5px 0px 0px rgb(22 20 20 / 66%) !important;
+  transition: 0.5s;
+}
 </style>

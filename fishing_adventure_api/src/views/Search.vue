@@ -2,35 +2,65 @@
   <div>
     <div class="title">
       <h1>Find your perfect vacation</h1>
-      <i class="far fa-home fa-3x"></i>
+      <i class="far fa-home fa-3x" style="font-family: 'Font Awesome 5 Pro'"></i
+      ><i
+        v-if="searching == '' || searching == 'boats'"
+        class="far fa-anchor fa-3x"
+        style="font-family: 'Font Awesome 5 Pro'"
+      ></i>
+      <i
+        v-if="searching == '' || searching == 'adventures'"
+        class="far fa-fish fa-3x"
+        style="font-family: 'Font Awesome 5 Pro'"
+      ></i>
     </div>
-    <div class="input-group pb-3 pt-3" style="background-color: #212529">
-      <form class="container">
-        <input
-          class="form-control me-2"
-          type="search"
-          placeholder="Search"
-          aria-label="Search"
-        />
-        <Datepicker
-          style="width: 100%; margin-right: 10px"
-          dark
-          id="picker"
-          v-model="date"
-          range
-          :enableTimePicker="false"
-        ></Datepicker>
-        <div class="input-group">
-          <span class="input-group-text">Number of persons</span>
+    <div
+      style="
+        background-color: #212529;
+        padding: 15px;
+        text-align: -webkit-center;
+      "
+    >
+      <div
+        class="container w-100 row row-cols-1 row-cols-sm-1 row-cols-md-4"
+        style="justify-content: space-evenly; align-items: center"
+      >
+        <div class="col-md-2">
           <input
-            type="number"
-            min="1"
-            max="15"
-            v-model="numberOfPersons"
             class="form-control me-2"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"
           />
         </div>
-      </form>
+        <div class="col-md-5">
+          <Datepicker
+            style="
+              width: 100%;
+              margin-right: 10px;
+              border: 1px solid white;
+              border-radius: 5px;
+            "
+            dark
+            id="picker"
+            v-model="date"
+            range
+            :enableTimePicker="false"
+          ></Datepicker>
+        </div>
+        <div class="col-md-5">
+          <div class="input-group">
+            <span class="input-group-text">Number of persons</span>
+            <input
+              type="number"
+              min="1"
+              max="15"
+              v-model="numberOfPersons"
+              class="form-control"
+            />
+          </div>
+        </div>
+      </div>
     </div>
     <div v-if="searching == 'cottages'" style="margin-top: 5%">
       <CottageCard v-for="index in 10" :key="index"></CottageCard>

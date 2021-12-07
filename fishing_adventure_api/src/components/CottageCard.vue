@@ -1,18 +1,81 @@
 <template>
   <div>
-    <div class="card mb-3 bg-dark mt-3" style="width: 60%; margin: auto">
+    <div class="card mb-3 bg-dark mt-3" style="width: 65%; margin: auto">
       <div class="row g-0">
-        <div class="col-md-4 w-80 shadow-none">
+        <div class="col-md-4 shadow-none">
           <img
+            style="width: 100%; height: 225px; object-fit: cover"
             src="@/assets/c2.jpg"
             class="img-fluid rounded-start shadow-none"
           />
         </div>
-        <div class="col-md-8 shadow-none">
+
+        <div class="col-md-8 shadow-none" name="main-col">
           <div class="card-body shadow-none">
             <div class="card-text shadow-none" style="display: flex">
               <h5 class="card-title shadow-none">Villa Madam</h5>
-              <p class="advertiserTitle shadow-none">@oglasivac</p>
+              <p class="advertiserTitle shadow-none">@jeamsDean</p>
+              <p
+                v-if="path == 'mycottages'"
+                class="top-right-corner shadow-none"
+              >
+                <i class="fas fa-minus-square fa-lg shadow-none"></i>
+              </p>
+            </div>
+            <div class="card-text shadow-none" style="display: flex">
+              <div class="shadow-none">
+                <p class="card-text text-left shadow-none mb-1">
+                  It is a long established fact that a reader will be distracted
+                  by the readable content of a page when looking at its layout.
+                </p>
+                <p
+                  class="card-text text-left shadow-none mb-3 flex-column d-flex flex-md-row"
+                  style="align-items: center"
+                >
+                  Available:
+                  <Datepicker
+                    v-if="path == 'mycottages'"
+                    style="
+                      margin-left: 2%;
+                      margin-top: 2%;
+                      border: 1px solid white;
+                      border-radius: 5px;
+                      width: 100%;
+                      box-shadow: none !important;
+                    "
+                    dark
+                    id="picker"
+                    v-model="date"
+                    range
+                    :partialRange="false"
+                    placeholder="Select date"
+                    :enableTimePicker="true"
+                    minutesIncrement="15"
+                    :minDate="new Date()"
+                  ></Datepicker>
+                  <Datepicker
+                    v-if="path != 'mycottages'"
+                    style="
+                      margin-left: 2%;
+                      margin-top: 2%;
+                      border: 1px solid white;
+                      border-radius: 5px;
+                      width: 100%;
+                      box-shadow: none !important;
+                    "
+                    dark
+                    id="picker"
+                    v-model="date"
+                    range
+                    :partialRange="false"
+                    placeholder="Select date"
+                    :enableTimePicker="true"
+                    minutesIncrement="15"
+                    :minDate="new Date()"
+                    disabled
+                  ></Datepicker>
+                </p>
+              </div>
               <p
                 class="shadow-none"
                 style="
@@ -20,22 +83,24 @@
                   text-align: right;
                   margin-left: auto;
                   color: #c79e2c;
+                  width: 30%;
                 "
               >
                 <i class="fas fa-star shadow-none"> 5.0</i>
               </p>
             </div>
-            <p class="card-text text-left shadow-none">
-              It is a long established fact that a reader will be distracted by
-              the readable content of a page when looking at its layout.
-            </p>
             <div class="card-text fw-bold shadow-none" style="display: flex">
               <p class="shadow-none" style="margin: 0">
                 341 Preston Street, Pheonix
               </p>
               <p
                 class="shadow-none"
-                style="margin: 0; text-align: right; margin-left: auto"
+                style="
+                  margin: 0;
+                  text-align: right;
+                  margin-left: auto;
+                  font-size: x-large;
+                "
               >
                 <i class="fas fa-dollar-sign shadow-none">50.00</i>
               </p>
@@ -48,7 +113,33 @@
 </template>
 
 <script>
-export default {};
+import { ref, onMounted } from "vue";
+
+export default {
+  setup() {
+    const date = ref();
+    onMounted(() => {
+      const startDate = new Date(2021, 12, 5, 14);
+      const endDate = new Date(2021, 12, 15, 11);
+      date.value = [startDate, endDate];
+    });
+    return {
+      date,
+    };
+  },
+  data: function () {
+    return {
+      path: "",
+    };
+  },
+  mounted: function () {
+    if (window.location.href.includes("/search/cottages")) {
+      this.path = "searchcottages";
+    } else if (window.location.href.includes("/cottages")) {
+      this.path = "mycottages";
+    }
+  },
+};
 </script>
 <style scoped>
 .img-fluid {
@@ -82,6 +173,7 @@ div {
 .card :hover {
   cursor: pointer;
   box-shadow: 2px 2px 15px 2px rgba(187, 178, 178, 0.664);
+  transition: 0.5s;
 }
 
 .advertiserTitle {
@@ -90,5 +182,19 @@ div {
   padding: 2px;
   border-radius: 5px;
   margin-left: 3%;
+}
+.advertiserTitle:hover {
+  box-shadow: 3px 5px 0px 0px rgb(22 20 20 / 66%) !important;
+  transition: 0.5s;
+}
+.top-right-corner {
+  margin: 0;
+  text-align: right;
+  margin-left: auto;
+  color: #832626;
+}
+.top-right-corner i:hover {
+  box-shadow: 3px 5px 0px 0px rgb(22 20 20 / 66%) !important;
+  transition: 0.5s;
 }
 </style>

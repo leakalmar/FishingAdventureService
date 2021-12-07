@@ -50,8 +50,36 @@
                 </li>
               </ul>
             </li>
+
+            <li class="nav-item dropdown" v-if="loggedInUser == 'homeOwner'">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarScrollingDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                My advertisments
+              </a>
+              <ul
+                class="dropdown-menu text-center dropdown-menu-dark"
+                aria-labelledby="navbarScrollingDropdown"
+              >
+                <li><a class="dropdown-item" href="/cottages">Cottages</a></li>
+                <li><a class="dropdown-item" href="/calendar">Calander</a></li>
+                <li>
+                  <a class="dropdown-item" href="/specialOffers"
+                    >Special Offers</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="/reservations">Reservations</a>
+                </li>
+              </ul>
+            </li>
           </ul>
-          <div class="d-flex">
+          <div class="d-flex" v-if="loggedInUser == ''">
             <button
               type="button"
               class="btn btn-outline-primary"
@@ -59,6 +87,23 @@
               data-bs-target="#LogInModal"
             >
               Register / Log In
+            </button>
+          </div>
+
+          <div class="d-flex" v-if="loggedInUser != ''">
+            <button
+              type="button"
+              class="btn btn-outline-primary me-2"
+              v-on:click="openProfile"
+            >
+              Log out
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-primary"
+              v-on:click="openProfile"
+            >
+              <i class="fas fa-user"></i>
             </button>
           </div>
         </div>
@@ -74,6 +119,16 @@ import RegisterModal from "@/components/RegisterModal.vue";
 export default {
   components: { "register-modal": RegisterModal },
   name: "NavBar",
+  data: function () {
+    return {
+      loggedInUser: "",
+    };
+  },
+  methods: {
+    openProfile: function () {
+      window.location.href = "/profile";
+    },
+  },
 };
 </script>
 
