@@ -68,6 +68,9 @@
     <div v-if="searching == 'boats'" style="margin-top: 5%">
       <BoatCard v-for="index in 10" :key="index"></BoatCard>
     </div>
+    <div v-if="searching == 'adventures'" style="margin-top: 5%">
+      <AdventureCard v-for="index in 10" :key="index"></AdventureCard>
+    </div>
   </div>
 </template>
 
@@ -77,8 +80,9 @@ import "vue3-date-time-picker/dist/main.css";
 import { ref, onMounted } from "vue";
 import CottageCard from "@/components/CottageCard.vue";
 import BoatCard from "@/components/BoatCard.vue";
+import AdventureCard from "@/components/AdventureCard.vue";
 export default {
-  components: { Datepicker, CottageCard, BoatCard },
+  components: { Datepicker, CottageCard, BoatCard, AdventureCard },
   setup() {
     const date = ref();
 

@@ -58,7 +58,7 @@
             alt="..."
           />
           <div class="card-body shadow-none">
-            <h5 class="card-title text-white shadow-none">Fishing</h5>
+            <h5 class="card-title text-white shadow-none">Fishing instructors</h5>
             <p class="card-text shadow-none">
               This is a longer card with supporting text below as a natural
               lead-in to additional content.
