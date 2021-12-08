@@ -41,7 +41,7 @@ public class Boat extends ServiceProfile {
             inverseJoinColumns = @JoinColumn(name = "fishingEquipmentId", referencedColumnName = "id"))
     public Set<FishingEquipment> fishingEquipment = new HashSet<FishingEquipment>();
 
-    public Boat(Integer serviceId, String name, int description, double cancellationRule, double rating, Location location, Set<Appointment> appointments, Set<Rule> rules, Set<AdditionalService> additionalServices) {
+    public Boat(Integer serviceId, String name, String description, double cancellationRule, double rating, Location location, Set<Appointment> appointments, Set<Rule> rules, Set<AdditionalService> additionalServices) {
         super(serviceId, name, description, cancellationRule, rating, location, appointments, rules, additionalServices);
 
     }
