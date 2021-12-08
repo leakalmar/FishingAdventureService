@@ -23,8 +23,7 @@ public class Address {
     @OneToOne(mappedBy = "address")
     private User user;
 
-    public Address(Integer addressId, String country, String city, String street) {
-        this.addressId = addressId;
+    public Address( String country, String city, String street) {
         this.country = country;
         this.city = city;
         this.street = street;

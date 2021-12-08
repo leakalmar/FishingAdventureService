@@ -71,7 +71,7 @@
               type="text"
               class="login-inputs"
               placeholder="Address"
-              v-model="user.address"
+              v-model="user.street"
             />
             <div class="row">
               <input
@@ -233,6 +233,7 @@
             <i class="fas fa-chevron-left fa-xs"></i> Back
           </button>
           <button
+            v-on:click="registerUser"
             type="button"
             v-if="mode == 'registerCustomer' || mode == 'registerAdvertiser'"
             class="btn btn-outline-primary"
@@ -254,6 +255,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "RegisterModal",
   data: function () {
@@ -265,7 +267,7 @@ export default {
         email: "",
         name: "",
         surname: "",
-        address: "",
+        street: "",
         city: "",
         country: "",
         phoneNumber: "",
@@ -325,7 +327,7 @@ export default {
       this.user.email = "";
       this.user.name = "";
       this.user.surname = "";
-      this.user.address = "";
+      this.user.street = "";
       this.user.city = "";
       this.user.country = "";
       this.user.phoneNumber = "";
@@ -335,6 +337,24 @@ export default {
       element.classList.add("active");
       element = document.getElementById("register-btn");
       element.classList.remove("active");
+    },
+    registerUser: function () {
+      let user = {
+        email: this.user.email,
+        password: this.user.password1,
+        name: this.user.name,
+        surname: this.user.surname,
+        phoneNumber: this.user.phoneNumber,
+        userType: "CLIENT"
+      };
+
+      axios
+        .post("http://localhost:8080/users/signup/async", user, {
+          headers: {
+            'Access-Control-Allow-Origin': 'http://localhost:8080'
+          }
+      })
+        .then();
     },
   },
 };
