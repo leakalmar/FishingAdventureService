@@ -20,7 +20,7 @@ public class VacationHome extends ServiceProfile {
     @OneToMany(mappedBy = "vacationHome", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public Set<Room> rooms;
 
-    public VacationHome(int serviceId, String name, int description, double cancellationRule, double rating, Location location, Set<Appointment> appointments, Set<Rule> rules, Set<AdditionalService> additionalServices) {
+    public VacationHome(int serviceId, String name, String description, double cancellationRule, double rating, Location location, Set<Appointment> appointments, Set<Rule> rules, Set<AdditionalService> additionalServices) {
         super(serviceId, name, description, cancellationRule, rating, location, appointments, rules, additionalServices);
     }
 

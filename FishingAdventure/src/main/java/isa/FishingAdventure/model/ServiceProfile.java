@@ -18,7 +18,7 @@ public abstract class ServiceProfile {
     private String name;
 
     @Column(name = "description", nullable = false)
-    private int description;
+    private String description;
 
     @Column(name = "cancellationRule", nullable = false)
     private double cancellationRule;
@@ -48,7 +48,7 @@ public abstract class ServiceProfile {
     @OneToMany(mappedBy = "serviceProfile", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Image> images = new HashSet<Image>();
 
-    public ServiceProfile(Integer serviceId, String name, int description, double cancellationRule, double rating, Location location, Set<Appointment> appointments, Set<Rule> rules, Set<AdditionalService> additionalServices) {
+    public ServiceProfile(Integer serviceId, String name, String description, double cancellationRule, double rating, Location location, Set<Appointment> appointments, Set<Rule> rules, Set<AdditionalService> additionalServices) {
         this.serviceId = serviceId;
         this.name = name;
         this.description = description;
@@ -79,11 +79,11 @@ public abstract class ServiceProfile {
         this.name = name;
     }
 
-    public int getDescription() {
+    public String getDescription() {
         return this.description;
     }
 
-    public void setDescription(int description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 

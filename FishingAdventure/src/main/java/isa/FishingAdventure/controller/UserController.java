@@ -1,6 +1,5 @@
 package isa.FishingAdventure.controller;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,17 +26,16 @@ public class UserController {
 	@Autowired
 	private EmailService emailService;
 
-
 	@PostMapping("/signup/async")
-	public String signUpAsync(@RequestBody UserDto user){
-		//slanje emaila
+	public String signUpAsync(@RequestBody UserDto user) {
+		// slanje emaila
 		System.out.println("Ovde");
 		try {
 			System.out.println(user.getEmail());
-			//System.out.println(user.toString());
+			// System.out.println(user.toString());
 			System.out.println("Thread id: " + Thread.currentThread().getId());
 			emailService.sendNotificaitionAsync(user);
-		}catch( Exception e ){
+		} catch (Exception e) {
 			logger.info("Greska prilikom slanja emaila: " + e.getMessage());
 		}
 
