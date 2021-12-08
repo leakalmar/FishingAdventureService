@@ -2,7 +2,7 @@
   <div>
     <div class="title">
       <h1>Find your perfect vacation</h1>
-      <i class="far fa-home fa-3x" style="font-family: 'Font Awesome 5 Pro'"></i
+      <i v-if="searching == '' || searching == 'cottages'" class="far fa-home fa-3x" style="font-family: 'Font Awesome 5 Pro'"></i
       ><i
         v-if="searching == '' || searching == 'boats'"
         class="far fa-anchor fa-3x"
@@ -65,6 +65,9 @@
     <div v-if="searching == 'cottages'" style="margin-top: 5%">
       <CottageCard v-for="index in 10" :key="index"></CottageCard>
     </div>
+    <div v-if="searching == 'boats'" style="margin-top: 5%">
+      <BoatCard v-for="index in 10" :key="index"></BoatCard>
+    </div>
   </div>
 </template>
 
@@ -73,8 +76,9 @@ import Datepicker from "vue3-date-time-picker";
 import "vue3-date-time-picker/dist/main.css";
 import { ref, onMounted } from "vue";
 import CottageCard from "@/components/CottageCard.vue";
+import BoatCard from "@/components/BoatCard.vue";
 export default {
-  components: { Datepicker, CottageCard },
+  components: { Datepicker, CottageCard, BoatCard },
   setup() {
     const date = ref();
 
