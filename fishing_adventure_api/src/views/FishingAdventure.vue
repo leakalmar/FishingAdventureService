@@ -65,46 +65,16 @@
             <h4>With every reservation you will get:</h4>
             <ul>
               <li>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="14"
-                  height="12"
-                  style="color: rgb(22, 82, 161)"
-                  fill="currentColor"
-                  class="bi bi-circle-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <circle cx="5" cy="5" r="5" />
-                </svg>
+                <i class="fas fa-circle ei-circle"></i>
                 A fishing rod and reel
               </li>
 
               <li>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="14"
-                  height="12"
-                  style="color: rgb(22, 82, 161)"
-                  fill="currentColor"
-                  class="bi bi-circle-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <circle cx="5" cy="5" r="5" />
-                </svg>
+               <i class="fas fa-circle ei-circle"></i>
                 A fishing line
               </li>
               <li>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="14"
-                  height="12"
-                  style="color: rgb(22, 82, 161)"
-                  fill="currentColor"
-                  class="bi bi-circle-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <circle cx="5" cy="5" r="5" />
-                </svg>
+                <i class="fas fa-circle ei-circle"></i>
                 A tackle box
               </li>
             </ul>
@@ -114,62 +84,17 @@
             <h4>Rulebook:</h4>
             <ul>
               <li>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="13"
-                  height="13"
-                  fill="currentColor"
-                  style="color: green; margin: 0 4px 1px 0"
-                  class="bi bi-check-circle"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
-                  />
-                  <path
-                    d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"
-                  />
-                </svg>
+                <i class="far fa-check-circle ei-check-mark"></i>
                 Pets
               </li>
 
               <li>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="13"
-                  height="13"
-                  fill="currentColor"
-                  style="color: red; margin: 0 4px 1px 0"
-                  class="bi bi-x-circle"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
-                  />
-                  <path
-                    d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
-                  />
-                </svg>
+                <i class="far fa-times-circle ei-cross"></i>
                 No smoking
               </li>
 
               <li>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="13"
-                  height="13"
-                  fill="currentColor"
-                  style="color: red; margin: 0 4px 1px 0"
-                  class="bi bi-x-circle"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
-                  />
-                  <path
-                    d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
-                  />
-                </svg>
+                <i class="far fa-times-circle ei-cross"></i>
                 No littering
               </li>
             </ul>
@@ -180,10 +105,34 @@
           <div class="loc-info">
             <h5>Bulevar Evrope 20</h5>
             <h5>Novi Sad</h5>
-            <h5>45.246117, 19.816604</h5>
+            <h5> 45.24621, 19.81873</h5>
           </div>
 
-          <div class="map-fa"></div>
+          <div class="map-fa">
+            <GMapMap
+            :center="center"
+            :zoom="13"
+            :options="{
+                      zoomControl: true,
+                      mapTypeControl: false,
+                      scaleControl: true,
+                      streetViewControl: false,
+                      rotateControl: true,
+                      fullscreenControl: true,
+                }"
+            map-type-id="terrain"
+            style="width: 100%; height: 150px;">
+              <GMapCluster>
+                <GMapMarker
+                    :key="index"
+                    v-for="(m, index) in markers"
+                    :position="m.position"
+                    :clickable="false"
+                    :draggable="false"
+                    @click="center=m.position"/>
+              </GMapCluster>
+            </GMapMap>
+          </div>
         </div>
 
         <div class="menu-pl-fa" style="display: none">
@@ -338,54 +287,10 @@
                 align-content: center;
               "
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                class="bi bi-star-fill rev-star"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                />
-              </svg>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                class="bi bi-star-fill rev-star"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                />
-              </svg>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                class="bi bi-star-fill rev-star"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                />
-              </svg>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                class="bi bi-star-fill rev-star"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                />
-              </svg>
+                <i class="fas fa-star rev-star"></i>
+                <i class="fas fa-star rev-star"></i>
+                <i class="fas fa-star rev-star"></i>
+                <i class="fas fa-star rev-star"></i>
             </div>
           </div>
           <p>
@@ -405,6 +310,18 @@
 <script>
 export default {
   name: "FishingAdventure",
+  data() {
+    return {
+      center: {lat: 45.24621, lng: 19.81873},
+      markers: [
+        {
+          position: {
+            lat: 45.24621, lng: 19.81873
+          },
+        }
+      ]
+    }
+  },
   methods: {
     changeMenuDisplay: function (event) {
       let elID = event.currentTarget.id;

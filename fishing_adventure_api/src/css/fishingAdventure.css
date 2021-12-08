@@ -74,7 +74,7 @@
     opacity: 0.96;
     box-shadow: 10px 20px 20px 0 rgb(0 0 0 / 20%);
     max-width: 60%;
-    min-height: 200px;
+    min-height: fit-content;
     display: flex;
     align-items: stretch;
     flex-direction: column;
@@ -108,6 +108,7 @@
 .menu-body-fa {
     min-height: fit-content;
     text-align: justify;
+    padding-top: 5px;
     padding-bottom: 20px;
     margin-left: 20px;
     margin-right: 20px;
@@ -157,6 +158,25 @@
     margin-bottom: 4%;
 }
 
+.ei-circle {
+    color: rgb(22, 82, 161);
+    font-size: 8px;
+    margin-right: 2px;
+    vertical-align: middle;
+}
+
+.ei-check-mark {
+    color: #228B22;
+    font-size: 13px;
+    margin-right: 2px;
+}
+
+.ei-cross {
+    color: #D70040;
+    font-size: 13px;
+    margin-right: 2px;
+}
+
 .ei-bonus {
     width: 50%;
     border-right: 2px solid rgb(22, 82, 161);
@@ -191,11 +211,14 @@
 }
 
 .map-fa {
-    border: 1px solid black;
-    min-width: 280px;
+    min-width: 340px;
     min-height: 150px;
 }
 
+.vue-map-container {
+    width: 340px;
+    height: 180px;
+}
 
 /* Menu - Pricelist */
 
@@ -322,7 +345,7 @@
 }
 
 .rev-star {
-    margin-right: 4px;
+    margin-right: 3px;
     color: rgb(22, 82, 161);
 }
 
