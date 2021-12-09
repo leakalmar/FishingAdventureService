@@ -17,6 +17,8 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.security.web.header.writers.StaticHeadersWriter;
 
 import isa.FishingAdventure.security.auth.RestAuthenticationEntryPoint;
+import isa.FishingAdventure.security.util.TokenUtils;
+import isa.FishingAdventure.service.UserService;
 
 /*
 import rs.ac.uns.ftn.informatika.spring.security.security.auth.TokenAuthenticationFilter;
@@ -36,8 +38,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	// Servis koji se koristi za citanje podataka o korisnicima aplikacije
-	/*@Autowired
-	private CustomUserDetailsService customUserDetailsService;*/
+	@Autowired
+	private UserService userService;
 
 	// Handler za vracanje 401 kada klijent sa neodogovarajucim korisnickim imenom i lozinkom pokusa da pristupi resursu
 	@Autowired
@@ -51,23 +53,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	// Definisemo nacin utvrdjivanja korisnika pri autentifikaciji
-	/*@Autowired
+	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		auth
 			// Definisemo uputstva AuthenticationManager-u:
 		
 			// 1. koji servis da koristi da izvuce podatke o korisniku koji zeli da se autentifikuje
 			// prilikom autentifikacije, AuthenticationManager ce sam pozivati loadUserByUsername() metodu ovog servisa
-			.userDetailsService(customUserDetailsService) 
+			.userDetailsService(userService) 
 			
 			// 2. kroz koji enkoder da provuce lozinku koju je dobio od klijenta u zahtevu 
 			// da bi adekvatan hash koji dobije kao rezultat hash algoritma uporedio sa onim koji se nalazi u bazi (posto se u bazi ne cuva plain lozinka)
 			.passwordEncoder(passwordEncoder());
-	}*/
+	}
 
 	// Injektujemo implementaciju iz TokenUtils klase kako bismo mogli da koristimo njene metode za rad sa JWT u TokenAuthenticationFilteru
-	/*@Autowired
-	private TokenUtils tokenUtils;*/
+	@Autowired
+	private TokenUtils tokenUtils;
 
 	// Definisemo prava pristupa za zahteve ka odredjenim URL-ovima/rutama
 	@Override
@@ -82,7 +84,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			//.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
 
 			// svim korisnicima dopusti da pristupe sledecim putanjama:
-			.authorizeRequests().antMatchers("/users/**").permitAll()		// /auth/**
+			.authorizeRequests().antMatchers("/auth/**").permitAll()		// /auth/**
 								.antMatchers("/h2-console/**").permitAll()	// /h2-console/** ako se koristi H2 baza)
 								.antMatchers("/api/foo").permitAll()		// /api/foo
 								
@@ -98,7 +100,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.cors().and();
 
 			// umetni custom filter TokenAuthenticationFilter kako bi se vrsila provera JWT tokena umesto cistih korisnickog imena i lozinke (koje radi BasicAuthenticationFilter)
-			//.addFilterBefore(new TokenAuthenticationFilter(tokenUtils, customUserDetailsService), BasicAuthenticationFilter.class);
+			//.addFilterBefore(new TokenAuthenticationFilter(tokenUtils, userService), BasicAuthenticationFilter.class);
 		
 		// zbog jednostavnosti primera ne koristimo Anti-CSRF token (https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html)
 		http.csrf().disable();
@@ -111,7 +113,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// Zahtevi koji se mecuju za web.ignoring().antMatchers() nemaju pristup SecurityContext-u
 		
 		// Dozvoljena POST metoda na ruti /auth/login, za svaki drugi tip HTTP metode greska je 401 Unauthorized
-		 web.ignoring().antMatchers(HttpMethod.POST, "/users/signup/async");
+		 web.ignoring().antMatchers(HttpMethod.POST, "/auth/**");
 		 
 		// Ovim smo dozvolili pristup statickim resursima aplikacije
 		web.ignoring().antMatchers(HttpMethod.GET, "/", "/webjars/**", "/*.html", "favicon.ico", "/**/*.html",

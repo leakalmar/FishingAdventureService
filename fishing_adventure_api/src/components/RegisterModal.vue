@@ -84,6 +84,7 @@
                 type="text"
                 class="col login-inputs"
                 placeholder="Country"
+                v-model="user.country"
               />
             </div>
             <input
@@ -345,11 +346,18 @@ export default {
         name: this.user.name,
         surname: this.user.surname,
         phoneNumber: this.user.phoneNumber,
-        userType: "CLIENT"
+        userType: {
+            name: "CLIENT"
+        },
+        address: {
+            street: this.user.street,
+            city: this.user.city,
+            country: this.user.country
+        }
       };
 
       axios
-        .post("http://localhost:8080/users/signup/async", user, {
+        .post("http://localhost:8080/auth/signup", user, {
           headers: {
             'Access-Control-Allow-Origin': 'http://localhost:8080'
           }
