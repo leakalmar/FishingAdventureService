@@ -1,11 +1,11 @@
 <template>
   <div>
     <div class="card mb-3 bg-dark mt-3" style="width: 65%; margin: auto">
-      <div class="row g-0">
+      <div class="row g-0" v-on:click="openCottage">
         <div class="col-md-4 shadow-none">
           <img
             style="width: 100%; height: 225px; object-fit: cover"
-            src="@/assets/c2.jpg"
+            :src="'/img/' + entitie.image"
             class="img-fluid rounded-start shadow-none"
           />
         </div>
@@ -13,20 +13,31 @@
         <div class="col-md-8 shadow-none" name="main-col">
           <div class="card-body shadow-none">
             <div class="card-text shadow-none" style="display: flex">
-              <h5 class="card-title shadow-none">Villa Madam</h5>
-              <p class="advertiserTitle shadow-none">@jeamsDean</p>
+              <h5 class="card-title shadow-none">{{ entitie.name }}</h5>
+              <p class="advertiserTitle shadow-none">
+                @{{ entitie.vacationHomeOwner }}
+              </p>
               <p
                 v-if="path == 'mycottages'"
                 class="top-right-corner shadow-none"
+                v-on:click="preventPropagation"
               >
-                <i class="fas fa-minus-square fa-lg shadow-none"></i>
+                <i
+                  class="fas fa-edit fa-lg shadow-none me-3"
+                  style="color: #293c4e"
+                  data-bs-toggle="modal"
+                  :data-bs-target="'#entitie' + entitie.id"
+                ></i>
+                <i
+                  class="fas fa-minus-square fa-lg shadow-none"
+                  v-on:click="delteCottage"
+                ></i>
               </p>
             </div>
             <div class="card-text shadow-none" style="display: flex">
               <div class="shadow-none">
                 <p class="card-text text-left shadow-none mb-1">
-                  It is a long established fact that a reader will be distracted
-                  by the readable content of a page when looking at its layout.
+                  {{ entitie.description }}
                 </p>
                 <p
                   class="card-text text-left shadow-none mb-3 flex-column d-flex flex-md-row"
@@ -86,12 +97,14 @@
                   width: 30%;
                 "
               >
-                <i class="fas fa-star shadow-none"> 5.0</i>
+                <i class="fas fa-star shadow-none"> {{ entitie.rating }}</i>
               </p>
             </div>
             <div class="card-text fw-bold shadow-none" style="display: flex">
               <p class="shadow-none" style="margin: 0">
-                341 Preston Street, Pheonix
+                {{ entitie.location.houseNumber }}
+                {{ entitie.location.street }} {{ entitie.location.city }}
+                {{ entitie.location.country }}
               </p>
               <p
                 class="shadow-none"
@@ -102,7 +115,9 @@
                   font-size: x-large;
                 "
               >
-                <i class="fas fa-dollar-sign shadow-none">50.00</i>
+                <i class="fas fa-dollar-sign shadow-none"
+                  >{{ entitie.price }}/day</i
+                >
               </p>
             </div>
           </div>
@@ -110,17 +125,27 @@
       </div>
     </div>
   </div>
+
+  <NewCottageModal
+    :cottage="entitie"
+    :id="'entitie' + entitie.id"
+  ></NewCottageModal>
 </template>
 
 <script>
 import { ref, onMounted } from "vue";
+import NewCottageModal from "@/components/NewCottageModal.vue";
 
 export default {
-  setup() {
+  components: { NewCottageModal },
+  props: ["entitie"],
+  setup(props) {
     const date = ref();
     onMounted(() => {
-      const startDate = new Date(2021, 12, 5, 14);
-      const endDate = new Date(2021, 12, 15, 11);
+      const startDate = new Date(Date.parse(props.entitie.availabilityStart));
+      const endDate = new Date(Date.parse(props.entitie.availabilityEnd));
+      startDate.setHours(startDate.getHours() - 1);
+      endDate.setHours(endDate.getHours() - 1);
       date.value = [startDate, endDate];
     });
     return {
@@ -138,6 +163,16 @@ export default {
     } else if (window.location.href.includes("/cottages")) {
       this.path = "mycottages";
     }
+  },
+
+  methods: {
+    openCottage: function () {
+      window.location.href = "/cottage/?id=" + this.entitie.id;
+    },
+    preventPropagation: function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    },
   },
 };
 </script>

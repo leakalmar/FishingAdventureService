@@ -1,13 +1,13 @@
 <template>
   <div class="fa-page">
     <div class="main-img-fa">
-      <img src="@/assets/fa7.jpg" alt="" />
+      <img src="@/assets/c16.jpg" alt="" />
       <div class="tagline-fa">
         <h2>
-          Start your adventure <br />
+          Enjoy in your cottage <br />
           today!
         </h2>
-        <button class="book-btn">Book an adventure</button>
+        <button class="book-btn">Book a cottage</button>
       </div>
     </div>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-info">
@@ -37,7 +37,6 @@
             </li>
             <li v-on:click="changeMenuDisplay" id="loc-fa">Location</li>
             <li v-on:click="changeMenuDisplay" id="pl-fa">Pricelist</li>
-            <li v-on:click="changeMenuDisplay" id="instr-fa">Instructor</li>
           </ul>
         </div>
       </div>
@@ -46,7 +45,7 @@
       <div class="menu-body-fa">
         <div class="menu-about-fa" style="text-align: justify">
           <div class="ma-top-part">
-            <h3>Adventure Title</h3>
+            <h3>Villa Madam</h3>
             <h5>For up to 3 people</h5>
           </div>
           <p>
@@ -55,8 +54,7 @@
             ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
             aliquip ex ea commodo consequat. Duis aute irure dolor in
             reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
+            pariatur.
           </p>
         </div>
 
@@ -65,17 +63,38 @@
             <h4>With every reservation you will get:</h4>
             <ul>
               <li>
-                <i class="fas fa-circle ei-circle"></i>
-                A fishing rod and reel
+                <i
+                  class="fas fa-circle"
+                  style="
+                    color: rgb(22, 82, 161);
+                    font-size: 0.5em;
+                    margin-right: 2%;
+                  "
+                ></i>
+                Towels
               </li>
 
               <li>
-               <i class="fas fa-circle ei-circle"></i>
-                A fishing line
+                <i
+                  class="fas fa-circle"
+                  style="
+                    color: rgb(22, 82, 161);
+                    font-size: 0.5em;
+                    margin-right: 2%;
+                  "
+                ></i>
+                Bed sheets
               </li>
               <li>
-                <i class="fas fa-circle ei-circle"></i>
-                A tackle box
+                <i
+                  class="fas fa-circle"
+                  style="
+                    color: rgb(22, 82, 161);
+                    font-size: 0.5em;
+                    margin-right: 2%;
+                  "
+                ></i>
+                Small kitchen set
               </li>
             </ul>
           </div>
@@ -84,17 +103,26 @@
             <h4>Rulebook:</h4>
             <ul>
               <li>
-                <i class="far fa-check-circle ei-check-mark"></i>
+                <i
+                  class="far fa-check-circle"
+                  style="color: green; margin-right: 2%"
+                ></i>
                 Pets
               </li>
 
               <li>
-                <i class="far fa-times-circle ei-cross"></i>
+                <i
+                  class="far fa-times-circle"
+                  style="color: red; margin-right: 2%"
+                ></i>
                 No smoking
               </li>
 
               <li>
-                <i class="far fa-times-circle ei-cross"></i>
+                <i
+                  class="far fa-times-circle"
+                  style="color: red; margin-right: 2%"
+                ></i>
                 No littering
               </li>
             </ul>
@@ -105,34 +133,10 @@
           <div class="loc-info">
             <h5>Bulevar Evrope 20</h5>
             <h5>Novi Sad</h5>
-            <h5> 45.24621, 19.81873</h5>
+            <h5>45.246117, 19.816604</h5>
           </div>
 
-          <div class="map-fa">
-            <GMapMap
-            :center="center"
-            :zoom="13"
-            :options="{
-                      zoomControl: true,
-                      mapTypeControl: false,
-                      scaleControl: true,
-                      streetViewControl: false,
-                      rotateControl: true,
-                      fullscreenControl: true,
-                }"
-            map-type-id="terrain"
-            style="width: 100%; height: 150px;">
-              <GMapCluster>
-                <GMapMarker
-                    :key="index"
-                    v-for="(m, index) in markers"
-                    :position="m.position"
-                    :clickable="false"
-                    :draggable="false"
-                    @click="center=m.position"/>
-              </GMapCluster>
-            </GMapMap>
-          </div>
+          <div class="map-fa"></div>
         </div>
 
         <div class="menu-pl-fa" style="display: none">
@@ -140,37 +144,23 @@
           <table class="table table-striped">
             <tbody>
               <tr>
-                <td class="as-title">Fishing boat</td>
-                <td><span class="as-price">$45</span></td>
-                <td>you will not be restricted to only fishing on the shore</td>
+                <td class="as-title">TV kable</td>
+                <td><span class="as-price">$2</span></td>
               </tr>
 
               <tr>
-                <td class="as-title">Professional fishing gear</td>
-                <td><span class="as-price">$70</span></td>
-                <td>high quality rods, reels and lures</td>
+                <td class="as-title">Air conditioner</td>
+                <td><span class="as-price">$5</span></td>
+              </tr>
+
+              <tr>
+                <td class="as-title">Parking</td>
+                <td><span class="as-price">$2</span></td>
               </tr>
             </tbody>
 
             <tbody></tbody>
           </table>
-
-          <h6 style="margin-top: 5%">
-            *In case of cancelation the instructor keeps 20% of the full payment
-            including bought additional services
-          </h6>
-        </div>
-
-        <div class="menu-instr-fa" style="display: none">
-          <h4>John Smith</h4>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur.
-          </p>
         </div>
       </div>
     </div>
@@ -212,11 +202,23 @@
             data-bs-slide-to="2"
             aria-label="Slide 3"
           ></button>
+          <button
+            type="button"
+            data-bs-target="#carouselExampleIndicators"
+            data-bs-slide-to="3"
+            aria-label="Slide 4"
+          ></button>
+          <button
+            type="button"
+            data-bs-target="#carouselExampleIndicators"
+            data-bs-slide-to="4"
+            aria-label="Slide 5"
+          ></button>
         </div>
         <div class="carousel-inner">
           <div class="carousel-item active">
             <img
-              src="@/assets/fa18.jpg"
+              src="@/assets/c16.jpg"
               class="d-block w-100"
               alt="..."
               style="object-fit: contain; height: 450px"
@@ -224,7 +226,7 @@
           </div>
           <div class="carousel-item">
             <img
-              src="@/assets/fa19.jpg"
+              src="@/assets/c16-2.jpg"
               class="d-block w-100"
               alt="..."
               style="object-fit: contain; height: 450px"
@@ -232,7 +234,23 @@
           </div>
           <div class="carousel-item">
             <img
-              src="@/assets/fa20.jpg"
+              src="@/assets/c16-3.jpg"
+              class="d-block w-100"
+              alt="..."
+              style="object-fit: contain; height: 450px"
+            />
+          </div>
+          <div class="carousel-item">
+            <img
+              src="@/assets/c16-4.jpg"
+              class="d-block w-100"
+              alt="..."
+              style="object-fit: contain; height: 450px"
+            />
+          </div>
+          <div class="carousel-item">
+            <img
+              src="@/assets/c16-5.jpg"
               class="d-block w-100"
               alt="..."
               style="object-fit: contain; height: 450px"
@@ -274,7 +292,7 @@
 
         <div class="review-fa continer">
           <div class="review-tp">
-            <img class="user-rev-img" src="@/assets/fa7.jpg" alt="" />
+            <img class="user-rev-img" src="@/assets/c16.jpg" alt="" />
             <div class="rev-info">
               <h5>John Smith</h5>
               <h6>01.12.2021.</h6>
@@ -287,10 +305,10 @@
                 align-content: center;
               "
             >
-                <i class="fas fa-star rev-star"></i>
-                <i class="fas fa-star rev-star"></i>
-                <i class="fas fa-star rev-star"></i>
-                <i class="fas fa-star rev-star"></i>
+              <i class="fas fa-star bi bi-star-fill rev-star"></i>
+              <i class="fas fa-star bi bi-star-fill rev-star"></i>
+              <i class="fas fa-star bi bi-star-fill rev-star"></i>
+              <i class="fas fa-star bi bi-star-fill rev-star"></i>
             </div>
           </div>
           <p>
@@ -309,19 +327,19 @@
 
 <script>
 export default {
-  name: "FishingAdventure",
-  data() {
+  data: function () {
     return {
-      center: {lat: 45.24621, lng: 19.81873},
-      markers: [
-        {
-          position: {
-            lat: 45.24621, lng: 19.81873
-          },
-        }
-      ]
-    }
+      entity: "",
+    };
   },
+  mounted() {
+    window.scrollTo(0, 0);
+    // axios.get("/cottage/" + this.$route.query.id).then((response) => {
+    //   this.entity = response.data;
+
+    // });
+  },
+  name: "FishingAdventure",
   methods: {
     changeMenuDisplay: function (event) {
       let elID = event.currentTarget.id;
@@ -329,7 +347,6 @@ export default {
       document.getElementById("ex-info-fa").style.borderBottom = "0px";
       document.getElementById("loc-fa").style.borderBottom = "0px";
       document.getElementById("pl-fa").style.borderBottom = "0px";
-      document.getElementById("instr-fa").style.borderBottom = "0px";
 
       document.getElementById(elID).style.borderBottom = "1px solid white";
 
@@ -338,31 +355,26 @@ export default {
         document.querySelector(".menu-ex-info-fa").style.display = "none";
         document.querySelector(".menu-loc-fa").style.display = "none";
         document.querySelector(".menu-pl-fa").style.display = "none";
-        document.querySelector(".menu-instr-fa").style.display = "none";
       } else if (elID == "ex-info-fa") {
         document.querySelector(".menu-about-fa").style.display = "none";
         document.querySelector(".menu-ex-info-fa").style.display = "flex";
         document.querySelector(".menu-loc-fa").style.display = "none";
         document.querySelector(".menu-pl-fa").style.display = "none";
-        document.querySelector(".menu-instr-fa").style.display = "none";
       } else if (elID == "loc-fa") {
         document.querySelector(".menu-about-fa").style.display = "none";
         document.querySelector(".menu-ex-info-fa").style.display = "none";
         document.querySelector(".menu-loc-fa").style.display = "inline-flex";
         document.querySelector(".menu-pl-fa").style.display = "none";
-        document.querySelector(".menu-instr-fa").style.display = "none";
       } else if (elID == "pl-fa") {
         document.querySelector(".menu-about-fa").style.display = "none";
         document.querySelector(".menu-ex-info-fa").style.display = "none";
         document.querySelector(".menu-loc-fa").style.display = "none";
         document.querySelector(".menu-pl-fa").style.display = "block";
-        document.querySelector(".menu-instr-fa").style.display = "none";
       } else {
         document.querySelector(".menu-about-fa").style.display = "none";
         document.querySelector(".menu-ex-info-fa").style.display = "none";
         document.querySelector(".menu-loc-fa").style.display = "none";
         document.querySelector(".menu-pl-fa").style.display = "none";
-        document.querySelector(".menu-instr-fa").style.display = "block";
       }
     },
   },
