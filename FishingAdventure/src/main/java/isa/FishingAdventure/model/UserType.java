@@ -15,12 +15,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name="role")
 public class UserType implements GrantedAuthority {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
-	@Id
+    @Id
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
@@ -33,7 +33,7 @@ public class UserType implements GrantedAuthority {
     public String getAuthority() {
         return name;
     }
-    
+
     public void setName(String name) {
         this.name = name;
     }
@@ -52,19 +52,16 @@ public class UserType implements GrantedAuthority {
     }
 
     public UserType() {}
-    
-    
-	public UserType(String name) {
-		super();
-		this.name = name;
-	}
 
-	public UserType(Integer id, String name) {
-		super();
-		this.id = id;
-		this.name = name;
-	}
-    
-    
 
+    public UserType(String name) {
+        super();
+        this.name = name;
+    }
+
+    public UserType(Integer id, String name) {
+        super();
+        this.id = id;
+        this.name = name;
+    }
 }

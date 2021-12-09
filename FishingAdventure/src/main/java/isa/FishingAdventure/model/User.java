@@ -79,15 +79,13 @@ public abstract class User implements UserDetails {
 	@Column(name = "points", nullable = false)
     private double points;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "catagoryId")
+    @ManyToOne(targetEntity = UserCategory.class,cascade = CascadeType.ALL)
     private UserCategory category;
 
     @Column(name = "activated", nullable = false)
     private boolean activated;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "addressId", referencedColumnName = "addressId")
+    @OneToOne(targetEntity = Address.class,cascade = CascadeType.ALL)
     public Address address;
     
     @Column(name = "last_password_reset_date")

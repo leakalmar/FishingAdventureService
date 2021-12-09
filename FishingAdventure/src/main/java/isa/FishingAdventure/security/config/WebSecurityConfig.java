@@ -84,7 +84,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			//.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
 
 			// svim korisnicima dopusti da pristupe sledecim putanjama:
-			.authorizeRequests().antMatchers("/auth/**").permitAll()		// /auth/**
+			.authorizeRequests().antMatchers("/**").permitAll()		// /auth/**
 								.antMatchers("/h2-console/**").permitAll()	// /h2-console/** ako se koristi H2 baza)
 								.antMatchers("/api/foo").permitAll()		// /api/foo
 								

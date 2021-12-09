@@ -17,12 +17,6 @@ public class Address {
     @Column(name = "street", nullable = false)
     private String street;
 
-    @OneToOne(mappedBy = "address")
-    private Location location;
-
-    @OneToOne(mappedBy = "address")
-    private User user;
-
     public Address( String country, String city, String street) {
         this.country = country;
         this.city = city;
@@ -63,22 +57,4 @@ public class Address {
     public void setStreet(String street) {
         this.street = street;
     }
-
-
-    public Location getLocation() {
-        return location;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
 }
