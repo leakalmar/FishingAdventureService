@@ -150,12 +150,12 @@
               name="btnradio"
               id="customer-radio-btn"
               autocomplete="off"
-              value="customer"
-              v-bind:checked="chosenRole == 'customer'"
+              value="ROLE_CLIENT"
+              v-bind:checked="chosenRole == 'ROLE_CLIENT'"
             />
             <label class="btn btn-outline-primary" for="customer-radio-btn"
               ><i class="fas fa-user fa-lg"></i><br />
-              Customer</label
+              Client</label
             >
 
             <input
@@ -164,8 +164,8 @@
               name="btnradio"
               id="boat-radio-btn"
               autocomplete="off"
-              value="boat"
-              v-bind:checked="chosenRole == 'boat'"
+              value="ROLE_BOAT_OWNER"
+              v-bind:checked="chosenRole == 'ROLE_BOAT_OWNER'"
             />
             <label class="btn btn-outline-primary" for="boat-radio-btn"
               ><i class="fas fa-anchor fa-lg"></i><br />
@@ -178,8 +178,8 @@
               name="btnradio"
               id="home-radio-btn"
               autocomplete="off"
-              value="home"
-              v-bind:checked="chosenRole == 'home'"
+              value="ROLE_VACATION_HOME_OWNER"
+              v-bind:checked="chosenRole == 'ROLE_VACATION_HOME_OWNER'"
             />
             <label class="btn btn-outline-primary" for="home-radio-btn"
               ><i class="fas fa-home fa-lg"></i><br />
@@ -192,8 +192,8 @@
               name="btnradio"
               id="instructor-radio-btn"
               autocomplete="off"
-              value="instructor"
-              v-bind:checked="chosenRole == 'instructor'"
+              value="ROLE_FISHING_INSTRUCTOR"
+              v-bind:checked="chosenRole == 'ROLE_FISHING_INSTRUCTOR'"
             />
             <label class="btn btn-outline-primary" for="instructor-radio-btn"
               ><i class="fas fa-fish fa-lg"></i><br />
@@ -309,7 +309,7 @@ export default {
         this.mode = "registerAdvertiser";
       }
 
-      if (this.chosenRole == "customer") {
+      if (this.chosenRole == "ROLE_CLIENT") {
         this.mode = "registerCustomer";
       } else if (this.mode == "registerRole" && this.chosenRole != "") {
         this.mode = "advertiserInfo";
@@ -340,23 +340,22 @@ export default {
       element = document.getElementById("register-btn");
       element.classList.remove("active");
     },
-    loginUser: function() {
+    loginUser: function () {
       let user = {
         email: this.user.email,
-        password: this.user.password1
-      }
+        password: this.user.password1,
+      };
 
       axios
         .post("http://localhost:8080/auth/login", user, {
           headers: {
-            'Access-Control-Allow-Origin': 'http://localhost:8080'
-          }
-      })
+            "Access-Control-Allow-Origin": "http://localhost:8080",
+          },
+        })
         .then((res) => {
-        console.log(res.data.accessToken);
-        //this.access_token = res.accessToken;
-        localStorage.setItem("jwt", res.data.accessToken)});
-
+          localStorage.setItem("jwt", res.data.accessToken);
+          localStorage.setItem("role", res.data.roles[0]);
+        });
     },
     registerUser: function () {
       let user = {
@@ -366,21 +365,36 @@ export default {
         surname: this.user.surname,
         phoneNumber: this.user.phoneNumber,
         userType: {
-            name: "ROLE_CLIENT"
+          name: this.chosenRole,
         },
         address: {
-            street: this.user.street,
-            city: this.user.city,
-            country: this.user.country
-        }
+          street: this.user.street,
+          city: this.user.city,
+          country: this.user.country,
+        },
       };
 
+      let path;
+      switch (this.chosenRole) {
+        case "ROLE_CLIENT":
+          path = "http://localhost:8080/auth/signup";
+          break;
+        case "ROLE_BOAT_OWNER":
+          path = "http://localhost:8080/auth/signup/boatOwner";
+          break;
+        case "ROLE_VACATION_HOME_OWNER":
+          path = "http://localhost:8080/auth/signup/homeOwner";
+          break;
+        case "ROLE_FISHING_INSTRUCTOR":
+          //path = "http://localhost:8080/auth/signup/";
+          break;
+      }
       axios
-        .post("http://localhost:8080/auth/signup", user, {
+        .post(path, user, {
           headers: {
-            'Access-Control-Allow-Origin': 'http://localhost:8080'
-          }
-      })
+            "Access-Control-Allow-Origin": "http://localhost:8080",
+          },
+        })
         .then();
     },
   },

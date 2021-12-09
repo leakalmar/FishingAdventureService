@@ -7,28 +7,27 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import isa.FishingAdventure.dto.UserDto;
-import isa.FishingAdventure.model.Admin;
+import isa.FishingAdventure.model.BoatOwner;
 import isa.FishingAdventure.model.UserType;
-import isa.FishingAdventure.repository.AdminRepository;
+import isa.FishingAdventure.repository.BoatOwnerRepository;
 
 @Service
-public class AdminService{
-	
+public class BoatOwnerService {
+
 	@Autowired
-	private AdminRepository adminRepository;
+	private BoatOwnerRepository boatOwnerRepository;
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-
 	@Autowired
 	private UserTypeService userTypeService;
 
-	public Admin findByEmail(String email) {
-		return (Admin) adminRepository.findByEmail(email);
+	public BoatOwner findByEmail(String email) {
+		return (BoatOwner)boatOwnerRepository.findByEmail(email);
 	}
-
-	public Admin save(UserDto userDto) {
-		Admin u = new Admin();
+	
+	public BoatOwner save(UserDto userDto) {
+		BoatOwner u = new BoatOwner();
 		u.setEmail(userDto.getEmail());
 
 		u.setPassword(passwordEncoder.encode(userDto.getPassword()));
@@ -39,10 +38,10 @@ public class AdminService{
 		u.setAddress(userDto.getAddress());
 
 		
-		List<UserType> roles = userTypeService.findByName("ROLE_ADMIN");
+		List<UserType> roles = userTypeService.findByName("ROLE_BOAT_OWNER");
 		u.setUserType(roles.get(0));
 		u.setPoints(0.0);
 		
-		return this.adminRepository.save(u);
-	}
+		return this.boatOwnerRepository.save(u);
+	} 
 }
