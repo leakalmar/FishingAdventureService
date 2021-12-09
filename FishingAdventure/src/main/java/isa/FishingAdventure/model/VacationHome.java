@@ -13,10 +13,10 @@ public class VacationHome extends ServiceProfile {
     @Column(name = "availabilityEnd", nullable = false)
     private Date availabilityEnd;
 
-    @ManyToOne(targetEntity = VacationHomeOwner.class,cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = VacationHomeOwner.class,cascade = CascadeType.MERGE)
     public VacationHomeOwner vocationHomeOwner;
 
-    @OneToMany(mappedBy = "vacationHome", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = Room.class,cascade = CascadeType.MERGE)
     public Set<Room> rooms;
 
     public VacationHome(int serviceId, String name, String description, double cancellationRule, double rating, Location location, Set<Appointment> appointments, Set<Rule> rules, Set<AdditionalService> additionalServices) {
@@ -43,21 +43,23 @@ public class VacationHome extends ServiceProfile {
         this.availabilityEnd = availabilityEnd;
     }
 
-    public VacationHomeOwner getVocationHomeOwner() {
-        return this.vocationHomeOwner;
-    }
 
-    public void setVocationHomeOwner(VacationHomeOwner vocationHomeOwner) {
-        this.vocationHomeOwner = vocationHomeOwner;
-    }
-
-    public Set<Room> getRooms() {
-        return this.rooms;
-    }
-
-    public void setRooms(Set<Room> rooms) {
-        this.rooms = rooms;
-    }
+	public VacationHomeOwner getVocationHomeOwner() {
+		return vocationHomeOwner;
+	}
 
 
+	public void setVocationHomeOwner(VacationHomeOwner vocationHomeOwner) {
+		this.vocationHomeOwner = vocationHomeOwner;
+	}
+
+
+	public Set<Room> getRooms() {
+		return rooms;
+	}
+
+
+	public void setRooms(Set<Room> rooms) {
+		this.rooms = rooms;
+	} 
 }

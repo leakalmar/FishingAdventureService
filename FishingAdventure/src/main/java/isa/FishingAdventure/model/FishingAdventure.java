@@ -1,5 +1,6 @@
 package isa.FishingAdventure.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -9,8 +10,7 @@ import java.util.Set;
 @Entity
 public class FishingAdventure extends ServiceProfile {
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fishingAdventureId")
+	@ManyToOne(targetEntity = FishingInstructor.class,cascade = CascadeType.MERGE)
     public FishingInstructor fishingInstructor;
 
     public FishingAdventure() {

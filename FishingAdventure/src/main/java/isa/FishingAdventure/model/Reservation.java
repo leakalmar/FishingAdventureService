@@ -11,13 +11,13 @@ public class Reservation {
     @Column(name = "place", nullable = false)
     private String place;
 
-    @OneToOne(targetEntity = Appointment.class,cascade = CascadeType.ALL)
+    @OneToOne(targetEntity = Appointment.class,cascade = CascadeType.MERGE)
     public Appointment appointment;
 
-    @ManyToOne(targetEntity = Client.class,cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = Client.class,cascade = CascadeType.MERGE)
     public Client client;
 
-    @ManyToMany(targetEntity = Review.class,cascade = CascadeType.ALL)
+    @OneToOne(targetEntity = Review.class,cascade = CascadeType.MERGE)
     public Review review;
 
     public Reservation(Integer reservationId, String place, Appointment appointment, Client client) {

@@ -12,10 +12,6 @@ public class Room {
     @Column(name = "bedNumber", nullable = false)
     private int bedNumber;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "vacationHomeId")
-    private VacationHome vacationHome;
-
     public Room(Integer roomId, int bedNumber) {
         this.roomId = roomId;
         this.bedNumber = bedNumber;
@@ -38,13 +34,5 @@ public class Room {
 
     public void setBedNumber(int bedNumber) {
         this.bedNumber = bedNumber;
-    }
-
-    public VacationHome getVacationHome() {
-        return vacationHome;
-    }
-
-    public void setVacationHome(VacationHome vacationHome) {
-        this.vacationHome = vacationHome;
     }
 }

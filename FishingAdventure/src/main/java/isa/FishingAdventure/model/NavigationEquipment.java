@@ -14,9 +14,6 @@ public class NavigationEquipment {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @ManyToMany(mappedBy = "navigationEquipment")
-    private Set<Boat> boats = new HashSet<Boat>();
-
     public NavigationEquipment(Integer id, String name) {
         this.id = id;
         this.name = name;
@@ -39,14 +36,6 @@ public class NavigationEquipment {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Set<Boat> getBoats() {
-        return boats;
-    }
-
-    public void setBoats(Set<Boat> boats) {
-        this.boats = boats;
     }
 
 

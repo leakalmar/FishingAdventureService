@@ -11,7 +11,7 @@ public class ReservationReport {
     @Column(name = "report", nullable = false)
     private String report;
 
-    @OneToOne(targetEntity = Reservation.class,cascade = CascadeType.ALL)
+    @OneToOne(targetEntity = Reservation.class,cascade = CascadeType.MERGE)
     public Reservation reservation;
 
     public ReservationReport(String report, Reservation reservation) {

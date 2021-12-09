@@ -11,13 +11,12 @@ public class Image {
     @Column(name = "path", nullable = false)
     private String path;
 
-    @ManyToOne(targetEntity = ServiceProfile.class,cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = ServiceProfile.class,cascade = CascadeType.MERGE)
     public ServiceProfile serviceProfile;
 
     public Image(Integer id, String path, ServiceProfile serviceProfile) {
         this.id = id;
         this.path = path;
-        this.serviceProfile = serviceProfile;
     }
 
     public Image() {

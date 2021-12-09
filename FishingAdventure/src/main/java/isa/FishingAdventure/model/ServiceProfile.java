@@ -29,16 +29,16 @@ public abstract class ServiceProfile {
     @Column(name = "rating", nullable = false)
     private double rating;
 
-    @OneToOne(targetEntity = Location.class,cascade = CascadeType.ALL)
+    @OneToOne(targetEntity = Location.class,cascade = CascadeType.MERGE)
     public Location location;
 
-    @OneToMany(targetEntity = Appointment.class,cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = Appointment.class,cascade = CascadeType.MERGE)
     private Set<Appointment> appointments;
 
-    @ManyToMany(targetEntity = Rule.class,cascade = CascadeType.ALL)
+    @ManyToMany(targetEntity = Rule.class,cascade = CascadeType.MERGE)
     private Set<Rule> rules;
 
-    @OneToMany(targetEntity = AdditionalService.class,cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = AdditionalService.class,cascade = CascadeType.MERGE)
     private Set<AdditionalService> additionalServices;
 
     public ServiceProfile(Integer serviceId, String name, String description, double cancellationRule, double rating, Location location, Set<Appointment> appointments, Set<Rule> rules, Set<AdditionalService> additionalServices) {
@@ -110,21 +110,5 @@ public abstract class ServiceProfile {
 
     public void setAppointments(Set<Appointment> appointments) {
         this.appointments = appointments;
-    }
-
-    public Set<Rule> getRules() {
-        return this.rules;
-    }
-
-    public void setRules(Set<Rule> rules) {
-        this.rules = rules;
-    }
-
-    public Set<AdditionalService> getAdditionalServices() {
-        return this.additionalServices;
-    }
-
-    public void setAdditionalServices(Set<AdditionalService> additionalServices) {
-        this.additionalServices = additionalServices;
     }
 }

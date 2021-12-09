@@ -25,20 +25,13 @@ public class Boat extends ServiceProfile {
     @Column(name = "capacity", nullable = false)
     private int capacity;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "boatOwnerId")
+    @ManyToOne(targetEntity = BoatOwner.class,cascade = CascadeType.MERGE)
     public BoatOwner boatOwner;
 
-    @ManyToMany
-    @JoinTable(name = "navigationEqInBoat",
-            joinColumns = @JoinColumn(name = "boatId", referencedColumnName = "serviceId"),
-            inverseJoinColumns = @JoinColumn(name = "navigationEquipmentId", referencedColumnName = "id"))
+    @ManyToMany(targetEntity = NavigationEquipment.class,cascade = CascadeType.MERGE)
     public Set<NavigationEquipment> navigationEquipment = new HashSet<NavigationEquipment>();
 
-    @ManyToMany
-    @JoinTable(name = "fishingEqInBoat",
-            joinColumns = @JoinColumn(name = "boatId", referencedColumnName = "serviceId"),
-            inverseJoinColumns = @JoinColumn(name = "fishingEquipmentId", referencedColumnName = "id"))
+    @ManyToMany(targetEntity = FishingEquipment.class,cascade = CascadeType.MERGE)
     public Set<FishingEquipment> fishingEquipment = new HashSet<FishingEquipment>();
 
     public Boat(Integer serviceId, String name, String description, double cancellationRule, double rating, Location location, Set<Appointment> appointments, Set<Rule> rules, Set<AdditionalService> additionalServices) {
@@ -98,27 +91,33 @@ public class Boat extends ServiceProfile {
         this.capacity = capacity;
     }
 
-//    public BoatOwner getBoatOwner() {
-//        return this.boatOwner;
-//    }
-//
-//    public void setBoatOwner(BoatOwner boatOwner) {
-//        this.boatOwner = boatOwner;
-//    }
-//
-//    public Set<NavigationEquipment> getNavigationEquipment() {
-//        return navigationEquipment;
-//    }
-//
-//    public void setNavigationEquipment(Set<NavigationEquipment> navigationEquipment) {
-//        this.navigationEquipment = navigationEquipment;
-//    }
-//
-//    public Set<FishingEquipment> getFishingEquipment() {
-//        return fishingEquipment;
-//    }
-//
-//    public void setFishingEquipment(Set<FishingEquipment> fishingEquipment) {
-//        this.fishingEquipment = fishingEquipment;
-//    }
+
+	public BoatOwner getBoatOwner() {
+		return boatOwner;
+	}
+
+
+	public void setBoatOwner(BoatOwner boatOwner) {
+		this.boatOwner = boatOwner;
+	}
+
+
+	public Set<NavigationEquipment> getNavigationEquipment() {
+		return navigationEquipment;
+	}
+
+
+	public void setNavigationEquipment(Set<NavigationEquipment> navigationEquipment) {
+		this.navigationEquipment = navigationEquipment;
+	}
+
+
+	public Set<FishingEquipment> getFishingEquipment() {
+		return fishingEquipment;
+	}
+
+
+	public void setFishingEquipment(Set<FishingEquipment> fishingEquipment) {
+		this.fishingEquipment = fishingEquipment;
+	}
 }

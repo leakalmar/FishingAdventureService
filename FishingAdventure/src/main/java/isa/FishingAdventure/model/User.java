@@ -79,7 +79,7 @@ public abstract class User implements UserDetails {
 	@Column(name = "points", nullable = false)
     private double points;
 
-    @ManyToOne(targetEntity = UserCategory.class,cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = UserCategory.class,cascade = CascadeType.MERGE)
     private UserCategory category;
 
     @Column(name = "activated", nullable = false)
@@ -186,7 +186,6 @@ public abstract class User implements UserDetails {
 		userTypes.add(userType);
 		return userTypes;
 	}
-
 
 	@Override
 	public boolean isAccountNonExpired() {

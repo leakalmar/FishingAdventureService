@@ -3,7 +3,6 @@ package isa.FishingAdventure.model;
 import javax.persistence.*;
 
 import java.sql.Timestamp;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -12,7 +11,7 @@ public class Client extends User {
     @Column(name = "penalties", nullable = false)
     private Integer penalties;
 
-    @ManyToMany(targetEntity = ServiceProfile.class,cascade = CascadeType.ALL)
+    @ManyToMany(targetEntity = ServiceProfile.class,cascade = CascadeType.MERGE)
     public Set<ServiceProfile> subscriptions;
 
     public Client(Integer userId, String email, String password, String name, String surname, String phoneNumber,

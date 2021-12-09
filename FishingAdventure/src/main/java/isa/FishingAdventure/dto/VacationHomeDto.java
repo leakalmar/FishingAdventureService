@@ -23,8 +23,6 @@ public class VacationHomeDto {
 	private Date availabilityEnd;
 	
 	public VacationHomeOwner vocationHomeOwner;
-
-	
 	
 	public VacationHomeDto(int id, String name, String description, double rating, Location location,
 			Date availabilityStart, Date availabilityEnd, VacationHomeOwner vocationHomeOwner) {
@@ -118,7 +116,4 @@ public class VacationHomeDto {
 	public void setVocationHomeOwner(VacationHomeOwner vocationHomeOwner) {
 		this.vocationHomeOwner = vocationHomeOwner;
 	}
-	
-	
-
 }
