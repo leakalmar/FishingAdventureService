@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,12 +27,11 @@ public class VacationHomeController{
 	private VacationHomeService  homeService;
 
 	@GetMapping(value = "/all")
-	@CrossOrigin
+	@PreAuthorize("hasRole('CLIENT')")
 	public ResponseEntity<List<VacationHomeDto>> getAllVacationHomes() {
 		System.out.println("DA");
 		List<ServiceProfile> vacationHomes = homeService.findAll();
 
-		// convert teachers to DTOs
 		List<VacationHomeDto> VacationHomeDto = new ArrayList<>();
 		for (ServiceProfile h : vacationHomes) {
 			VacationHome home = (VacationHome)h;
