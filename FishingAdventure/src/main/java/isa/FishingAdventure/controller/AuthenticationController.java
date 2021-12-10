@@ -226,29 +226,28 @@ public class AuthenticationController {
 	@PostMapping("/signup/fishingInstructor")
 	public ResponseEntity<FishingInstructor> addFishingInstructor(@RequestBody UserDto userDto, UriComponentsBuilder ucBuilder) throws MailException, InterruptedException {
 
-		Client existClient = this.clientService.findByEmail(userDto.getEmail());
-		Admin existAdmin = null;
-		FishingInstructor existInstructor = null;
-		VacationHomeOwner existHomeOwner = null;
-		BoatOwner existBoatOwner = null;
-				
-		if(existClient == null) {
-			existAdmin = this.adminService.findByEmail(userDto.getEmail());
-			if(existAdmin == null) {
-				existInstructor = this.instructorService.findByEmail(userDto.getEmail());
-				if(existHomeOwner == null) {
-					existHomeOwner = this.homeOwnerService.findByEmail(userDto.getEmail());
-					if(existBoatOwner == null) {
-						existBoatOwner = this.boatOwnerService.findByEmail(userDto.getEmail());
-					}
-				}
-			}
-		}
-		
-		
-		if (existClient != null || existAdmin != null || existInstructor != null || existHomeOwner != null) {
-			throw new ResourceConflictException(userDto.getId(), "Email already exists");
-		}
+		try {
+            Client existClient = this.clientService.findByEmail(userDto.getEmail());
+            Admin existAdmin = null;
+            FishingInstructor existInstructor = null;
+            VacationHomeOwner existHomeOwner = null;
+            BoatOwner existBoatOwner = null;
+
+            if(existClient == null) {
+                existAdmin = this.adminService.findByEmail(userDto.getEmail());
+                if(existAdmin == null) {
+                    existInstructor = this.instructorService.findByEmail(userDto.getEmail());
+                    if(existHomeOwner == null) {
+                        existHomeOwner = this.homeOwnerService.findByEmail(userDto.getEmail());
+                        if(existBoatOwner == null) {
+                            existBoatOwner = this.boatOwnerService.findByEmail(userDto.getEmail());
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            throw new ResourceConflictException(userDto.getId(), "Email already exists");
+        }
 
 		FishingInstructor userFishingInstructor = this.instructorService.save(userDto); 
 		
