@@ -124,8 +124,8 @@ export default {
       loggedInUser: undefined,
     };
   },
-  mounted: function() {
-    this.loggedInUser = localStorage.role
+  mounted: function () {
+    this.loggedInUser = localStorage.role;
   },
   methods: {
     openProfile: function () {

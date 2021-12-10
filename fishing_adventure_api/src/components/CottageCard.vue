@@ -15,7 +15,8 @@
             <div class="card-text shadow-none" style="display: flex">
               <h5 class="card-title shadow-none">{{ entitie.name }}</h5>
               <p class="advertiserTitle shadow-none">
-                @{{ entitie.vacationHomeOwner.name }}{{ entitie.vacationHomeOwner.surname }}
+                @{{ entitie.vocationHomeOwner.name
+                }}{{ entitie.vocationHomeOwner.surname }}
               </p>
               <p
                 v-if="path == 'mycottages'"
@@ -30,7 +31,7 @@
                 ></i>
                 <i
                   class="fas fa-minus-square fa-lg shadow-none"
-                  v-on:click="delteCottage"
+                  v-on:click="deleteCottage"
                 ></i>
               </p>
             </div>
@@ -113,23 +114,21 @@
                   margin-left: auto;
                   font-size: x-large;
                 "
-              >
-              </p>
+              ></p>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-
-  
 </template>
 
 <script>
 import { ref, onMounted } from "vue";
+import axios from "axios";
 
 export default {
-  components: { },
+  components: {},
   props: ["entitie"],
   setup(props) {
     const date = ref();
@@ -164,6 +163,21 @@ export default {
     preventPropagation: function (event) {
       event.preventDefault();
       event.stopPropagation();
+    },
+    deleteCottage: function () {
+      console.log(this.entitie);
+      axios
+        .get(
+          "http://localhost:8080/vacationHome/deleteHome/" +
+            this.entitie.serviceId,
+          {
+            headers: {
+              "Access-Control-Allow-Origin": "http://localhost:8080",
+              Authorization: "Bearer " + localStorage.jwt,
+            },
+          }
+        )
+        .then(window.location.reload());
     },
   },
 };
