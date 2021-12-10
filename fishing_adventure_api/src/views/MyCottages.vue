@@ -37,7 +37,7 @@
             New cottage
           </button>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
           <input
             class="form-control me-2"
             type="search"

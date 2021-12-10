@@ -2,7 +2,11 @@
   <div>
     <div class="title">
       <h1>Find your perfect vacation</h1>
-      <i v-if="searching == '' || searching == 'cottages'" class="far fa-home fa-3x" style="font-family: 'Font Awesome 5 Pro'"></i
+      <i
+        v-if="searching == '' || searching == 'cottages'"
+        class="far fa-home fa-3x"
+        style="font-family: 'Font Awesome 5 Pro'"
+      ></i
       ><i
         v-if="searching == '' || searching == 'boats'"
         class="far fa-anchor fa-3x"
@@ -70,10 +74,11 @@
       ></CottageCard>
     </div>
     <div v-if="searching == 'boats'" style="margin-top: 5%">
-      <BoatCard 
+      <BoatCard
         v-for="boatEntitie in boatEntities"
         :key="boatEntitie.id"
-        v-bind:boatEntitie="boatEntitie"></BoatCard>
+        v-bind:boatEntitie="boatEntitie"
+      ></BoatCard>
     </div>
     <div v-if="searching == 'fishingInstructors'" style="margin-top: 5%">
       <InstructorCard v-for="index in 10" :key="index"></InstructorCard>
@@ -88,7 +93,7 @@ import { ref, onMounted } from "vue";
 import CottageCard from "@/components/CottageCard.vue";
 import BoatCard from "@/components/BoatCard.vue";
 import InstructorCard from "@/components/InstructorCard.vue";
-import axios from "axios"
+import axios from "axios";
 export default {
   components: { Datepicker, CottageCard, BoatCard, InstructorCard },
   setup() {
@@ -162,8 +167,8 @@ export default {
           vacationHomeOwner: "nikkiMorrison",
         },
       ],
-      boatEntities:[],
-      fishingInstructor:[]
+      boatEntities: [],
+      fishingInstructor: [],
     };
   },
   mounted: function () {
@@ -175,31 +180,27 @@ export default {
       this.searching = "boats";
     }
     axios
-        .get("http://localhost:8080/boat/all", {
-          headers: {
-            "Access-Control-Allow-Origin": "http://localhost:8080"
-          },
-        })
-        .then(
-          (res) => {
-            this.boatEntities = res.data
-            for(let boat of this.boatEntities){
-              boat.rating = (Number(boat.rating)).toFixed(2);
-            }
-          }
-        );
+      .get("http://localhost:8080/boat/all", {
+        headers: {
+          "Access-Control-Allow-Origin": "http://localhost:8080",
+        },
+      })
+      .then((res) => {
+        this.boatEntities = res.data;
+        for (let boat of this.boatEntities) {
+          boat.rating = Number(boat.rating).toFixed(2);
+        }
+      });
 
     axios
-        .get("http://localhost:8080/fishingInstructor/all", {
-          headers: {
-            "Access-Control-Allow-Origin": "http://localhost:8080"
-          },
-        })
-        .then(
-          (res) => {
-            this.fishingInstructor = res.data
-          }
-        );
+      .get("http://localhost:8080/fishingInstructor/all", {
+        headers: {
+          "Access-Control-Allow-Origin": "http://localhost:8080",
+        },
+      })
+      .then((res) => {
+        this.fishingInstructor = res.data;
+      });
   },
   methods: {},
 };
