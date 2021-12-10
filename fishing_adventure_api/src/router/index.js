@@ -8,7 +8,14 @@ const routes = [{
     path: '/profile',
     name: 'profile',
     component: () =>
-        import ('../views/Profile.vue')
+        import ('../views/Profile.vue'),
+    beforeEnter: (to, from, next) => {
+        if (localStorage.role == "ROLE_VACATION_HOME_OWNER") {
+            next();
+        } else {
+            next('/');
+        }
+    }
 }, {
     path: '/search',
     name: 'Search',
@@ -41,7 +48,6 @@ const routes = [{
     component: () =>
         import ('../views/MyCottages.vue'),
     beforeEnter: (to, from, next) => {
-        console.log("DA")
         if (localStorage.role == "ROLE_VACATION_HOME_OWNER") {
             next();
         } else {
@@ -53,26 +59,22 @@ const routes = [{
     name: 'HomeOwnerReservations',
     component: () =>
         import ('../views/HomeOwnerReservations.vue')
-},
-{
+}, {
     path: '/client/currentReservations',
     name: 'CurrentClientReservations',
     component: () =>
         import ('../views/CurrentClientReservations.vue')
-},
-{
+}, {
     path: '/client/pastReservations',
     name: 'PastClientReservations',
     component: () =>
         import ('../views/PastClientReservations.vue')
-},
-{
+}, {
     path: '/client/subscriptions',
     name: 'ClientSubscriptions',
     component: () =>
         import ('../views/ClientSubscriptions.vue')
-}, 
-{
+}, {
     path: '/specialOffers',
     name: 'HomeOwnerSpecialOffers',
     component: () =>
@@ -81,7 +83,14 @@ const routes = [{
     path: '/calendar',
     name: 'HomeOwnerCalendar',
     component: () =>
-        import ('../views/HomeOwnerCalendar.vue')
+        import ('../views/HomeOwnerCalendar.vue'),
+    beforeEnter: (to, from, next) => {
+        if (localStorage.role == "ROLE_VACATION_HOME_OWNER") {
+            next();
+        } else {
+            next('/');
+        }
+    }
 }, {
     path: '/fishingAdventure',
     name: 'FishingAdventure',
