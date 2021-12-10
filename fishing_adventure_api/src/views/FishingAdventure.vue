@@ -265,6 +265,7 @@
         <div class="so-title-fa">
           <h2>Special Offers</h2>
         </div>
+          <p style="font-size:24px">There are no special offers currently</p>
       </div>
 
       <div class="special-offers-fa">

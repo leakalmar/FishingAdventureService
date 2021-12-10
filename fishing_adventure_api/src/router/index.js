@@ -116,6 +116,21 @@ const routes = [{
     name: 'RegistrationRequests',
     component: () =>
         import ('../views/RegistrationRequests.vue')
+}, {
+    path: '/fishingAdventures',
+    name: 'MyFishingAdventures',
+    component: () =>
+        import ('../views/MyFishingAdventures.vue')
+}, {
+    path: '/instructorReservations',
+    name: 'InstructorReservations',
+    component: () =>
+        import ('../views/InstructorReservations.vue')
+}, {
+    path: '/instructorSpecialOffers',
+    name: 'InstructorSpecialOffers',
+    component: () =>
+        import ('../views/InstructorSpecialOffers.vue')
 }]
 const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
