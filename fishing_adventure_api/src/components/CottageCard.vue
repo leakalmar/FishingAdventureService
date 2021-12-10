@@ -5,7 +5,7 @@
         <div class="col-md-4 shadow-none">
           <img
             style="width: 100%; height: 225px; object-fit: cover"
-            :src="'/img/' + entitie.image"
+            :src="'/img/' + entitie.imagePath"
             class="img-fluid rounded-start shadow-none"
           />
         </div>
@@ -15,7 +15,7 @@
             <div class="card-text shadow-none" style="display: flex">
               <h5 class="card-title shadow-none">{{ entitie.name }}</h5>
               <p class="advertiserTitle shadow-none">
-                @{{ entitie.vacationHomeOwner }}
+                @{{ entitie.vacationHomeOwner.name }}{{ entitie.vacationHomeOwner.surname }}
               </p>
               <p
                 v-if="path == 'mycottages'"
@@ -102,9 +102,8 @@
             </div>
             <div class="card-text fw-bold shadow-none" style="display: flex">
               <p class="shadow-none" style="margin: 0">
-                {{ entitie.location.houseNumber }}
-                {{ entitie.location.street }} {{ entitie.location.city }}
-                {{ entitie.location.country }}
+                {{ entitie.street }} {{ entitie.city }}
+                {{ entitie.country }}
               </p>
               <p
                 class="shadow-none"
@@ -115,9 +114,6 @@
                   font-size: x-large;
                 "
               >
-                <i class="fas fa-dollar-sign shadow-none"
-                  >{{ entitie.price }}/day</i
-                >
               </p>
             </div>
           </div>
@@ -126,18 +122,14 @@
     </div>
   </div>
 
-  <NewCottageModal
-    :cottage="entitie"
-    :id="'entitie' + entitie.id"
-  ></NewCottageModal>
+  
 </template>
 
 <script>
 import { ref, onMounted } from "vue";
-import NewCottageModal from "@/components/NewCottageModal.vue";
 
 export default {
-  components: { NewCottageModal },
+  components: { },
   props: ["entitie"],
   setup(props) {
     const date = ref();
