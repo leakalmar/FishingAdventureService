@@ -6,8 +6,8 @@
           <img
             width="100"
             height="225"
-            style="width: 100%; object-fit: cover; position: relative"
-            src="@/assets/advertizer.png"
+            style="width: 100%; object-fit: cover; position: relative; padding-top:10px"
+            src="@/assets/advertiser.png"
             class="img-fluid rounded-start shadow-none overlay"
           />
         </div>
@@ -282,7 +282,8 @@ export default {
   height: 100%;
 }
 .overlay {
-  background-image: url(../assets/backgroun1.png);
+  background: rgb(17,16,16);
+  background: linear-gradient(90deg, rgba(17,16,16,1) 0%, rgba(30,34,36,1) 50%, rgba(33,37,41,1) 100%);
 }
 
 .navigation-btn {
