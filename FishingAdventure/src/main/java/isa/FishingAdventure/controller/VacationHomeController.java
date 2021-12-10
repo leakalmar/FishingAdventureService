@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 
 import isa.FishingAdventure.model.VacationHomeOwner;
-import isa.FishingAdventure.service.AddressService;
 import isa.FishingAdventure.service.VacationHomeOwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -18,16 +17,10 @@ import org.springframework.web.bind.annotation.*;
 
 import isa.FishingAdventure.dto.NewHomeDto;
 import isa.FishingAdventure.dto.VacationHomeDto;
-import isa.FishingAdventure.model.AdditionalService;
-import isa.FishingAdventure.model.Address;
 import isa.FishingAdventure.model.Image;
-import isa.FishingAdventure.model.Location;
 import isa.FishingAdventure.model.ServiceProfile;
 import isa.FishingAdventure.model.VacationHome;
 import isa.FishingAdventure.service.VacationHomeService;
-import java.util.Set;
-import java.util.List;
-
 @RestController
 @Configurable
 @RequestMapping(value = "/vacationHome", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -94,6 +87,7 @@ public class VacationHomeController {
 
 		return new ResponseEntity<>("ok", HttpStatus.OK);
 	}
+}
 
 	
 

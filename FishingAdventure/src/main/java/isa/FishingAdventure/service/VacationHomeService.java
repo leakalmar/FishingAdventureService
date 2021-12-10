@@ -16,7 +16,7 @@ public class VacationHomeService{
 	@Autowired
 	private VacationHomeRepository homeRepository;
 	
-	public List<ServiceProfile> findAll() {
+	public List<VacationHome> findAll() {
 		return homeRepository.findAll();
 	}
 
