@@ -22,11 +22,13 @@ import isa.FishingAdventure.service.FishingInstructorService;
 
 @RestController
 @Configurable
-@RequestMapping(value = "fishingAdventure", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/fishingAdventure", produces = MediaType.APPLICATION_JSON_VALUE)
 public class FishingAdventureController{
 	
 	@Autowired
 	private FishingAdventureService adventureService;
+
+	@Autowired
 	private FishingInstructorService instructorService;
 	
 	@GetMapping(value = "/all")
@@ -46,6 +48,7 @@ public class FishingAdventureController{
 	@PreAuthorize("hasRole('ROLE_FISHING_INSTRUCTOR')")
 	public ResponseEntity<List<FishingAdventure>> getAllFishingAdventuresByEmail(@PathVariable String email) {
 		FishingInstructor instructor = instructorService.findByEmail(email);
+
 		List<FishingAdventure> fishingAdventures = adventureService.findByFishingInstructor(instructor);
 		return new ResponseEntity<>(fishingAdventures, HttpStatus.OK);
 	}

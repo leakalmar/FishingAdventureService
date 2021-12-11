@@ -10,7 +10,7 @@ const routes = [{
     component: () =>
         import ('../views/Profile.vue'),
     beforeEnter: (to, from, next) => {
-        if (localStorage.role == "ROLE_VACATION_HOME_OWNER") {
+        if (localStorage.role != undefined) {
             next();
         } else {
             next('/');

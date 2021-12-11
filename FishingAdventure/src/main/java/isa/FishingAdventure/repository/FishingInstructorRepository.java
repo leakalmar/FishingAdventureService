@@ -7,7 +7,7 @@ import isa.FishingAdventure.model.FishingInstructor;
 import isa.FishingAdventure.model.User;
 
 @Repository
-public interface FishingInstructorRepository extends JpaRepository<User, Integer>{
+public interface FishingInstructorRepository extends UserRepository{
 	
 	FishingInstructor findByEmail(String email);
 

@@ -53,14 +53,14 @@
                   <a
                     class="dropdown-item"
                     href="/search"
-                    v-if="loggedInUser != 'ROLE_ADMIN'"
+                    v-if="loggedInRole != 'ROLE_ADMIN'"
                     >All</a
                   >
                 </li>
                 <li>
                   <hr
                     class="dropdown-divider"
-                    v-if="loggedInUser != 'ROLE_ADMIN'"
+                    v-if="loggedInRole != 'ROLE_ADMIN'"
                   />
                 </li>
                 <li><a class="dropdown-item" href="/search/boats">Boats</a></li>
@@ -83,7 +83,7 @@
                 role="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
-                v-if="loggedInUser == 'ROLE_CLIENT'"
+                v-if="loggedInRole == 'ROLE_CLIENT'"
               >
                 Reservations
               </a>
@@ -104,7 +104,7 @@
               </ul>
             </li>
 
-            <li class="nav-item" v-if="loggedInUser == 'ROLE_CLIENT'">
+            <li class="nav-item" v-if="loggedInRole == 'ROLE_CLIENT'">
               <a
                 class="nav-link"
                 aria-current="page"
@@ -115,11 +115,11 @@
 
             <li
               class="nav-item dropdown"
-              v-if="loggedInUser == 'homeOwner'"
+              v-if="loggedInRole == 'homeOwner'"
             ></li>
             <li
               class="nav-item dropdown"
-              v-if="loggedInUser == 'ROLE_VACATION_HOME_OWNER'"
+              v-if="loggedInRole == 'ROLE_VACATION_HOME_OWNER' || loggedInRole == 'ROLE_FISHING_INSTRUCTOR'"
             >
               <a
                 class="nav-link dropdown-toggle"
@@ -158,7 +158,7 @@
             </li>
             <li
               class="nav-item dropdown"
-              v-if="loggedInUser == 'ROLE_ADMIN'"
+              v-if="loggedInRole == 'ROLE_ADMIN'"
             >
               <a
                 class="nav-link dropdown-toggle"

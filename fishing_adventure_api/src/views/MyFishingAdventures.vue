@@ -82,63 +82,7 @@ export default {
         clickedAdventureCardForEdit: "",
         numberOfPersons: "",
         searchText: "",
-         //searchResults: [],
-        searchResults: [{
-          id: "1",
-          imagePath: "fa21.jpg",
-          name: "Villa Madam",
-          description:
-            "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
-          cancellationRule: "",
-          rating: "4.85",
-            street: "Ketch Harbour Lane",
-            city: "New Port Richey",
-            country: "USA",
-          availabilityStart: "10 Dec 2021 14:00:00 GMT",
-          availabilityEnd: "15 Dec 2021 11:00:00 GMT",
-          image: "c1.jpg",
-          fishingInstructor:  {
-            id: "1",
-            name: "Sam",
-            surname: "Lee",
-            email: "sam_lee@gmail.com",
-            userType: "FISHING_INSTRUCTOR",
-            date: "03.12.2021.",
-            telephone: "0634375921",
-            country: "Serbia",
-            city: "City",
-            street: "Street 2",
-            },
-          price: 30.0,
-        },
-        {
-          id: "2",
-          imagePath: "fa21.jpg",
-          name: "Catherine's Vineyard",
-          description:
-            "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
-          cancellationRule: "",
-          rating: "3.95",
-            street: "Ketch Harbour Lane",
-            city: "New Port Richey",
-            country: "USA",
-          availabilityStart: "8 Dec 2021 14:00:00 GMT",
-          availabilityEnd: "12 Dec 2021 11:00:00 GMT",
-          image: "c3.jpg",
-          fishingInstructor: {
-            id: "2",
-            name: "John",
-            surname: "Larsson",
-            email: "john_smith@gmail.com",
-            userType: "FISHING_INSTRUCTOR",
-            date: "01.12.2021.",
-            telephone: "0632868924",
-            country: "Germany",
-            city: "City",
-            street: "Street 7",
-            },
-          price: 61.0,
-        },]
+        searchResults: [],
         
         };
     },
@@ -152,11 +96,10 @@ export default {
         })
         .then(
             (res) => {
-            console.log(res.data);
-            this.searchResults = res.data;
+              this.searchResults = res.data;
             },
             (err) => {
-            console.log(err);
+              console.log(err);
             }
         );
     },

@@ -64,6 +64,7 @@ public class AuthenticationController {
 	
 	@Autowired
 	private FishingInstructorService instructorService;
+
 	@Autowired
 	private BoatOwnerService boatOwnerService;
 	
@@ -250,13 +251,8 @@ public class AuthenticationController {
         }
 
 		FishingInstructor userFishingInstructor = this.instructorService.save(userDto); 
-		
-		try {
-			emailService.sendNotificaitionAsync(userDto);
-		}
-		catch(Exception e){
-			System.out.println(e);
-		}
+
+		//TODO: send registration to admin for approval
 
 		return new ResponseEntity<>(userFishingInstructor, HttpStatus.CREATED);
 	}
