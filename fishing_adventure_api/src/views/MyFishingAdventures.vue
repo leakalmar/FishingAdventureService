@@ -88,7 +88,7 @@ export default {
     },
     mounted: function () {
         axios
-        .get("http://localhost:8080/fishingAdventure/all/" + localStorage.email, {
+        .get("http://localhost:8080/fishingAdventure/all/" + localStorage.jwt, {
             headers: {
             "Access-Control-Allow-Origin": "http://localhost:8080",
             Authorization: "Bearer " + localStorage.jwt,

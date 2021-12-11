@@ -3,6 +3,7 @@ package isa.FishingAdventure.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import isa.FishingAdventure.security.util.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,10 @@ import isa.FishingAdventure.service.FishingInstructorService;
 @Configurable
 @RequestMapping(value = "/fishingAdventure", produces = MediaType.APPLICATION_JSON_VALUE)
 public class FishingAdventureController{
-	
+
+	@Autowired
+	private TokenUtils tokenUtils;
+
 	@Autowired
 	private FishingAdventureService adventureService;
 
@@ -44,9 +48,11 @@ public class FishingAdventureController{
 		return new ResponseEntity<>(fishingAdventureDtos, HttpStatus.OK);
 	}
 	
-	@GetMapping(value = "/all/{email}")
+	@GetMapping(value = "/all/{token}")
 	@PreAuthorize("hasRole('ROLE_FISHING_INSTRUCTOR')")
-	public ResponseEntity<List<FishingAdventure>> getAllFishingAdventuresByEmail(@PathVariable String email) {
+	public ResponseEntity<List<FishingAdventure>> getAllFishingAdventuresByEmail(@PathVariable String token) {
+		String email = tokenUtils.getEmailFromToken(token);
+
 		FishingInstructor instructor = instructorService.findByEmail(email);
 
 		List<FishingAdventure> fishingAdventures = adventureService.findByFishingInstructor(instructor);

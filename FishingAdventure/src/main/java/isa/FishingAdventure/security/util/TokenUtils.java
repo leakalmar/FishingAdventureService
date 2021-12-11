@@ -137,7 +137,7 @@ public class TokenUtils {
 	 * @param token JWT token.
 	 * @return Korisničko ime iz tokena ili null ukoliko ne postoji.
 	 */
-	public String getUsernameFromToken(String token) {
+	public String getEmailFromToken(String token) {
 		String username;
 
 		try {
@@ -273,7 +273,7 @@ public class TokenUtils {
 				break;
 
 		}
-		final String username = getUsernameFromToken(token);
+		final String username = getEmailFromToken(token);
 		final Date created = getIssuedAtDateFromToken(token);
 
 		if (userAdmin != null) {
