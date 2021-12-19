@@ -40,22 +40,6 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
-
-	@PostMapping("/signup/async")
-	public String signUpAsync(@RequestBody UserDto user) {
-		// slanje emaila
-		System.out.println("Ovde");
-		try {
-			System.out.println(user.getEmail());
-			// System.out.println(user.toString());
-			System.out.println("Thread id: " + Thread.currentThread().getId());
-			emailService.sendNotificaitionAsync(user);
-		} catch (Exception e) {
-			logger.info("Greska prilikom slanja emaila: " + e.getMessage());
-		}
-
-		return "success";
-	}
 	
 	@RequestMapping(value="get", method = RequestMethod.GET)
 	public @ResponseBody UserInfoDto getItem(@RequestParam("email") String email){

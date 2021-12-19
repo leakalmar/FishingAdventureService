@@ -10,4 +10,5 @@ public interface ClientRepository extends UserRepository{
 
 	Client save(UserDto userRequest);
 
+	Client findByEmail(String email);
 }

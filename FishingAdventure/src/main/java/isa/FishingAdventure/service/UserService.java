@@ -22,9 +22,7 @@ public class UserService implements UserDetailsService {
 
 	@Autowired
 	private UserTypeService userTypeService;
-	
 
-	// Funkcija koja na osnovu username-a iz baze vraca objekat User-a
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		User user = repository.findByEmail(email);
@@ -49,5 +47,9 @@ public class UserService implements UserDetailsService {
 
 	public void save(User user) {
 		repository.save(user);
+	}
+
+	public Boolean isEmailRegistered(String email){
+		return findByEmail(email) != null;
 	}
 }

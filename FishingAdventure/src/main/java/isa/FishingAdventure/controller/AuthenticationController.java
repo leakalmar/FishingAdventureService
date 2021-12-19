@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 
+import isa.FishingAdventure.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -34,15 +35,7 @@ import isa.FishingAdventure.model.FishingInstructor;
 import isa.FishingAdventure.model.User;
 import isa.FishingAdventure.model.VacationHomeOwner;
 import isa.FishingAdventure.security.util.TokenUtils;
-import isa.FishingAdventure.service.AdminService;
-import isa.FishingAdventure.service.BoatOwnerService;
-import isa.FishingAdventure.service.ClientService;
-import isa.FishingAdventure.service.ConfirmationTokenService;
-import isa.FishingAdventure.service.EmailService;
-import isa.FishingAdventure.service.FishingInstructorService;
-import isa.FishingAdventure.service.VacationHomeOwnerService;
 
-//Kontroler zaduzen za autentifikaciju korisnika
 @RestController
 @RequestMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AuthenticationController {
@@ -55,9 +48,6 @@ public class AuthenticationController {
 
 	@Autowired
 	private ClientService clientService;
-	
-	@Autowired
-	private AdminService adminService;
 	
 	@Autowired
 	private VacationHomeOwnerService homeOwnerService;
@@ -73,23 +63,19 @@ public class AuthenticationController {
 	
 	@Autowired
 	private ConfirmationTokenService confirmationTokenService;
-	
-	// Prvi endpoint koji pogadja korisnik kada se loguje.
-	// Tada zna samo svoje korisnicko ime i lozinku i to prosledjuje na backend.
+
+	@Autowired
+	private UserService userService;
+
 	@PostMapping("/login")
 	public ResponseEntity<UserTokenState> createAuthenticationToken(
 			@RequestBody JwtAuthenticationRequest authenticationRequest, HttpServletResponse response) {
 
-		// Ukoliko kredencijali nisu ispravni, logovanje nece biti uspesno, desice se
-		// AuthenticationException
 		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
 				authenticationRequest.getEmail(), authenticationRequest.getPassword()));
 
-		// Ukoliko je autentifikacija uspesna, ubaci korisnika u trenutni security
-		// kontekst
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
-		// Kreiraj token za tog korisnika
 		User user = (User) authentication.getPrincipal();
 		if(!user.isActivated()) {
 			return ResponseEntity.ok(null);
@@ -102,159 +88,77 @@ public class AuthenticationController {
 				.map(item -> item.getAuthority())
 				.collect(Collectors.toList());
 
-		// Vrati token kao odgovor na uspesnu autentifikaciju
 		return ResponseEntity.ok(new UserTokenState(jwt, (long) expiresIn, email, roles));
 	}
 
-	// Endpoint za registraciju novog korisnika
 	@PostMapping("/signup")
 	public ResponseEntity<Client> addUser(@RequestBody UserDto userDto, UriComponentsBuilder ucBuilder) throws MailException, InterruptedException {
 
-		Client existClient = this.clientService.findByEmail(userDto.getEmail());
-		Admin existAdmin = null;
-		FishingInstructor existInstructor = null;
-		VacationHomeOwner existHomeOwner = null;
-		BoatOwner existBoatOwner = null;
-				
-		if(existClient == null) {
-			existAdmin = this.adminService.findByEmail(userDto.getEmail());
-			if(existAdmin == null) {
-				existInstructor = this.instructorService.findByEmail(userDto.getEmail());
-				if(existHomeOwner == null) {
-					existHomeOwner = this.homeOwnerService.findByEmail(userDto.getEmail());
-					if(existBoatOwner == null) {
-						existBoatOwner = this.boatOwnerService.findByEmail(userDto.getEmail());
-					}
-				}
-			}
-		}
-		
-		
-		if (existClient != null || existAdmin != null || existInstructor != null || existHomeOwner != null) {
+		Client userClient;
+		if (userService.isEmailRegistered(userDto.getEmail())){
 			throw new ResourceConflictException(userDto.getId(), "Email already exists");
-		}
-
-		Client userClient = this.clientService.save(userDto); 
-		
-		try {
-			emailService.sendNotificaitionAsync(userDto);
-		}
-		catch(Exception e){
-			System.out.println(e);
+		}else{
+			userClient = this.clientService.save(userDto);
+			sendRegistrationEmail(userDto);
 		}
 
 		return new ResponseEntity<>(userClient, HttpStatus.CREATED);
 	}
-	
-	@PostMapping("/signup/homeOwner")
-	public ResponseEntity<VacationHomeOwner> addHomeOwner(@RequestBody UserDto userDto, UriComponentsBuilder ucBuilder) throws MailException, InterruptedException {
 
-		Client existClient = this.clientService.findByEmail(userDto.getEmail());
-		Admin existAdmin = null;
-		FishingInstructor existInstructor = null;
-		VacationHomeOwner existHomeOwner = null;
-		BoatOwner existBoatOwner = null;
-				
-		if(existClient == null) {
-			existAdmin = this.adminService.findByEmail(userDto.getEmail());
-			if(existAdmin == null) {
-				existInstructor = this.instructorService.findByEmail(userDto.getEmail());
-				if(existHomeOwner == null) {
-					existHomeOwner = this.homeOwnerService.findByEmail(userDto.getEmail());
-					if(existBoatOwner == null) {
-						existBoatOwner = this.boatOwnerService.findByEmail(userDto.getEmail());
-					}
-				}
-			}
-		}
-		
-		
-		if (existClient != null || existAdmin != null || existInstructor != null || existHomeOwner != null) {
-			throw new ResourceConflictException(userDto.getId(), "Email already exists");
-		}
-
-		VacationHomeOwner userVacationHomeOwner = this.homeOwnerService.save(userDto); 
-		
+	private void sendRegistrationEmail(UserDto userDto){
 		try {
-			emailService.sendNotificaitionAsync(userDto);
+			emailService.sendEmail(userDto.getEmail(), "Registration confirmation", "Hello " + userDto.getName() + ",\n\nto confirm your account, please click here : " + "http://localhost:8080/auth/confirm-account?token=" + generateRegistrationToken(userDto.getEmail()));
 		}
 		catch(Exception e){
 			System.out.println(e);
 		}
+	}
 
-		return new ResponseEntity<>(userVacationHomeOwner, HttpStatus.CREATED);
+	private String generateRegistrationToken(String email) {
+		ConfirmationToken confirmationToken = new ConfirmationToken();
+		confirmationToken.setEmail(email);
+		confirmationToken.setToken(tokenUtils.generateToken(email));
+		confirmationTokenService.save(confirmationToken);
+
+		return confirmationToken.getToken();
+	}
+
+	@PostMapping("/signup/homeOwner")
+	public ResponseEntity<VacationHomeOwner> addHomeOwner(@RequestBody UserDto userDto, UriComponentsBuilder ucBuilder) throws MailException, InterruptedException {
+		VacationHomeOwner vacationHomeOwner;
+		if (userService.isEmailRegistered(userDto.getEmail())){
+			throw new ResourceConflictException(userDto.getId(), "Email already exists");
+		}else{
+			vacationHomeOwner = this.homeOwnerService.save(userDto);
+		}
+
+		return new ResponseEntity<>(vacationHomeOwner, HttpStatus.CREATED);
 	}
 	
 	@PostMapping("/signup/boatOwner")
 	public ResponseEntity<BoatOwner> addBoatOwner(@RequestBody UserDto userDto, UriComponentsBuilder ucBuilder) throws MailException, InterruptedException {
-
-		Client existClient = this.clientService.findByEmail(userDto.getEmail());
-		Admin existAdmin = null;
-		FishingInstructor existInstructor = null;
-		VacationHomeOwner existHomeOwner = null;
-		BoatOwner existBoatOwner = null;
-				
-		if(existClient == null) {
-			existAdmin = this.adminService.findByEmail(userDto.getEmail());
-			if(existAdmin == null) {
-				existInstructor = this.instructorService.findByEmail(userDto.getEmail());
-				if(existHomeOwner == null) {
-					existHomeOwner = this.homeOwnerService.findByEmail(userDto.getEmail());
-					if(existBoatOwner == null) {
-						existBoatOwner = this.boatOwnerService.findByEmail(userDto.getEmail());
-					}
-				}
-			}
-		}
-		
-		
-		if (existClient != null || existAdmin != null || existInstructor != null || existHomeOwner != null) {
+		BoatOwner boatOwner;
+		if (userService.isEmailRegistered(userDto.getEmail())){
 			throw new ResourceConflictException(userDto.getId(), "Email already exists");
+		}else{
+			boatOwner = this.boatOwnerService.save(userDto);
 		}
 
-		BoatOwner userBoatOwner = this.boatOwnerService.save(userDto); 
-		
-		try {
-			emailService.sendNotificaitionAsync(userDto);
-		}
-		catch(Exception e){
-			System.out.println(e);
-		}
-
-		return new ResponseEntity<>(userBoatOwner, HttpStatus.CREATED);
+		return new ResponseEntity<>(boatOwner, HttpStatus.CREATED);
 	}
 	
 	@PostMapping("/signup/fishingInstructor")
 	public ResponseEntity<FishingInstructor> addFishingInstructor(@RequestBody UserDto userDto, UriComponentsBuilder ucBuilder) throws MailException, InterruptedException {
-
-		try {
-            Client existClient = this.clientService.findByEmail(userDto.getEmail());
-            Admin existAdmin = null;
-            FishingInstructor existInstructor = null;
-            VacationHomeOwner existHomeOwner = null;
-            BoatOwner existBoatOwner = null;
-
-            if(existClient == null) {
-                existAdmin = this.adminService.findByEmail(userDto.getEmail());
-                if(existAdmin == null) {
-                    existInstructor = this.instructorService.findByEmail(userDto.getEmail());
-                    if(existHomeOwner == null) {
-                        existHomeOwner = this.homeOwnerService.findByEmail(userDto.getEmail());
-                        if(existBoatOwner == null) {
-                            existBoatOwner = this.boatOwnerService.findByEmail(userDto.getEmail());
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-            throw new ResourceConflictException(userDto.getId(), "Email already exists");
-        }
-
-		FishingInstructor userFishingInstructor = this.instructorService.save(userDto); 
+		FishingInstructor fishingInstructor;
+		if (userService.isEmailRegistered(userDto.getEmail())){
+			throw new ResourceConflictException(userDto.getId(), "Email already exists");
+		}else{
+			fishingInstructor = this.instructorService.save(userDto);
+		}
 
 		//TODO: send registration to admin for approval
 
-		return new ResponseEntity<>(userFishingInstructor, HttpStatus.CREATED);
+		return new ResponseEntity<>(fishingInstructor, HttpStatus.CREATED);
 	}
 	
 	@GetMapping("/confirm-account")

@@ -25,44 +25,19 @@ public class EmailService {
 	@Autowired
 	private TokenUtils tokenUtils;
 
-	/*
-	 * Koriscenje klase za ocitavanje vrednosti iz application.properties fajla
-	 */
 	@Autowired
 	private Environment env;
 
-	/*
-	 * Anotacija za oznacavanje asinhronog zadatka
-	 * Vise informacija na: https://docs.spring.io/spring/docs/current/spring-framework-reference/integration.html#scheduling
-	 */
 	@Async
-	public void sendNotificaitionAsync(UserDto user) throws MailException, InterruptedException {
-		System.out.println("Async metoda se izvrsava u drugom Threadu u odnosu na prihvaceni zahtev. Thread id: " + Thread.currentThread().getId());
-		//Simulacija duze aktivnosti da bi se uocila razlika
-		Thread.sleep(10000);
-		System.out.println("Slanje emaila...");
-		
-		System.out.println(user.getEmail());
-		System.out.println(user.getPassword());
-		System.out.println(user.getName());
-		System.out.println(user.getPhoneNumber());
-		System.out.println(user.getSurname());
-		//System.out.println(user.getAddress().getStreet());
-		System.out.println(user.getUserType());
-		
-		ConfirmationToken confirmationToken = new ConfirmationToken();
-		confirmationToken.setEmail(user.getEmail());
-		confirmationToken.setToken(tokenUtils.generateToken(user.getEmail()));
-		confirmationTokenService.save(confirmationToken);
-		
-		
+	public void sendEmail(String email, String subject, String text) throws MailException, InterruptedException {
 		SimpleMailMessage mail = new SimpleMailMessage();
-		mail.setTo(user.getEmail());
+		mail.setTo(email);
 		mail.setFrom(env.getProperty("spring.mail.username"));
-		mail.setSubject("Primer slanja emaila pomoću asinhronog Spring taska");
-		mail.setText("Hello " + user.getName() + ",\n\nto confirm your account, please click here : " + "http://localhost:8080/auth/confirm-account?token=" +confirmationToken.getToken());
+		mail.setSubject(subject);
+		mail.setText(text);
 		javaMailSender.send(mail);
 
-		System.out.println("Email poslat!");
+		System.out.println("Email sent!");
 	}
+
 }
