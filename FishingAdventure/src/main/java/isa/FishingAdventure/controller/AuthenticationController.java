@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 
+import isa.FishingAdventure.model.*;
 import isa.FishingAdventure.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,13 +28,6 @@ import isa.FishingAdventure.dto.JwtAuthenticationRequest;
 import isa.FishingAdventure.dto.UserDto;
 import isa.FishingAdventure.dto.UserTokenState;
 import isa.FishingAdventure.exception.ResourceConflictException;
-import isa.FishingAdventure.model.Admin;
-import isa.FishingAdventure.model.BoatOwner;
-import isa.FishingAdventure.model.Client;
-import isa.FishingAdventure.model.ConfirmationToken;
-import isa.FishingAdventure.model.FishingInstructor;
-import isa.FishingAdventure.model.User;
-import isa.FishingAdventure.model.VacationHomeOwner;
 import isa.FishingAdventure.security.util.TokenUtils;
 
 @RestController
@@ -82,7 +76,7 @@ public class AuthenticationController {
 		if(!user.isActivated()) {
 			return ResponseEntity.ok(null);
 		}
-		String jwt = tokenUtils.generateToken(user.getEmail());
+		String jwt = tokenUtils.generateToken(user.getEmail(), user.getUserType().getName());
 		int expiresIn = tokenUtils.getExpiredIn();
 		String email = tokenUtils.getEmailFromToken(jwt);
 		
@@ -119,7 +113,7 @@ public class AuthenticationController {
 	private String generateRegistrationToken(String email) {
 		ConfirmationToken confirmationToken = new ConfirmationToken();
 		confirmationToken.setEmail(email);
-		confirmationToken.setToken(tokenUtils.generateToken(email));
+		confirmationToken.setToken(tokenUtils.generateToken(email, "ROLE_CLIENT"));
 		confirmationTokenService.save(confirmationToken);
 
 		return confirmationToken.getToken();
@@ -182,7 +176,7 @@ public class AuthenticationController {
         }
 		
 		return ResponseEntity.ok()
-		        .body("Sucess");
+		        .body("Success");
 	}
 
 }

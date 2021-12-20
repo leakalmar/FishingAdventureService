@@ -19,12 +19,14 @@ public class UserDto {
 
 	private UserType userType;
 	
-	private Address address; 
+	private Address address;
+
+	private String biography;
 
 	public UserDto() {}
 
 	public UserDto(Integer id, String email, String password, String name, String surname, String phoneNumber,
-			UserType userType) {
+			UserType userType, String biography) {
 		super();
 		this.id = id;
 		this.email = email;
@@ -33,6 +35,7 @@ public class UserDto {
 		this.surname = surname;
 		this.phoneNumber = phoneNumber;
 		this.userType = userType;
+		this.biography = biography;
 	}
 
 	public UserDto(String email, String password, String name) {
@@ -40,6 +43,14 @@ public class UserDto {
 		this.email = email;
 		this.password = password;
 		this.name = name;
+	}
+
+	public String getBiography() {
+		return biography;
+	}
+
+	public void setBiography(String biography) {
+		this.biography = biography;
 	}
 
 	public Integer getId() {

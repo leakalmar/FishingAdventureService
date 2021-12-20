@@ -23,8 +23,8 @@ public class VacationHome extends ServiceProfile {
     @OneToMany(targetEntity = Room.class,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     public Set<Room> rooms;
 
-    public VacationHome(int serviceId, String name, String description, double cancellationRule, double rating, Location location, Set<Appointment> appointments, Set<Rule> rules, Set<AdditionalService> additionalServices) {
-        super(serviceId, name, description, cancellationRule, rating, location, appointments, rules, additionalServices);
+    public VacationHome(int id, String name, String description, double cancellationRule, double rating, Location location, Set<Appointment> appointments, Set<Rule> rules, Set<AdditionalService> additionalServices) {
+        super(id, name, description, cancellationRule, rating, location, appointments, rules, additionalServices);
     }
 
     public VacationHome() {

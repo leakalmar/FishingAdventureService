@@ -38,7 +38,7 @@ public class BoatDto {
 	}
 
 	public BoatDto(Boat boat) {
-		this.id = boat.getServiceId();
+		this.id = boat.getId();
 		this.name = boat.getName();
 		this.description = boat.getDescription();
 		this.rating = boat.getRating();

@@ -537,7 +537,6 @@ export default {
         rooms: roomsFinal,
         rules: rulesFinal,
         additionalServices: additionalServices,
-        vacationHomeOwner: localStorage.email,
       };
 
       axios

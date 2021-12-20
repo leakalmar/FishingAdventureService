@@ -1,5 +1,7 @@
 package isa.FishingAdventure.controller;
 
+import isa.FishingAdventure.model.VacationHomeOwner;
+import isa.FishingAdventure.security.util.TokenUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,16 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import isa.FishingAdventure.dto.ChangePasswordDto;
 import isa.FishingAdventure.dto.UserDto;
@@ -40,16 +33,22 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private TokenUtils tokenUtils;
 	
 	@RequestMapping(value="get", method = RequestMethod.GET)
-	public @ResponseBody UserInfoDto getItem(@RequestParam("email") String email){
-
+	public @ResponseBody UserInfoDto getItem(@RequestHeader("Authorization") String token){
+		String email = tokenUtils.getEmailFromToken(token.split(" ")[1]);
 	    User user = userService.findByEmail(email);
-	    UserInfoDto userInfoDto = new UserInfoDto(user);
-	    
-	    return userInfoDto;
+
+		return new UserInfoDto(user);
 	}
-	
+
+	@RequestMapping(value="getRole", method = RequestMethod.GET)
+	public @ResponseBody String getRole(@RequestHeader("Authorization") String token){
+		return tokenUtils.getRoleFromToken(token.split(" ")[1]);
+	}
 	
 	@RequestMapping(value="update", method = RequestMethod.PUT)
 	public @ResponseBody UserInfoDto update(@RequestBody UserInfoDto dto) {
@@ -73,8 +72,9 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="changePassword", method = RequestMethod.PUT)
-	public @ResponseBody ChangePasswordDto changePassword(@RequestBody ChangePasswordDto dto) {		
-		User user = userService.findByEmail(dto.getEmail());
+	public @ResponseBody ChangePasswordDto changePassword(@RequestHeader("Authorization") String token, @RequestBody ChangePasswordDto dto) {
+		String email = tokenUtils.getEmailFromToken(token.split(" ")[1]);
+		User user = userService.findByEmail(email);
 
 		if(dto.getNewPassword().equals(dto.getPasswordAgain())) {
 			user.setPassword(passwordEncoder.encode(dto.getNewPassword()));

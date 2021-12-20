@@ -61,10 +61,11 @@ public class TokenUtils {
 	 * @param username Korisničko ime korisnika kojem se token izdaje
 	 * @return JWT token
 	 */
-	public String generateToken(String username) {
+	public String generateToken(String username, String role) {
 		return Jwts.builder()
 				.setIssuer(APP_NAME)
 				.setSubject(username)
+				.claim("role", role)
 				.setAudience(generateAudience())
 				.setIssuedAt(new Date())
 				.setExpiration(generateExpirationDate())
@@ -150,6 +151,27 @@ public class TokenUtils {
 		}
 
 		return username;
+	}
+
+	/**
+	 * Funkcija za preuzimanje role vlasnika tokena.
+	 *
+	 * @param token JWT token.
+	 * @return Rola iz tokena ili null ukoliko ne postoji.
+	 */
+	public String getRoleFromToken(String token) {
+		String role;
+
+		try {
+			final Claims claims = this.getAllClaimsFromToken(token);
+			role = claims.get("role", String.class);
+		} catch (ExpiredJwtException ex) {
+			throw ex;
+		} catch (Exception e) {
+			role = null;
+		}
+
+		return role;
 	}
 
 	/**

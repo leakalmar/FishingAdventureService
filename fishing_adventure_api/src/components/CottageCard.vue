@@ -124,6 +124,7 @@
     </div>
   </div>
   <NewCottageModal
+    v-if="path == 'mycottages'"
     :cottage="entity"
     :id="'entity' + entity.id"
   ></NewCottageModal>
@@ -172,10 +173,10 @@ export default {
       event.stopPropagation();
     },
     deleteCottage: function () {
+      alert(this.entity.id);
       axios
         .get(
-          "http://localhost:8080/vacationHome/deleteHome/" +
-            this.entity.serviceId,
+          "http://localhost:8080/vacationHome/deleteHome/" + this.entity.id,
           {
             headers: {
               "Access-Control-Allow-Origin": "http://localhost:8080",

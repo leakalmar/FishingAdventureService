@@ -119,7 +119,10 @@
             ></li>
             <li
               class="nav-item dropdown"
-              v-if="loggedInRole == 'ROLE_VACATION_HOME_OWNER' || loggedInRole == 'ROLE_FISHING_INSTRUCTOR'"
+              v-if="
+                loggedInRole == 'ROLE_VACATION_HOME_OWNER' ||
+                loggedInRole == 'ROLE_FISHING_INSTRUCTOR'
+              "
             >
               <a
                 class="nav-link dropdown-toggle"
@@ -135,9 +138,22 @@
                 class="dropdown-menu text-center dropdown-menu-dark"
                 aria-labelledby="navbarScrollingDropdown"
               >
-                <li v-if="loggedInRole == 'ROLE_VACATION_HOME_OWNER'"><a class="dropdown-item" href="/cottages">Cottages</a></li>
-                <li v-if="loggedInRole == 'ROLE_FISHING_INSTRUCTOR'"><a class="dropdown-item" href="/fishingAdventures">Fishing adventures</a></li>
-                <li v-if="loggedInRole == 'ROLE_VACATION_HOME_OWNER' || loggedInRole == 'ROLE_FISHING_INSTRUCTOR'"><a class="dropdown-item" href="/calendar">Calander</a></li>
+                <li v-if="loggedInRole == 'ROLE_VACATION_HOME_OWNER'">
+                  <a class="dropdown-item" href="/cottages">Cottages</a>
+                </li>
+                <li v-if="loggedInRole == 'ROLE_FISHING_INSTRUCTOR'">
+                  <a class="dropdown-item" href="/fishingAdventures"
+                    >Fishing adventures</a
+                  >
+                </li>
+                <li
+                  v-if="
+                    loggedInRole == 'ROLE_VACATION_HOME_OWNER' ||
+                    loggedInRole == 'ROLE_FISHING_INSTRUCTOR'
+                  "
+                >
+                  <a class="dropdown-item" href="/calendar">Calander</a>
+                </li>
                 <li v-if="loggedInRole == 'ROLE_VACATION_HOME_OWNER'">
                   <a class="dropdown-item" href="/specialOffers"
                     >Special offers</a
@@ -152,14 +168,13 @@
                   <a class="dropdown-item" href="/reservations">Reservations</a>
                 </li>
                 <li v-if="loggedInRole == 'ROLE_FISHING_INSTRUCTOR'">
-                  <a class="dropdown-item" href="/instructorReservations">Reservations</a>
+                  <a class="dropdown-item" href="/instructorReservations"
+                    >Reservations</a
+                  >
                 </li>
               </ul>
             </li>
-            <li
-              class="nav-item dropdown"
-              v-if="loggedInRole == 'ROLE_ADMIN'"
-            >
+            <li class="nav-item dropdown" v-if="loggedInRole == 'ROLE_ADMIN'">
               <a
                 class="nav-link dropdown-toggle"
                 href="#"
@@ -219,6 +234,7 @@
 
 <script>
 import RegisterModal from "@/components/RegisterModal.vue";
+import axios from "axios";
 
 export default {
   components: { "register-modal": RegisterModal },
@@ -229,7 +245,20 @@ export default {
     };
   },
   mounted: function () {
-    this.loggedInRole = localStorage.role;
+    if (!localStorage.jwt) {
+      this.loggedInRole = undefined;
+    } else {
+      axios
+        .get("http://localhost:8080/users/getRole", {
+          headers: {
+            "Access-Control-Allow-Origin": "http://localhost:8080",
+            Authorization: "Bearer " + localStorage.jwt,
+          },
+        })
+        .then((res) => {
+          this.loggedInRole = res.data;
+        });
+    }
   },
   methods: {
     openProfile: function () {

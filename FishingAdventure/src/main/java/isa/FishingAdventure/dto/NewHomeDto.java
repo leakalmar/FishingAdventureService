@@ -21,6 +21,8 @@ import isa.FishingAdventure.model.*;
 
 public class NewHomeDto {
 
+	private Integer id;
+
     private String name;
 
     private String description;
@@ -43,11 +45,9 @@ public class NewHomeDto {
 
 	private Date availabilityEnd;
 
-	public String vacationHomeOwner;
+	public VacationHomeOwner vacationHomeOwner;
 
 	public String imagePath;
-
-
 
 	public Set<Room> getRooms() {
 		return rooms;
@@ -57,11 +57,12 @@ public class NewHomeDto {
 		this.rooms = rooms;
 	}
 
-	public NewHomeDto(String name, String description, double cancellationRule, double rating, Location location,
+	public NewHomeDto(Integer id, String name, String description, double cancellationRule, double rating, Location location,
 			Set<Rule> rules, Set<AdditionalService> additionalServices,
 			Set<Image> images, Set<Room> rooms, Date availabilityStart, Date availabilityEnd,
-			String vocationHomeOwner, String imagePath) {
+					  VacationHomeOwner vocationHomeOwner, String imagePath) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.cancellationRule = cancellationRule;
@@ -75,6 +76,14 @@ public class NewHomeDto {
 		this.availabilityEnd = availabilityEnd;
 		this.vacationHomeOwner = vocationHomeOwner;
 		this.imagePath = imagePath;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public String getImagePath() {
@@ -165,11 +174,11 @@ public class NewHomeDto {
 		this.availabilityEnd = availabilityEnd;
 	}
 
-	public String getVacationHomeOwner() {
+	public VacationHomeOwner getVacationHomeOwner() {
 		return vacationHomeOwner;
 	}
 
-	public void setVacationHomeOwner(String vocationHomeOwner) {
+	public void setVacationHomeOwner(VacationHomeOwner vocationHomeOwner) {
 		this.vacationHomeOwner = vocationHomeOwner;
 	}
 
@@ -178,6 +187,7 @@ public class NewHomeDto {
 	}
 
 	public NewHomeDto(VacationHome home) {
+		this.id = home.getId();
 		this.name = home.getName();
 		this.cancellationRule = home.getCancellationRule();
 		this.location = home.getLocation();
@@ -193,6 +203,6 @@ public class NewHomeDto {
 		}
 		this.availabilityStart = home.getAvailabilityStart();
 		this.availabilityEnd = home.getAvailabilityEnd();
-		this.vacationHomeOwner = home.getVacationHomeOwner().getName() + home.getVacationHomeOwner().getSurname();
+		this.vacationHomeOwner = home.getVacationHomeOwner();
 	}
 }

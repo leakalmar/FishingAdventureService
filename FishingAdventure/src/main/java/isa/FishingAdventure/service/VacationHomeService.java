@@ -1,5 +1,6 @@
 package isa.FishingAdventure.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import isa.FishingAdventure.model.VacationHome;
@@ -16,17 +17,28 @@ public class VacationHomeService{
 	@Autowired
 	private VacationHomeRepository homeRepository;
 	
-	public List<VacationHome> findAll() {
-		return homeRepository.findAll();
+	public List<VacationHome> findAllNonDeleted() {
+		List<VacationHome> homes = new ArrayList<VacationHome>();
+		for(VacationHome home: homeRepository.findAll()){
+			if(!home.getDeleted()){
+				homes.add(home);
+			}
+		}
+		return homes;
 	}
 
-	public List<VacationHome> findByVacationHomeOwner(VacationHomeOwner owner){return homeRepository.findByVacationHomeOwner(owner);}
+	public List<VacationHome> findByVacationHomeOwner(VacationHomeOwner owner){
+		List<VacationHome> homes = new ArrayList<VacationHome>();
+		for(VacationHome home: homeRepository.findByVacationHomeOwner(owner)){
+			if(!home.getDeleted()){
+				homes.add(home);
+			}
+		}
+		return homes;
+	}
 
 	public VacationHome save(VacationHome home) {
 		return homeRepository.save(home);
 	}
-	
-	public void delete(Integer id) {
-		homeRepository.deleteById(id);
-	}
+
 }

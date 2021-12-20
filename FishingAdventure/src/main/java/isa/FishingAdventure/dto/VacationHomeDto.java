@@ -42,7 +42,7 @@ public class VacationHomeDto {
 	}
 
 	public VacationHomeDto(VacationHome home) {
-		this.id = home.getServiceId();
+		this.id = home.getId();
 		this.name = home.getName();
 		this.description = home.getDescription();
 		this.rating = home.getRating();

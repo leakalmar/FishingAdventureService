@@ -84,6 +84,7 @@
                         resize: none;
                       "
                       disabled
+                      placeholder="Something about me.."
                       class="shadow-none login-inputs col-md-8"
                     />
                   </div>
@@ -227,7 +228,7 @@ export default {
     element.checked = true;
     this.readioChecked = "1";
     axios
-      .get("http://localhost:8080/users/get?email=" + localStorage.email, {
+      .get("http://localhost:8080/users/get", {
         headers: {
           "Access-Control-Allow-Origin": "http://localhost:8080",
           Authorization: "Bearer " + localStorage.jwt,
@@ -239,6 +240,7 @@ export default {
         this.phonenumber = res.data.phoneNumber;
         this.address =
           res.data.street + ", " + res.data.city + ", " + res.data.country;
+        this.biography = res.data.biography;
       });
   },
   data: function () {
@@ -251,8 +253,7 @@ export default {
       account: "darek.hayward@gmail.com",
       phonenumber: "347-393-6833",
       address: "3293 Cantebury Drive, Garden City",
-      biography:
-        "All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable.",
+      biography: "",
     };
   },
   methods: {
@@ -278,7 +279,6 @@ export default {
     },
     changePassword: function () {
       let dto = {
-        email: localStorage.email,
         newPassword: this.password1,
         passwordAgain: this.password2,
       };
@@ -287,6 +287,7 @@ export default {
         axios.put("http://localhost:8080/users/changePassword", dto, {
           headers: {
             "Access-Control-Allow-Origin": "http://localhost:8080",
+            Authorization: "Bearer " + localStorage.jwt,
           },
         });
       }

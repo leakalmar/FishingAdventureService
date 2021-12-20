@@ -92,7 +92,7 @@ export default {
   },
   mounted: function () {
     axios
-      .get("http://localhost:8080/vacationHome/all/" + localStorage.email, {
+      .get("http://localhost:8080/vacationHome/allByUser", {
         headers: {
           "Access-Control-Allow-Origin": "http://localhost:8080",
           Authorization: "Bearer " + localStorage.jwt,

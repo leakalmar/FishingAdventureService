@@ -23,7 +23,7 @@
       </p>
       <p>
         You can find our project
-        <a href="https://github.com/leakalmar/Dostava">here</a>
+        <a href="https://github.com/leakalmar/FishingAdventureService">here</a>
         .
       </p>
     </div>

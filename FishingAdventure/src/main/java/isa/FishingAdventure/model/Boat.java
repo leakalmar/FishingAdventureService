@@ -34,8 +34,8 @@ public class Boat extends ServiceProfile {
     @ManyToMany(targetEntity = FishingEquipment.class,cascade = CascadeType.MERGE)
     public Set<FishingEquipment> fishingEquipment = new HashSet<FishingEquipment>();
 
-    public Boat(Integer serviceId, String name, String description, double cancellationRule, double rating, Location location, Set<Appointment> appointments, Set<Rule> rules, Set<AdditionalService> additionalServices) {
-        super(serviceId, name, description, cancellationRule, rating, location, appointments, rules, additionalServices);
+    public Boat(Integer id, String name, String description, double cancellationRule, double rating, Location location, Set<Appointment> appointments, Set<Rule> rules, Set<AdditionalService> additionalServices) {
+        super(id, name, description, cancellationRule, rating, location, appointments, rules, additionalServices);
 
     }
 

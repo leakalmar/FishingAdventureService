@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 
 import isa.FishingAdventure.model.*;
+import isa.FishingAdventure.security.util.TokenUtils;
+import isa.FishingAdventure.service.ServiceProfileService;
 import isa.FishingAdventure.service.VacationHomeOwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -27,11 +29,17 @@ public class VacationHomeController {
 	private VacationHomeService homeService;
 
 	@Autowired
+	private ServiceProfileService serviceProfileService;
+
+	@Autowired
 	private VacationHomeOwnerService homeOwnerService;
+
+	@Autowired
+	private TokenUtils tokenUtils;
 
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<VacationHomeDto>> getAllVacationHomes() {
-		List<VacationHome> vacationHomes = homeService.findAll();
+		List<VacationHome> vacationHomes = homeService.findAllNonDeleted();
 
 		List<VacationHomeDto> VacationHomeDto = new ArrayList<>();
 		for (VacationHome h : vacationHomes) {
@@ -42,9 +50,10 @@ public class VacationHomeController {
 		return new ResponseEntity<>(VacationHomeDto, HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/all/{email}")
+	@GetMapping(value = "/allByUser")
 	@PreAuthorize("hasRole('ROLE_VACATION_HOME_OWNER')")
-	public ResponseEntity<List<NewHomeDto>> getAllVacationHomesByEmail(@PathVariable String email) {
+	public ResponseEntity<List<NewHomeDto>> getAllVacationHomesByEmail(@RequestHeader("Authorization") String token) {
+		String email = tokenUtils.getEmailFromToken(token.split(" ")[1]);
 		VacationHomeOwner owner = homeOwnerService.findByEmail(email);
 
 		List<NewHomeDto> vacationHomes = new ArrayList<NewHomeDto>();
@@ -57,10 +66,15 @@ public class VacationHomeController {
 
 	@PostMapping(value = "/newHome")
 	@PreAuthorize("hasRole('ROLE_VACATION_HOME_OWNER')")
-	public ResponseEntity<NewHomeDto> saveNewCottage(@RequestBody NewHomeDto dto) {
-		VacationHomeOwner owner = homeOwnerService.findByEmail(dto.getVacationHomeOwner());
-		VacationHome home = new VacationHome();
+	public ResponseEntity<NewHomeDto> saveNewCottage(@RequestHeader("Authorization") String token, @RequestBody NewHomeDto dto) {
+		String email = tokenUtils.getEmailFromToken(token.split(" ")[1]);
+		VacationHomeOwner owner = homeOwnerService.findByEmail(email);
+		homeService.save(createHome(dto, owner));
+		return new ResponseEntity<>(dto, HttpStatus.OK);
+	}
 
+	private VacationHome createHome(NewHomeDto dto, VacationHomeOwner owner){
+		VacationHome home = new VacationHome();
 		home.setAvailabilityEnd(new Date());
 		home.setAvailabilityStart(new Date());
 		home.setDescription(dto.getDescription());
@@ -74,17 +88,13 @@ public class VacationHomeController {
 		home.setRooms(dto.getRooms());
 		home.setRules(dto.getRules());
 		home.setVacationHomeOwner(owner);
-
-		homeService.save(home);
-
-		return new ResponseEntity<>(dto, HttpStatus.OK);
+		return home;
 	}
 
 	@GetMapping(value = "/deleteHome/{id}")
 	@PreAuthorize("hasRole('ROLE_VACATION_HOME_OWNER')")
 	public ResponseEntity<String> deleteVacationHome(@PathVariable String id) {
-		homeService.delete(Integer.parseInt(id));
-
+		serviceProfileService.delete(Integer.parseInt(id));
 		return new ResponseEntity<>("ok", HttpStatus.OK);
 	}
 }

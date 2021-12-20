@@ -38,7 +38,7 @@ public class FishingAdventureDto {
 	}
 
 	public FishingAdventureDto(FishingAdventure fishingAdventure) {
-		this.id = fishingAdventure.getServiceId();
+		this.id = fishingAdventure.getId();
 		this.name = fishingAdventure.getName();
 		this.description = fishingAdventure.getDescription();
 		this.rating = fishingAdventure.getRating();
@@ -47,7 +47,6 @@ public class FishingAdventureDto {
 		this.country = fishingAdventure.getLocation().getAddress().getCountry();
 		for(Image img : fishingAdventure.getImages()) {
 			this.imagePath = img.getPath();
-			System.out.println(img.getPath());
 			break;
 		}
 		this.fishingInstructor = fishingAdventure.getFishingInstructor();

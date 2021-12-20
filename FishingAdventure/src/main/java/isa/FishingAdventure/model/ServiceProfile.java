@@ -15,7 +15,7 @@ public abstract class ServiceProfile {
     @Id
     @SequenceGenerator(name = "mySeqGenV1", sequenceName = "mySeqV1", initialValue = 1, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenV1")
-    private Integer serviceId;
+    private Integer id;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -47,8 +47,8 @@ public abstract class ServiceProfile {
     @OneToMany(targetEntity = Image.class,cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     public Set<Image> images;
 
-    public ServiceProfile(Integer serviceId, String name, String description, double cancellationRule, double rating, Location location, Set<Appointment> appointments, Set<Rule> rules, Set<AdditionalService> additionalServices) {
-        this.serviceId = serviceId;
+    public ServiceProfile(Integer id, String name, String description, double cancellationRule, double rating, Location location, Set<Appointment> appointments, Set<Rule> rules, Set<AdditionalService> additionalServices) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.cancellationRule = cancellationRule;
@@ -71,12 +71,12 @@ public abstract class ServiceProfile {
         isDeleted = deleted;
     }
 
-    public Integer getServiceId() {
-        return this.serviceId;
+    public Integer getId() {
+        return this.id;
     }
 
-    public void setServiceId(Integer serviceId) {
-        this.serviceId = serviceId;
+    public void setId(Integer serviceId) {
+        this.id = serviceId;
     }
 
     public String getName() {

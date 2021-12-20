@@ -10,4 +10,5 @@ public interface VacationHomeOwnerRepository extends UserRepository {
     VacationHomeOwner findByEmail(String email);
 
     VacationHomeOwner save(VacationHomeOwner vacationHomeOwner);
+
 }
