@@ -5,7 +5,7 @@
         <div class="col-md-4 shadow-none">
           <img
             style="width: 100%; height: 225px; object-fit: cover"
-            :src="'/img/' + entitie.images[0].path"
+            :src="getImageUrl(entity.imagePath)"
             class="img-fluid rounded-start shadow-none"
           />
         </div>
@@ -13,10 +13,10 @@
         <div class="col-md-8 shadow-none" name="main-col">
           <div class="card-body shadow-none">
             <div class="card-text shadow-none" style="display: flex">
-              <h5 class="card-title shadow-none">{{ entitie.name }}</h5>
+              <h5 class="card-title shadow-none">{{ entity.name }}</h5>
               <p class="advertiserTitle shadow-none">
-                @{{ entitie.vocationHomeOwner.name
-                }}{{ entitie.vocationHomeOwner.surname }}
+                @{{ entity.vacationHomeOwner.name
+                }}{{ entity.vacationHomeOwner.surname }}
               </p>
               <p
                 v-if="path == 'mycottages'"
@@ -27,7 +27,7 @@
                   class="fas fa-edit fa-lg shadow-none me-3"
                   style="color: #293c4e"
                   data-bs-toggle="modal"
-                  :data-bs-target="'#entitie' + entitie.id"
+                  :data-bs-target="'#entity' + entity.id"
                 ></i>
                 <i
                   class="fas fa-minus-square fa-lg shadow-none"
@@ -38,7 +38,7 @@
             <div class="card-text shadow-none" style="display: flex">
               <div class="shadow-none">
                 <p class="card-text text-left shadow-none mb-1">
-                  {{ entitie.description }}
+                  {{ entity.description }}
                 </p>
                 <p
                   class="card-text text-left shadow-none mb-3 flex-column d-flex flex-md-row"
@@ -99,27 +99,14 @@
                   width: 30%;
                 "
               >
-                <i class="fas fa-star shadow-none"> {{ entitie.rating }}</i>
+                <i class="fas fa-star shadow-none"> {{ entity.rating }}</i>
               </p>
             </div>
             <div class="card-text fw-bold shadow-none" style="display: flex">
-              <p
-                class="shadow-none"
-                style="margin: 0"
-                v-if="path == 'mycottages'"
-              >
-                {{ entitie.location.address.street }},
-                {{ entitie.location.address.city }},
-                {{ entitie.location.address.country }}
-              </p>
-              <p
-                class="shadow-none"
-                style="margin: 0"
-                v-if="path == 'searchcottages'"
-              >
-                {{ entitie.street }}
-                {{ entitie.city }}
-                {{ entitie.country }}
+              <p class="shadow-none" style="margin: 0">
+                {{ entity.location.address.street }},
+                {{ entity.location.address.city }},
+                {{ entity.location.address.country }}
               </p>
               <p
                 class="shadow-none"
@@ -137,8 +124,8 @@
     </div>
   </div>
   <NewCottageModal
-    :cottage="entitie"
-    :id="'entitie' + entitie.id"
+    :cottage="entity"
+    :id="'entity' + entity.id"
   ></NewCottageModal>
 </template>
 
@@ -149,12 +136,12 @@ import axios from "axios";
 
 export default {
   components: { NewCottageModal },
-  props: ["entitie"],
+  props: ["entity"],
   setup(props) {
     const date = ref();
     onMounted(() => {
-      const startDate = new Date(props.entitie.availabilityStart);
-      const endDate = new Date(props.entitie.availabilityEnd);
+      const startDate = new Date(props.entity.availabilityStart);
+      const endDate = new Date(props.entity.availabilityEnd);
       startDate.setHours(startDate.getHours() - 1);
       endDate.setHours(endDate.getHours() - 1);
       date.value = [startDate, endDate];
@@ -178,18 +165,17 @@ export default {
 
   methods: {
     openCottage: function () {
-      window.location.href = "/cottage/?id=" + this.entitie.id;
+      window.location.href = "/cottage/?id=" + this.entity.id;
     },
     preventPropagation: function (event) {
       event.preventDefault();
       event.stopPropagation();
     },
     deleteCottage: function () {
-      console.log(this.entitie);
       axios
         .get(
           "http://localhost:8080/vacationHome/deleteHome/" +
-            this.entitie.serviceId,
+            this.entity.serviceId,
           {
             headers: {
               "Access-Control-Allow-Origin": "http://localhost:8080",
@@ -198,6 +184,9 @@ export default {
           }
         )
         .then(window.location.reload());
+    },
+    getImageUrl: function (imagePath) {
+      return require("@/assets/" + imagePath);
     },
   },
 };

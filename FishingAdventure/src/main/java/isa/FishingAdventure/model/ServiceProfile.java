@@ -20,7 +20,10 @@ public abstract class ServiceProfile {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "description", nullable = false)
+    @Column(name = "is_deleted", nullable = false)
+    private Boolean isDeleted;
+
+    @Column(name = "description", nullable = false, length = 1024)
     private String description;
 
     @Column(name = "cancellationRule", nullable = false)
@@ -54,9 +57,18 @@ public abstract class ServiceProfile {
         this.appointments = appointments;
         this.rules = rules;
         this.additionalServices = additionalServices;
+        this.isDeleted = false;
     }
 
     public ServiceProfile() {
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
     }
 
     public Integer getServiceId() {

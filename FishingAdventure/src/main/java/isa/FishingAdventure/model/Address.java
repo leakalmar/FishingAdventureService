@@ -17,10 +17,14 @@ public class Address {
     @Column(name = "street", nullable = false)
     private String street;
 
-    public Address( String country, String city, String street) {
+    @Column(name = "zip_code", nullable = false)
+    private Long zipCode;
+
+    public Address( String country, String city, String street, Long zipCode) {
         this.country = country;
         this.city = city;
         this.street = street;
+        this.zipCode = zipCode;
     }
 
     public Address() {
@@ -56,5 +60,13 @@ public class Address {
 
     public void setStreet(String street) {
         this.street = street;
+    }
+
+    public Long getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(Long zipCode) {
+        this.zipCode = zipCode;
     }
 }

@@ -537,9 +537,8 @@ export default {
         rooms: roomsFinal,
         rules: rulesFinal,
         additionalServices: additionalServices,
-        vocationHomeOwner: localStorage.email,
+        vacationHomeOwner: localStorage.email,
       };
-      console.log(home);
 
       axios
         .post("http://localhost:8080/vacationHome/newHome", home, {

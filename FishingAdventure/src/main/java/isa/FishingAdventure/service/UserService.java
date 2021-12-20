@@ -5,6 +5,7 @@ import isa.FishingAdventure.repository.ClientRepository;
 
 import java.util.List;
 
+import isa.FishingAdventure.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Service;
 public class UserService implements UserDetailsService {
 
 	@Autowired
-	private ClientRepository repository;
+	private UserRepository repository;
 
 	@Autowired
 	private UserTypeService userTypeService;

@@ -20,7 +20,7 @@ public class VacationHomeService{
 		return homeRepository.findAll();
 	}
 
-	public List<VacationHome> findByVacationHomeOwner(VacationHomeOwner owner){return homeRepository.findByVocationHomeOwner(owner);}
+	public List<VacationHome> findByVacationHomeOwner(VacationHomeOwner owner){return homeRepository.findByVacationHomeOwner(owner);}
 
 	public VacationHome save(VacationHome home) {
 		return homeRepository.save(home);

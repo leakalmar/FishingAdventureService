@@ -18,7 +18,7 @@ public class VacationHome extends ServiceProfile {
     private Date availabilityEnd;
 
     @ManyToOne(targetEntity = VacationHomeOwner.class,cascade = CascadeType.MERGE)
-    public VacationHomeOwner vocationHomeOwner;
+    public VacationHomeOwner vacationHomeOwner;
 
     @OneToMany(targetEntity = Room.class,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     public Set<Room> rooms;
@@ -47,13 +47,13 @@ public class VacationHome extends ServiceProfile {
     }
 
 
-	public VacationHomeOwner getVocationHomeOwner() {
-		return vocationHomeOwner;
+	public VacationHomeOwner getVacationHomeOwner() {
+		return vacationHomeOwner;
 	}
 
 
-	public void setVocationHomeOwner(VacationHomeOwner vocationHomeOwner) {
-		this.vocationHomeOwner = vocationHomeOwner;
+	public void setVacationHomeOwner(VacationHomeOwner vocationHomeOwner) {
+		this.vacationHomeOwner = vocationHomeOwner;
 	}
 
 

@@ -11,5 +11,5 @@ import java.util.List;
 @Repository
 public interface VacationHomeRepository extends JpaRepository<VacationHome, Integer>{
 
-    List<VacationHome> findByVocationHomeOwner(VacationHomeOwner owner);
+    List<VacationHome> findByVacationHomeOwner(VacationHomeOwner owner);
 }

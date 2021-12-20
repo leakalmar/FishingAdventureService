@@ -21,60 +21,26 @@ public abstract class User implements UserDetails {
     @Column(name = "email", nullable = false)
     private String email;
 
+	@Column(name = "is_deleted", nullable = false)
+	private Boolean isDeleted;
+
+	@Column(name = "name", nullable = false)
+	private String name;
+
+	@Column(name = "surname", nullable = false)
+	private String surname;
+
     @Column(name = "password", nullable = false)
     private String password;
-
-    @Column(name = "name", nullable = false)
-    private String name;
-
-    @Column(name = "surname", nullable = false)
-    private String surname;
 
     @Column(name = "phoneNumber", nullable = false)
     private String phoneNumber;
 
+	@Column(name = "biography", nullable = false, length = 1024)
+	private String biography;
+
     @OneToOne(targetEntity = UserType.class, cascade = CascadeType.MERGE)
     private UserType userType;
-
-    public UserType getUserType() {
-		return userType;
-	}
-
-
-	public void setUserType(UserType userType) {
-		this.userType = userType;
-	}
-
-
-	public UserCategory getCategory() {
-		return category;
-	}
-
-
-	public void setCategory(UserCategory category) {
-		this.category = category;
-	}
-
-
-	public boolean isActivated() {
-		return activated;
-	}
-
-
-	public void setActivated(boolean activated) {
-		this.activated = activated;
-	}
-
-
-	public Address getAddress() {
-		return address;
-	}
-
-
-	public void setAddress(Address address) {
-		this.address = address;
-	}
-
 
 	@Column(name = "points", nullable = false)
     private double points;
@@ -99,6 +65,7 @@ public abstract class User implements UserDetails {
 			Timestamp lastPasswordResetDate) {
 		super();
 		this.userId = userId;
+		this.isDeleted = false;
 		this.email = email;
 		this.password = password;
 		this.name = name;
@@ -110,6 +77,55 @@ public abstract class User implements UserDetails {
 		this.activated = activated;
 		this.address = address;
 		this.lastPasswordResetDate = lastPasswordResetDate;
+		this.biography = "";
+	}
+
+	public String getBiography() {
+		return biography;
+	}
+
+	public void setBiography(String biography) {
+		this.biography = biography;
+	}
+
+	public Boolean getDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		isDeleted = deleted;
+	}
+
+	public UserType getUserType() {
+		return userType;
+	}
+
+	public void setUserType(UserType userType) {
+		this.userType = userType;
+	}
+
+	public UserCategory getCategory() {
+		return category;
+	}
+
+	public void setCategory(UserCategory category) {
+		this.category = category;
+	}
+
+	public boolean isActivated() {
+		return activated;
+	}
+
+	public void setActivated(boolean activated) {
+		this.activated = activated;
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
 	}
 
 	public Integer getUserId() {

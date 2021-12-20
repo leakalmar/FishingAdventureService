@@ -5,7 +5,7 @@
         <div class="col-md-4 shadow-none">
           <img
             style="width: 100%; height: 225px; object-fit: cover"
-            :src="'/img/' + boatEntitie.imagePath"
+            :src="require('@/assets/' + boatEntity.imagePath)"
             class="img-fluid rounded-start shadow-none"
           />
         </div>
@@ -13,8 +13,11 @@
         <div class="col-md-8 shadow-none" name="main-col">
           <div class="card-body shadow-none">
             <div class="card-text shadow-none" style="display: flex">
-              <h5 class="card-title shadow-none">{{ boatEntitie.name }}</h5>
-              <p class="advertiserTitle shadow-none">@{{ boatEntitie.boatOwner.name }}{{ boatEntitie.boatOwner.surname }}</p>
+              <h5 class="card-title shadow-none">{{ boatEntity.name }}</h5>
+              <p class="advertiserTitle shadow-none">
+                @{{ boatEntity.boatOwner.name
+                }}{{ boatEntity.boatOwner.surname }}
+              </p>
               <p
                 v-if="path == 'mycottages'"
                 class="top-right-corner shadow-none"
@@ -25,7 +28,7 @@
             <div class="card-text shadow-none" style="display: flex">
               <div class="shadow-none">
                 <p class="card-text text-left shadow-none mb-1">
-                  {{ boatEntitie.description }}
+                  {{ boatEntity.description }}
                 </p>
               </div>
               <p
@@ -38,13 +41,13 @@
                   width: 30%;
                 "
               >
-                <i class="fas fa-star shadow-none"> {{ boatEntitie.rating }}</i>
+                <i class="fas fa-star shadow-none"> {{ boatEntity.rating }}</i>
               </p>
             </div>
             <div class="card-text fw-bold shadow-none" style="display: flex">
               <p class="shadow-none" style="margin: 0">
-                {{ boatEntitie.street }} {{ boatEntitie.city }}
-                {{ boatEntitie.country }}
+                {{ boatEntity.street }} {{ boatEntity.city }}
+                {{ boatEntity.country }}
               </p>
               <p
                 class="shadow-none"
@@ -54,8 +57,7 @@
                   margin-left: auto;
                   font-size: x-large;
                 "
-              >
-              </p>
+              ></p>
             </div>
           </div>
         </div>
@@ -68,18 +70,17 @@
 import { ref, onMounted } from "vue";
 
 export default {
-  props: ["boatEntitie"],
+  props: ["boatEntity"],
   setup() {
     const date = ref();
-    onMounted(() => {
-    });
+    onMounted(() => {});
     return {
       date,
     };
   },
   data: function () {
     return {
-      path: ""
+      path: "",
     };
   },
   mounted: function () {
@@ -88,7 +89,7 @@ export default {
     } else if (window.location.href.includes("/boats")) {
       this.path = "myboats";
     }
-  }
+  },
 };
 </script>
 <style scoped>

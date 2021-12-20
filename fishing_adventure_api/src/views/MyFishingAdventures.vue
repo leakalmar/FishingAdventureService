@@ -64,9 +64,9 @@
     </div>
     <div style="margin-top: 5%">
       <AdventureCard
-        v-for="entitie in searchResults"
-        :key="entitie.id"
-        v-bind:adventureEntitie="entitie"
+        v-for="entity in searchResults"
+        :key="entity.id"
+        v-bind:adventureEntity="entity"
       ></AdventureCard>
     </div>
   </div>
@@ -76,96 +76,92 @@
 import AdventureCard from "@/components/AdventureCard.vue";
 import axios from "axios";
 export default {
-    components: { AdventureCard },
-    data: function () {
-        return {
-        clickedAdventureCardForEdit: "",
-        numberOfPersons: "",
-        searchText: "",
-        searchResults: [],
-        
-        };
-    },
-    mounted: function () {
-        axios
-        .get("http://localhost:8080/fishingAdventure/all/" + localStorage.jwt, {
-            headers: {
-            "Access-Control-Allow-Origin": "http://localhost:8080",
-            Authorization: "Bearer " + localStorage.jwt,
-            },
-        })
-        .then(
-            (res) => {
-              this.searchResults = res.data;
-            },
-            (err) => {
-              console.log(err);
-            }
-        );
-    },
-    methods: {
-        searchAdventures: function () {
-        if (this.searchText != "" && this.searchText.trim().lenght != 0) {
-            let searchParts = this.searchText.trim().split(" ");
+  components: { AdventureCard },
+  data: function () {
+    return {
+      clickedAdventureCardForEdit: "",
+      numberOfPersons: "",
+      searchText: "",
+      searchResults: [],
+      entities: [],
+    };
+  },
+  mounted: function () {
+    axios
+      .get("http://localhost:8080/fishingAdventure/all/" + localStorage.jwt, {
+        headers: {
+          "Access-Control-Allow-Origin": "http://localhost:8080",
+          Authorization: "Bearer " + localStorage.jwt,
+        },
+      })
+      .then((res) => {
+        this.searchResults = res.data;
+        this.entities = res.data;
+      });
+  },
+  methods: {
+    searchAdventures: function () {
+      if (this.searchText != "" && this.searchText.trim().lenght != 0) {
+        let searchParts = this.searchText.trim().split(" ");
 
-            this.searchResults = [];
-            for (let entitie of this.entities) {
-            let matches = true;
-            for (let i = 0; i < searchParts.length; i++) {
-                if (
-                !entitie.name
-                    .toLocaleLowerCase()
-                    .includes(searchParts[i].toLocaleLowerCase()) &&
-                !entitie.location
-                    .toLocaleLowerCase()
-                    .includes(searchParts[i].toLocaleLowerCase()) &&
-                !entitie.vacationHomeOwner
-                    .toLocaleLowerCase()
-                    .includes(searchParts[i].toLocaleLowerCase())
-                ) {
-                matches = false;
-                break;
-                }
+        this.searchResults = [];
+        for (let entity of this.entities) {
+          let matches = true;
+          for (let i = 0; i < searchParts.length; i++) {
+            if (
+              !entity.name
+                .toLocaleLowerCase()
+                .includes(searchParts[i].toLocaleLowerCase()) &&
+              !entity.location
+                .toLocaleLowerCase()
+                .includes(searchParts[i].toLocaleLowerCase()) &&
+              !entity.vacationHomeOwner
+                .toLocaleLowerCase()
+                .includes(searchParts[i].toLocaleLowerCase())
+            ) {
+              matches = false;
+              break;
             }
-            if (matches) {
-                this.searchResults.push(entitie);
-            }
-            }
+          }
+          if (matches) {
+            this.searchResults.push(entity);
+          }
+        }
+      } else {
+        this.searchResults = this.entities;
+      }
+
+      let stars = document.querySelector(
+        "input[type='radio'][name='star']:checked"
+      );
+      if (stars != null && this.searchResults != null) {
+        let rating;
+        if (document.getElementById("star1").checked) {
+          rating = 5;
+        } else if (document.getElementById("star2").checked) {
+          rating = 4;
+        } else if (document.getElementById("star3").checked) {
+          rating = 3;
+        } else if (document.getElementById("star4").checked) {
+          rating = 2;
         } else {
-            this.searchResults = this.entities;
+          rating = 1;
         }
 
-        let stars = document.querySelector(
-            "input[type='radio'][name='star']:checked"
-        );
-        if (stars != null && this.searchResults != null) {
-            let rating;
-            if (document.getElementById("star1").checked) {
-            rating = 5;
-            } else if (document.getElementById("star2").checked) {
-            rating = 4;
-            } else if (document.getElementById("star3").checked) {
-            rating = 3;
-            } else if (document.getElementById("star4").checked) {
-            rating = 2;
-            } else {
-            rating = 1;
-            }
-
-            let newResults = [];
-            for (let entitie of this.searchResults) {
-            if (parseFloat(entitie.rating) >= rating) {
-                newResults.push(entitie);
-            }
-            }
-
-            this.searchResults = newResults;
+        let newResults = [];
+        for (let entity of this.searchResults) {
+          if (parseFloat(entity.rating) >= rating) {
+            newResults.push(entity);
+          }
         }
-        },
-        editAdventure: function (event) {
-        console.log(event);
-        },
+
+        this.searchResults = newResults;
+      }
     },
+    editAdventure: function (event) {
+      console.log(event);
+    },
+  },
 };
 </script>
 

@@ -68,23 +68,24 @@
     </div>
     <div v-if="searching == 'cottages'" style="margin-top: 5%">
       <CottageCard
-        v-for="homeEntitie in homeEntities"
-        :key="homeEntitie.id"
-        v-bind:entitie="homeEntitie"
+        v-for="homeEntity in homeEntities"
+        :key="homeEntity.id"
+        v-bind:entity="homeEntity"
       ></CottageCard>
     </div>
     <div v-if="searching == 'boats'" style="margin-top: 5%">
       <BoatCard
-        v-for="boatEntitie in boatEntities"
-        :key="boatEntitie.id"
-        v-bind:boatEntitie="boatEntitie"
+        v-for="boatEntity in boatEntities"
+        :key="boatEntity.id"
+        v-bind:boatEntity="boatEntity"
       ></BoatCard>
     </div>
     <div v-if="searching == 'adventures'" style="margin-top: 5%">
-      <AdventureCard 
-        v-for="adventureEntitie in adventureEntities"
-        :key="adventureEntitie.id"
-        v-bind:adventureEntitie="adventureEntitie"></AdventureCard>
+      <AdventureCard
+        v-for="adventureEntity in adventureEntities"
+        :key="adventureEntity.id"
+        v-bind:adventureEntity="adventureEntity"
+      ></AdventureCard>
     </div>
   </div>
 </template>
@@ -124,49 +125,47 @@ export default {
   mounted: function () {
     if (window.location.href.includes("/search/cottages")) {
       this.searching = "cottages";
+      axios
+        .get("http://localhost:8080/vacationHome/all", {
+          headers: {
+            "Access-Control-Allow-Origin": "http://localhost:8080",
+          },
+        })
+        .then((res) => {
+          this.homeEntities = res.data;
+          for (let e of this.homeEntities) {
+            e.rating = Number(e.rating).toFixed(2);
+          }
+        });
     } else if (window.location.href.includes("/search/adventures")) {
       this.searching = "adventures";
+      axios
+        .get("http://localhost:8080/fishingAdventure/all", {
+          headers: {
+            "Access-Control-Allow-Origin": "http://localhost:8080",
+          },
+        })
+        .then((res) => {
+          this.adventureEntities = res.data;
+          for (let adventure of this.adventureEntities) {
+            adventure.rating = Number(adventure.rating).toFixed(2);
+          }
+        });
     } else if (window.location.href.includes("/search/boats")) {
       this.searching = "boats";
+      axios
+        .get("http://localhost:8080/boat/all", {
+          headers: {
+            "Access-Control-Allow-Origin": "http://localhost:8080",
+          },
+        })
+        .then((res) => {
+          this.boatEntities = res.data;
+          for (let boat of this.boatEntities) {
+            boat.rating = Number(boat.rating).toFixed(2);
+          }
+        });
     }
-    axios
-      .get("http://localhost:8080/vacationHome/all", {
-        headers: {
-          "Access-Control-Allow-Origin": "http://localhost:8080",
-        },
-      })
-      .then((res) => {
-        this.homeEntities = res.data;
-        for (let e of this.homeEntities) {
-          e.rating = Number(e.rating).toFixed(2);
-        }
-      });
-
-    axios
-      .get("http://localhost:8080/boat/all", {
-        headers: {
-          "Access-Control-Allow-Origin": "http://localhost:8080",
-        },
-      })
-      .then((res) => {
-        this.boatEntities = res.data;
-        for (let boat of this.boatEntities) {
-          boat.rating = Number(boat.rating).toFixed(2);
-        }
-      });
-
-    axios
-      .get("http://localhost:8080/fishingAdventure/all", {
-        headers: {
-          "Access-Control-Allow-Origin": "http://localhost:8080",
-        },
-      })
-      .then((res) => {
-        this.adventureEntities = res.data;
-        for (let adventure of this.adventureEntities) {
-          adventure.rating = Number(adventure.rating).toFixed(2);
-        }
-      });
   },
   methods: {},
 };

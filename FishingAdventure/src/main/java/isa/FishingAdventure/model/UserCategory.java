@@ -13,16 +13,16 @@ public class UserCategory {
     @Column(name = "points", nullable = false)
     private double points;
 
-    @Column(name = "category", nullable = false)
-    private UserCategoryName category;
+    @Column(name = "name", nullable = false)
+    private String name;
 
     @Column(name = "percentage", nullable = false)
     private double percentage;
 
-    public UserCategory(Integer id, double points, UserCategoryName category, double percentage) {
+    public UserCategory(Integer id, double points, String name, double percentage) {
         this.id = id;
         this.points = points;
-        this.category = category;
+        this.name = name;
         this.percentage = percentage;
     }
 
@@ -45,12 +45,12 @@ public class UserCategory {
         this.points = points;
     }
 
-    public UserCategoryName getCategory() {
-        return this.category;
+    public String getName() {
+        return this.name;
     }
 
-    public void setCategory(UserCategoryName category) {
-        this.category = category;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public double getPercentage() {

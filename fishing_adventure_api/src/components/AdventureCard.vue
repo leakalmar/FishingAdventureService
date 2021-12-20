@@ -5,7 +5,7 @@
         <div class="col-md-4 shadow-none">
           <img
             style="width: 100%; height: 225px; object-fit: cover"
-            :src="'/img/' + adventureEntitie.imagePath"
+            :src="require('@/assets/' + adventureEntity.imagePath)"
             class="img-fluid rounded-start shadow-none"
           />
         </div>
@@ -13,22 +13,28 @@
         <div class="col-md-8 shadow-none" name="main-col">
           <div class="card-body shadow-none">
             <div class="card-text shadow-none" style="display: flex">
-              <h5 class="card-title shadow-none">{{ adventureEntitie.name }}</h5>
-              <p class="advertiserTitle shadow-none">@{{adventureEntitie.fishingInstructor.name}}{{adventureEntitie.fishingInstructor.surname}}</p>
+              <h5 class="card-title shadow-none">{{ adventureEntity.name }}</h5>
+              <p class="advertiserTitle shadow-none">
+                @{{ adventureEntity.fishingInstructor.name
+                }}{{ adventureEntity.fishingInstructor.surname }}
+              </p>
               <p
                 v-if="path == 'myadventures'"
                 class="top-right-corner shadow-none"
               >
-                <i class="fas fa-edit fa-lg shadow-none me-3" style="color: #293c4e"></i>
+                <i
+                  class="fas fa-edit fa-lg shadow-none me-3"
+                  style="color: #293c4e"
+                ></i>
                 <i class="fas fa-minus-square fa-lg shadow-none"></i>
               </p>
             </div>
             <div class="card-text shadow-none" style="display: flex">
               <div class="shadow-none">
                 <p class="card-text text-left shadow-none mb-1">
-                  {{ adventureEntitie.description }}
+                  {{ adventureEntity.description }}
                 </p>
-                 <p
+                <p
                   class="card-text text-left shadow-none mb-3 flex-column d-flex flex-md-row"
                   style="align-items: center"
                 >
@@ -86,13 +92,15 @@
                   width: 30%;
                 "
               >
-                <i class="fas fa-star shadow-none"> {{ adventureEntitie.rating }}</i>
+                <i class="fas fa-star shadow-none">
+                  {{ adventureEntity.rating }}</i
+                >
               </p>
             </div>
             <div class="card-text fw-bold shadow-none" style="display: flex">
               <p class="shadow-none" style="margin: 0">
-                {{ adventureEntitie.street}} {{ adventureEntitie.city}}
-                {{ adventureEntitie.country }}
+                {{ adventureEntity.street }} {{ adventureEntity.city }}
+                {{ adventureEntity.country }}
               </p>
               <p
                 class="shadow-none"
@@ -102,8 +110,7 @@
                   margin-left: auto;
                   font-size: x-large;
                 "
-              >
-              </p>
+              ></p>
             </div>
           </div>
         </div>
@@ -116,7 +123,7 @@
 import { ref, onMounted } from "vue";
 
 export default {
-  props: ["adventureEntitie"],
+  props: ["adventureEntity"],
   setup() {
     const date = ref();
     onMounted(() => {
@@ -144,7 +151,7 @@ export default {
     openAdventure: function () {
       window.location.href = "/fishingAdventure";
     },
-  }
+  },
 };
 </script>
 <style scoped>

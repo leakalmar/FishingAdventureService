@@ -23,10 +23,12 @@ public class UserInfoDto {
 	
 	private String country;
 
+	private String biography;
+
 	public UserInfoDto() {}
 
 	public UserInfoDto(Integer id, String email, String password, String name, String surname, String phoneNumber,
-			String street, String city, String country) {
+			String street, String city, String country, String biography) {
 		super();
 		this.id = id;
 		this.email = email;
@@ -37,6 +39,7 @@ public class UserInfoDto {
 		this.street = street;
 		this.city = city;
 		this.country = country;
+		this.biography = biography;
 	}
 	
 	public UserInfoDto(User user) {
@@ -49,6 +52,15 @@ public class UserInfoDto {
 		this.street = user.getAddress().getStreet();
 		this.city = user.getAddress().getCity();
 		this.country = user.getAddress().getCountry();
+		this.biography = user.getBiography();
+	}
+
+	public String getBiography() {
+		return biography;
+	}
+
+	public void setBiography(String biography) {
+		this.biography = biography;
 	}
 
 	public Integer getId() {

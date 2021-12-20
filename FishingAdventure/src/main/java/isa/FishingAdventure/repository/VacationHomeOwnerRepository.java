@@ -1,11 +1,13 @@
 package isa.FishingAdventure.repository;
 
+import isa.FishingAdventure.dto.UserDto;
 import isa.FishingAdventure.model.VacationHomeOwner;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface VacationHomeOwnerRepository extends JpaRepository<VacationHomeOwner, Integer> {
+public interface VacationHomeOwnerRepository extends UserRepository {
 
     VacationHomeOwner findByEmail(String email);
+
+    VacationHomeOwner save(VacationHomeOwner vacationHomeOwner);
 }

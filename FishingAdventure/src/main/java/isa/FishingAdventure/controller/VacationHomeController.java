@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
-import isa.FishingAdventure.model.VacationHomeOwner;
+import isa.FishingAdventure.model.*;
 import isa.FishingAdventure.service.VacationHomeOwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -17,9 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import isa.FishingAdventure.dto.NewHomeDto;
 import isa.FishingAdventure.dto.VacationHomeDto;
-import isa.FishingAdventure.model.Image;
-import isa.FishingAdventure.model.ServiceProfile;
-import isa.FishingAdventure.model.VacationHome;
 import isa.FishingAdventure.service.VacationHomeService;
 @RestController
 @Configurable
@@ -33,14 +30,12 @@ public class VacationHomeController {
 	private VacationHomeOwnerService homeOwnerService;
 
 	@GetMapping(value = "/all")
-	// @PreAuthorize("hasRole('CLIENT')")
 	public ResponseEntity<List<VacationHomeDto>> getAllVacationHomes() {
 		List<VacationHome> vacationHomes = homeService.findAll();
 
 		List<VacationHomeDto> VacationHomeDto = new ArrayList<>();
-		for (ServiceProfile h : vacationHomes) {
-			VacationHome home = (VacationHome) h;
-			VacationHomeDto dto = new VacationHomeDto(home);
+		for (VacationHome h : vacationHomes) {
+			VacationHomeDto dto = new VacationHomeDto(h);
 			VacationHomeDto.add(dto);
 		}
 
@@ -49,16 +44,21 @@ public class VacationHomeController {
 
 	@GetMapping(value = "/all/{email}")
 	@PreAuthorize("hasRole('ROLE_VACATION_HOME_OWNER')")
-	public ResponseEntity<List<VacationHome>> getAllVacationHomesByEmail(@PathVariable String email) {
+	public ResponseEntity<List<NewHomeDto>> getAllVacationHomesByEmail(@PathVariable String email) {
 		VacationHomeOwner owner = homeOwnerService.findByEmail(email);
-		List<VacationHome> vacationHomes = homeService.findByVacationHomeOwner(owner);
+
+		List<NewHomeDto> vacationHomes = new ArrayList<NewHomeDto>();
+		for (VacationHome home: homeService.findByVacationHomeOwner(owner)){
+			vacationHomes.add(new NewHomeDto(home));
+		}
+
 		return new ResponseEntity<>(vacationHomes, HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/newHome")
 	@PreAuthorize("hasRole('ROLE_VACATION_HOME_OWNER')")
-	public ResponseEntity<VacationHome> saveNewCottage(@RequestBody NewHomeDto dto) {
-		VacationHomeOwner owner = homeOwnerService.findByEmail(dto.getVocationHomeOwner());
+	public ResponseEntity<NewHomeDto> saveNewCottage(@RequestBody NewHomeDto dto) {
+		VacationHomeOwner owner = homeOwnerService.findByEmail(dto.getVacationHomeOwner());
 		VacationHome home = new VacationHome();
 
 		home.setAvailabilityEnd(new Date());
@@ -66,18 +66,18 @@ public class VacationHomeController {
 		home.setDescription(dto.getDescription());
 		home.setLocation(dto.getLocation());
 		home.setAdditionalServices(dto.getAdditionalServices());
-		home.setAppointments(dto.getAppointments());
+		home.setAppointments(new HashSet<Appointment>());
 		home.setCancellationRule(dto.getCancellationRule());
 		home.setImages(new HashSet<Image>());
 		home.setName(dto.getName());
 		home.setRating(0.0);
 		home.setRooms(dto.getRooms());
 		home.setRules(dto.getRules());
-		home.setVocationHomeOwner(owner);
+		home.setVacationHomeOwner(owner);
 
 		homeService.save(home);
 
-		return new ResponseEntity<>(home, HttpStatus.OK);
+		return new ResponseEntity<>(dto, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/deleteHome/{id}")

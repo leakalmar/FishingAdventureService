@@ -61,6 +61,7 @@ public class UserController {
 
 		user.setName(dto.getName()); 
 		user.setSurname(dto.getSurname());
+		user.setBiography(dto.getBiography());
 		user.setPhoneNumber(dto.getPhoneNumber());
 		user.getAddress().setStreet(dto.getStreet());
 		user.getAddress().setCity(dto.getCity());

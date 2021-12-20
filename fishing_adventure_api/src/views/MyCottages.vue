@@ -66,9 +66,9 @@
     </div>
     <div style="margin-top: 5%">
       <CottageCard
-        v-for="entitie in searchResults"
-        :key="entitie.id"
-        v-bind:entitie="entitie"
+        v-for="entity in searchResults"
+        :key="entity.id"
+        v-bind:entity="entity"
       ></CottageCard>
     </div>
   </div>
@@ -87,6 +87,7 @@ export default {
       numberOfPersons: "",
       searchText: "",
       searchResults: [],
+      entities: [],
     };
   },
   mounted: function () {
@@ -97,15 +98,10 @@ export default {
           Authorization: "Bearer " + localStorage.jwt,
         },
       })
-      .then(
-        (res) => {
-          console.log(res.data);
-          this.searchResults = res.data;
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
+      .then((res) => {
+        this.searchResults = res.data;
+        this.entities = res.data;
+      });
   },
   methods: {
     searchCottage: function () {
@@ -113,17 +109,17 @@ export default {
         let searchParts = this.searchText.trim().split(" ");
 
         this.searchResults = [];
-        for (let entitie of this.entities) {
+        for (let entity of this.entities) {
           let matches = true;
           for (let i = 0; i < searchParts.length; i++) {
             if (
-              !entitie.name
+              !entity.name
                 .toLocaleLowerCase()
                 .includes(searchParts[i].toLocaleLowerCase()) &&
-              !entitie.location
+              !entity.location
                 .toLocaleLowerCase()
                 .includes(searchParts[i].toLocaleLowerCase()) &&
-              !entitie.vacationHomeOwner
+              !entity.vacationHomeOwner
                 .toLocaleLowerCase()
                 .includes(searchParts[i].toLocaleLowerCase())
             ) {
@@ -132,7 +128,7 @@ export default {
             }
           }
           if (matches) {
-            this.searchResults.push(entitie);
+            this.searchResults.push(entity);
           }
         }
       } else {
@@ -157,9 +153,9 @@ export default {
         }
 
         let newResults = [];
-        for (let entitie of this.searchResults) {
-          if (parseFloat(entitie.rating) >= rating) {
-            newResults.push(entitie);
+        for (let entity of this.searchResults) {
+          if (parseFloat(entity.rating) >= rating) {
+            newResults.push(entity);
           }
         }
 
@@ -167,7 +163,6 @@ export default {
       }
     },
     editCottage: function (event) {
-      console.log("DA");
       console.log(event);
       // this.$("#NewCottageModal").modal({ show: false });
       // this.$("#NewCottageModal").modal("show");

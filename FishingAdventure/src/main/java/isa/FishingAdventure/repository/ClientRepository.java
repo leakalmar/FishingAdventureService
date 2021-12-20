@@ -8,7 +8,7 @@ import isa.FishingAdventure.model.Client;
 @Repository
 public interface ClientRepository extends UserRepository{
 
-	Client save(UserDto userRequest);
+	Client save(Client client);
 
 	Client findByEmail(String email);
 }

@@ -1,6 +1,9 @@
 <template>
   <div>
-    <h2 v-if="role == 'ROLE_CLIENT'" style="color:white;"> You have 2 penalties, after 3 penalties you will not be allow create any reservation</h2>
+    <h2 v-if="role == 'ROLE_CLIENT'" style="color: white">
+      You have 2 penalties, after 3 penalties you will not be allow create any
+      reservation
+    </h2>
     <div class="card mb-3 bg-dark mt-3" style="width: 80%; margin: auto">
       <div class="row g-0">
         <div class="col-md-4 shadow-none">
@@ -68,16 +71,13 @@
                       class="shadow-none login-inputs col-md-8 mb-2"
                     />
                   </div>
-                  <div
-                    v-if="role == 'ROLE_FISHINGINSTRUCTOR'"
-                    class="row shadow-none"
-                  >
+                  <div class="row shadow-none">
                     <p class="card-text text-left shadow-none col-md-3">
                       Biography:
                     </p>
                     <textarea
                       name="aboutMe"
-                      v-model="description"
+                      v-model="biography"
                       style="
                         min-height: 100px;
                         margin-bottom: 20px;
@@ -128,8 +128,12 @@
                       Save
                     </button>
                   </div>
-                  <h2 v-if="role == 'ROLE_CLIENT'" style="color:white"> User category: <b style="color:orange"> GOLD USER </b></h2>
-                  <h2 v-if="role == 'ROLE_CLIENT'" style="color:white"> Your points: 50 </h2>
+                  <h2 v-if="role == 'ROLE_CLIENT'" style="color: white">
+                    User category: <b style="color: orange"> GOLD USER </b>
+                  </h2>
+                  <h2 v-if="role == 'ROLE_CLIENT'" style="color: white">
+                    Your points: 50
+                  </h2>
                 </div>
               </div>
               <div
@@ -247,7 +251,7 @@ export default {
       account: "darek.hayward@gmail.com",
       phonenumber: "347-393-6833",
       address: "3293 Cantebury Drive, Garden City",
-      description:
+      biography:
         "All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable.",
     };
   },
@@ -280,13 +284,11 @@ export default {
       };
 
       if (this.password1 === this.password2) {
-        axios
-          .put("http://localhost:8080/users/changePassword", dto, {
-            headers: {
-              "Access-Control-Allow-Origin": "http://localhost:8080",
-            },
-          })
-          .then(console.log("success"));
+        axios.put("http://localhost:8080/users/changePassword", dto, {
+          headers: {
+            "Access-Control-Allow-Origin": "http://localhost:8080",
+          },
+        });
       }
       this.saveAccount();
     },
@@ -326,8 +328,9 @@ export default {
         street: this.address.split(", ")[0],
         city: this.address.split(", ")[1],
         country: this.address.split(", ")[2],
+        biography: this.biography,
       };
-      if(localStorage.role != undefined){
+      if (localStorage.role != undefined) {
         axios
           .put("http://localhost:8080/users/update", user, {
             headers: {

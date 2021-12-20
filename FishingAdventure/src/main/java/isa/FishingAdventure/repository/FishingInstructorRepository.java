@@ -1,14 +1,14 @@
 package isa.FishingAdventure.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import isa.FishingAdventure.dto.UserDto;
 import org.springframework.stereotype.Repository;
 
 import isa.FishingAdventure.model.FishingInstructor;
-import isa.FishingAdventure.model.User;
 
 @Repository
 public interface FishingInstructorRepository extends UserRepository{
 	
 	FishingInstructor findByEmail(String email);
 
+	FishingInstructor save(FishingInstructor fishingInstructor);
 }

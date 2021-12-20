@@ -16,13 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
-import isa.FishingAdventure.model.AdditionalService;
-import isa.FishingAdventure.model.Appointment;
-import isa.FishingAdventure.model.Image;
-import isa.FishingAdventure.model.Location;
-import isa.FishingAdventure.model.Room;
-import isa.FishingAdventure.model.Rule;
-import isa.FishingAdventure.model.VacationHomeOwner;
+import isa.FishingAdventure.model.*;
 
 
 public class NewHomeDto {
@@ -37,8 +31,6 @@ public class NewHomeDto {
 
     public Location location;
 
-    private Set<Appointment> appointments;
-
     private Set<Rule> rules;
 
     private Set<AdditionalService> additionalServices;
@@ -51,7 +43,9 @@ public class NewHomeDto {
 
 	private Date availabilityEnd;
 
-	public String vocationHomeOwner;
+	public String vacationHomeOwner;
+
+	public String imagePath;
 
 
 
@@ -64,23 +58,31 @@ public class NewHomeDto {
 	}
 
 	public NewHomeDto(String name, String description, double cancellationRule, double rating, Location location,
-			Set<Appointment> appointments, Set<Rule> rules, Set<AdditionalService> additionalServices,
+			Set<Rule> rules, Set<AdditionalService> additionalServices,
 			Set<Image> images, Set<Room> rooms, Date availabilityStart, Date availabilityEnd,
-			String vocationHomeOwner) {
+			String vocationHomeOwner, String imagePath) {
 		super();
 		this.name = name;
 		this.description = description;
 		this.cancellationRule = cancellationRule;
 		this.rating = rating;
 		this.location = location;
-		this.appointments = appointments;
 		this.rules = rules;
 		this.additionalServices = additionalServices;
 		this.images = images;
 		this.rooms = rooms;
 		this.availabilityStart = availabilityStart;
 		this.availabilityEnd = availabilityEnd;
-		this.vocationHomeOwner = vocationHomeOwner;
+		this.vacationHomeOwner = vocationHomeOwner;
+		this.imagePath = imagePath;
+	}
+
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
 	}
 
 	public String getName() {
@@ -123,14 +125,6 @@ public class NewHomeDto {
 		this.location = location;
 	}
 
-	public Set<Appointment> getAppointments() {
-		return appointments;
-	}
-
-	public void setAppointments(Set<Appointment> appointments) {
-		this.appointments = appointments;
-	}
-
 	public Set<Rule> getRules() {
 		return rules;
 	}
@@ -171,17 +165,34 @@ public class NewHomeDto {
 		this.availabilityEnd = availabilityEnd;
 	}
 
-	public String getVocationHomeOwner() {
-		return vocationHomeOwner;
+	public String getVacationHomeOwner() {
+		return vacationHomeOwner;
 	}
 
-	public void setVocationHomeOwner(String vocationHomeOwner) {
-		this.vocationHomeOwner = vocationHomeOwner;
+	public void setVacationHomeOwner(String vocationHomeOwner) {
+		this.vacationHomeOwner = vocationHomeOwner;
 	}
 
 	public NewHomeDto() {
 		super();
 	}
 
-
+	public NewHomeDto(VacationHome home) {
+		this.name = home.getName();
+		this.cancellationRule = home.getCancellationRule();
+		this.location = home.getLocation();
+		this.rules = home.getRules();
+		this.additionalServices = home.getAdditionalServices();
+		this.images = home.getImages();
+		this.rooms = home.getRooms();
+		this.description = home.getDescription();
+		this.rating = home.getRating();
+		for(Image img : home.getImages()) {
+			this.imagePath = img.getPath();
+			break;
+		}
+		this.availabilityStart = home.getAvailabilityStart();
+		this.availabilityEnd = home.getAvailabilityEnd();
+		this.vacationHomeOwner = home.getVacationHomeOwner().getName() + home.getVacationHomeOwner().getSurname();
+	}
 }
