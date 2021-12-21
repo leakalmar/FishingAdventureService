@@ -112,14 +112,17 @@ export default {
         for (let entity of this.entities) {
           let matches = true;
           for (let i = 0; i < searchParts.length; i++) {
+            let address = entity.location.address;
+            let owner = entity.vacationHomeOwner;
+            let string =
+              entity.name +
+              address.streat +
+              address.city +
+              address.country +
+              owner.name +
+              owner.surname;
             if (
-              !entity.name
-                .toLocaleLowerCase()
-                .includes(searchParts[i].toLocaleLowerCase()) &&
-              !entity.location
-                .toLocaleLowerCase()
-                .includes(searchParts[i].toLocaleLowerCase()) &&
-              !entity.vacationHomeOwner
+              !string
                 .toLocaleLowerCase()
                 .includes(searchParts[i].toLocaleLowerCase())
             ) {
