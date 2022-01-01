@@ -11,9 +11,13 @@ public class Image {
     @Column(name = "path", nullable = false)
     private String path;
 
-    public Image(Integer id, String path, ServiceProfile serviceProfile) {
+    @Column(name = "is_cover_image", nullable = false)
+    private boolean isCoverImage;
+
+    public Image(Integer id, String path, ServiceProfile serviceProfile, boolean isCoverImage) {
         this.id = id;
         this.path = path;
+        this.isCoverImage = isCoverImage;
     }
 
     public Image() {
@@ -33,5 +37,13 @@ public class Image {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public boolean isCoverImage() {
+        return isCoverImage;
+    }
+
+    public void setCoverImage(boolean coverImage) {
+        isCoverImage = coverImage;
     }
 }

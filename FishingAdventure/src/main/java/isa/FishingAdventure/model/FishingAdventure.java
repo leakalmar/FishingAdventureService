@@ -18,8 +18,8 @@ public class FishingAdventure extends ServiceProfile {
 
 
     public FishingAdventure(Integer id, String name, String description, double cancellationRule, double rating, Location location,
-                            Set<Appointment> appointments, Set<Rule> rules, Set<AdditionalService> additionalServices) {
-        super(id, name, description, cancellationRule, rating, location, appointments, rules, additionalServices);
+                            Set<Appointment> appointments, Set<Rule> rules, Set<AdditionalService> additionalServices, int persons) {
+        super(id, name, description, cancellationRule, rating, location, appointments, rules, additionalServices, persons);
     }
 
     public FishingInstructor getFishingInstructor() {

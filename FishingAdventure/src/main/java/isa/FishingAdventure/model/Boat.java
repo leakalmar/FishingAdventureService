@@ -22,9 +22,6 @@ public class Boat extends ServiceProfile {
     @Column(name = "maxSpeed", nullable = false)
     private double maxSpeed;
 
-    @Column(name = "capacity", nullable = false)
-    private int capacity;
-
     @ManyToOne(targetEntity = BoatOwner.class,cascade = CascadeType.MERGE)
     public BoatOwner boatOwner;
 
@@ -34,8 +31,8 @@ public class Boat extends ServiceProfile {
     @ManyToMany(targetEntity = FishingEquipment.class,cascade = CascadeType.MERGE)
     public Set<FishingEquipment> fishingEquipment = new HashSet<FishingEquipment>();
 
-    public Boat(Integer id, String name, String description, double cancellationRule, double rating, Location location, Set<Appointment> appointments, Set<Rule> rules, Set<AdditionalService> additionalServices) {
-        super(id, name, description, cancellationRule, rating, location, appointments, rules, additionalServices);
+    public Boat(Integer id, String name, String description, double cancellationRule, double rating, Location location, Set<Appointment> appointments, Set<Rule> rules, Set<AdditionalService> additionalServices, int persons) {
+        super(id, name, description, cancellationRule, rating, location, appointments, rules, additionalServices, persons);
 
     }
 
@@ -82,15 +79,6 @@ public class Boat extends ServiceProfile {
     public void setMaxSpeed(double maxSpeed) {
         this.maxSpeed = maxSpeed;
     }
-
-    public int getCapacity() {
-        return this.capacity;
-    }
-
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
-    }
-
 
 	public BoatOwner getBoatOwner() {
 		return boatOwner;

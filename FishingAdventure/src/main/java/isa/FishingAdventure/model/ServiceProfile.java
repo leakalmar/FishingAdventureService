@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -45,9 +46,18 @@ public abstract class ServiceProfile {
     private Set<AdditionalService> additionalServices;
     
     @OneToMany(targetEntity = Image.class,cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    public Set<Image> images;
+    private Set<Image> images;
 
-    public ServiceProfile(Integer id, String name, String description, double cancellationRule, double rating, Location location, Set<Appointment> appointments, Set<Rule> rules, Set<AdditionalService> additionalServices) {
+    @Column(name = "persons", nullable = false)
+    private int persons;
+
+    @Column(name = "availabilityStart", nullable = false)
+    private Date availabilityStart;
+
+    @Column(name = "availabilityEnd", nullable = false)
+    private Date availabilityEnd;
+
+    public ServiceProfile(Integer id, String name, String description, double cancellationRule, double rating, Location location, Set<Appointment> appointments, Set<Rule> rules, Set<AdditionalService> additionalServices, int persons) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -58,6 +68,7 @@ public abstract class ServiceProfile {
         this.rules = rules;
         this.additionalServices = additionalServices;
         this.isDeleted = false;
+        this.persons = persons;
     }
 
     public ServiceProfile() {
@@ -150,4 +161,28 @@ public abstract class ServiceProfile {
 	public void setImages(Set<Image> images) {
 		this.images = images;
 	}
+
+    public int getPersons() {
+        return persons;
+    }
+
+    public void setPersons(int persons) {
+        this.persons = persons;
+    }
+
+    public Date getAvailabilityStart() {
+        return availabilityStart;
+    }
+
+    public void setAvailabilityStart(Date availabilityStart) {
+        this.availabilityStart = availabilityStart;
+    }
+
+    public Date getAvailabilityEnd() {
+        return availabilityEnd;
+    }
+
+    public void setAvailabilityEnd(Date availabilityEnd) {
+        this.availabilityEnd = availabilityEnd;
+    }
 }

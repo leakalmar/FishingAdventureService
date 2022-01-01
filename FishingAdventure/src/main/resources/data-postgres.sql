@@ -4,9 +4,9 @@
 INSERT INTO additional_service
 VALUES (101, 'TV cable', 2);
 INSERT INTO additional_service
-VALUES (101, 'Air conditioner', 2);
+VALUES (102, 'Air conditioner', 2);
 INSERT INTO additional_service
-VALUES (101, 'Parking', 2);
+VALUES (103, 'Parking', 2);
 
 
 --
@@ -147,29 +147,29 @@ VALUES (112, true, '', 'boatOwner3@gmail.com', false, NULL, 'Toby',
 -- Data for Name: boat; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 INSERT INTO boat
-VALUES (113, 0,
+VALUES (113, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0,
         'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry''s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
-        false, 'Legacy', 4.58, 102, 2, 10, 1000, 158785, 10, 'type', 110);
+        false, 'Legacy', 2, 4.58, 102, 10, 1000, 158785, 10, 'type', 110);
 INSERT INTO boat
-VALUES (114, 0,
+VALUES (114, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0,
         'It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
-        false, 'Big Nauti', 3.68, 108, 2, 10, 1000, 158755, 10, 'type', 110);
+        false, 'Big Nauti', 2, 3.68, 108, 10, 1000, 158755, 10, 'type', 110);
 INSERT INTO boat
-VALUES (115, 0,
+VALUES (115, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0,
         'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.',
-        false, 'Chaste', 2.91, 109, 2, 10, 1000, 578785, 10, 'type', 111);
+        false, 'Chaste', 2, 2.91, 109, 10, 1000, 578785, 10, 'type', 111);
 INSERT INTO boat
-VALUES (116, 0,
+VALUES (116, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0,
         'Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.',
-        false, 'Uptown Girl', 4.33, 106, 2, 10, 1000, 666785, 10, 'type', 111);
+        false, 'Uptown Girl', 2, 4.33, 106, 10, 1000, 666785, 10, 'type', 111);
 INSERT INTO boat
-VALUES (117, 0,
+VALUES (117, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0,
         'Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance.',
-        false, 'Big Top', 3.97, 107, 2, 10, 1000, 958885, 10, 'type', 112);
+        false, 'Big Top', 2, 3.97, 107, 10, 1000, 958885, 10, 'type', 112);
 INSERT INTO boat
-VALUES (118, 0,
+VALUES (118, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0,
         'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content here, content here.',
-        false, 'Wildcard', 3.85, 103, 2, 10, 1000, 178685, 10, 'type', 112);
+        false, 'Wildcard', 2, 3.85, 103, 10, 1000, 178685, 10, 'type', 112);
 
 
 --
@@ -219,28 +219,28 @@ VALUES (109, true,
 -- Data for Name: fishing_adventure; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 INSERT INTO fishing_adventure
-VALUES (107, 0,
+VALUES (107, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0,
         'All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet.',
-        false, 'Tahoe adventure', 2.58, 108, 107);
+        false, 'Tahoe adventure', 2, 2.58, 108, 107);
 INSERT INTO fishing_adventure
-VALUES (108, 0, 'The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.',
-        false, 'Nevada adventure', 4.58, 105, 107);
+VALUES (108, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0, 'The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.',
+        false, 'Nevada adventure', 2, 4.58, 105, 107);
 INSERT INTO fishing_adventure
-VALUES (109, 0,
+VALUES (109, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0,
         'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry''s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
-        false, 'Oregon adventure', 3.54, 102, 108);
+        false, 'Oregon adventure', 2, 3.54, 102, 108);
 INSERT INTO fishing_adventure
-VALUES (110, 0,
+VALUES (110, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0,
         'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.',
-        false, 'Marion and Moultrie adventure', 4.98, 109, 108);
+        false, 'Marion and Moultrie adventure', 2, 4.98, 109, 108);
 INSERT INTO fishing_adventure
-VALUES (111, 0,
+VALUES (111, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0,
         'Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for lorem ipsum will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).',
-        false, 'Okeechobee adventure', 2.13, 103, 109);
+        false, 'Okeechobee adventure', 2, 2.13, 103, 109);
 INSERT INTO fishing_adventure
-VALUES (112, 0,
+VALUES (112, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0,
         'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don''t look even slightly believable.',
-        false, 'Hartwell adventure', 3.38, 104, 109);
+        false, 'Hartwell adventure', 2, 3.38, 104, 109);
 
 
 
@@ -259,51 +259,51 @@ VALUES (112, 0,
 --
 
 INSERT INTO image
-VALUES (101, 'c1.jpg');
+VALUES (101, false, 'c1.jpg');
 INSERT INTO image
-VALUES (102, 'c3.jpg');
+VALUES (102, false, 'c3.jpg');
 INSERT INTO image
-VALUES (103, 'c11.jpg');
+VALUES (103, false, 'c11.jpg');
 INSERT INTO image
-VALUES (104, 'c12.jpg');
+VALUES (104, false, 'c12.jpg');
 INSERT INTO image
-VALUES (105, 'c13.jpg');
+VALUES (105, false, 'c13.jpg');
 INSERT INTO image
-VALUES (106, 'c14.jpg');
+VALUES (106, false, 'c14.jpg');
 INSERT INTO image
-VALUES (107, 'fa5.jpg');
+VALUES (107, false, 'fa5.jpg');
 INSERT INTO image
-VALUES (108, 'fa6.jpg');
+VALUES (108, false, 'fa6.jpg');
 INSERT INTO image
-VALUES (109, 'fa7.jpg');
+VALUES (109, false, 'fa7.jpg');
 INSERT INTO image
-VALUES (110, 'fa8.jpg');
+VALUES (110, false, 'fa8.jpg');
 INSERT INTO image
-VALUES (111, 'fa11.jpg');
+VALUES (111, false, 'fa11.jpg');
 INSERT INTO image
-VALUES (112, 'fa12.jpg');
+VALUES (112, false, 'fa12.jpg');
 INSERT INTO image
-VALUES (113, 'b10.jpg');
+VALUES (113, false, 'b10.jpg');
 INSERT INTO image
-VALUES (114, 'b1.jpg');
+VALUES (114, false, 'b1.jpg');
 INSERT INTO image
-VALUES (115, 'b2.jpg');
+VALUES (115, false, 'b2.jpg');
 INSERT INTO image
-VALUES (116, 'b3.jpg');
+VALUES (116, false, 'b3.jpg');
 INSERT INTO image
-VALUES (117, 'b5.jpg');
+VALUES (117, false, 'b5.jpg');
 INSERT INTO image
-VALUES (118, 'b6.jpg');
+VALUES (118, false, 'b6.jpg');
 INSERT INTO image
-VALUES (119, 'c16.jpg');
+VALUES (119, false, 'c16.jpg');
 INSERT INTO image
-VALUES (120, 'c16-2.jpg');
+VALUES (120, false, 'c16-2.jpg');
 INSERT INTO image
-VALUES (121, 'c16-3.jpg');
+VALUES (121, false, 'c16-3.jpg');
 INSERT INTO image
-VALUES (122, 'c16-4.jpg');
+VALUES (122, false, 'c16-4.jpg');
 INSERT INTO image
-VALUES (123, 'c16-5.jpg');
+VALUES (123, false, 'c16-5.jpg');
 
 
 
@@ -455,29 +455,29 @@ VALUES (103, true, '', 'homeOwner3@gmail.com', false, NULL, 'Beverly',
 --
 
 INSERT INTO vacation_home
-VALUES (101, 0,
+VALUES (101, '2021-12-10 21:55:01.501', '2021-12-10 21:55:01.501', 0,
         ' Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).',
-        false, 'Lakeview Cottage', 3.89, 101, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 101);
+        false, 'Lakeview Cottage', 2, 3.89, 101, 101);
 INSERT INTO vacation_home
-VALUES (102, 0,
+VALUES (102, '2021-12-10 21:55:01.501', '2021-12-10 21:55:01.501', 0,
         ' Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).',
-        false, 'Villa Madam', 4.5, 102, '2021-12-10 21:55:01.501', '2021-12-10 21:55:01.501', 101);
+        false, 'Villa Madam', 2, 4.5, 102, 101);
 INSERT INTO vacation_home
-VALUES (103, 0,
+VALUES (103, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0,
         ' Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).',
-        false, 'Winter Acres', 3.25, 107, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 102);
+        false, 'Winter Acres', 2, 3.25, 107, 102);
 INSERT INTO vacation_home
-VALUES (104, 0,
+VALUES (104, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0,
         ' Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).',
-        false, 'Eagle Cascades', 2.5, 108, '2021-12-10 21:55:01.501', '2021-12-10 21:55:01.501', 102);
+        false, 'Eagle Cascades', 2, 2.5, 108, 102);
 INSERT INTO vacation_home
-VALUES (105, 0,
+VALUES (105, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0,
         ' Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).',
-        false, 'Green Palace', 4.92, 109, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 103);
+        false, 'Green Palace', 2, 4.92, 109, 103);
 INSERT INTO vacation_home
-VALUES (106, 0,
+VALUES (106, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0,
         ' Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).',
-        false, 'Coast House', 1.5, 110, '2021-12-10 21:55:01.501', '2021-12-10 21:55:01.501', 103);
+        false, 'Coast House', 2, 1.5, 110, 103);
 
 
 --
