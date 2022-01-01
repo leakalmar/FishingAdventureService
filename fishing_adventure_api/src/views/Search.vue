@@ -38,7 +38,7 @@
         class="container w-100 row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-4"
         style="justify-content: space-evenly; align-items: center"
       >
-        <div class="col-md-5">
+        <div class="col-md-4">
           <input
             class="form-control me-2"
             type="search"
@@ -48,7 +48,7 @@
         </div>
         <div
           v-if="searching == 'cottages'"
-          class="col-md-5"
+          class="col-md-6"
           style="min-width: 17rem"
         >
           <Datepicker
@@ -62,7 +62,7 @@
             id="picker"
             v-model="date"
             range
-            :enableTimePicker="false"
+            :enableTimePicker="true"
           ></Datepicker>
         </div>
         <div class="col-md-5">

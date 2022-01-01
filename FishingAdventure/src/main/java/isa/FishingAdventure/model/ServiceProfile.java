@@ -57,6 +57,9 @@ public abstract class ServiceProfile {
     @Column(name = "availabilityEnd", nullable = false)
     private Date availabilityEnd;
 
+    @Column(name = "price_per_day", nullable = false)
+    private double pricePerDay;
+
     public ServiceProfile(Integer id, String name, String description, double cancellationRule, double rating, Location location, Set<Appointment> appointments, Set<Rule> rules, Set<AdditionalService> additionalServices, int persons) {
         this.id = id;
         this.name = name;
@@ -184,5 +187,13 @@ public abstract class ServiceProfile {
 
     public void setAvailabilityEnd(Date availabilityEnd) {
         this.availabilityEnd = availabilityEnd;
+    }
+
+    public double getPricePerDay() {
+        return pricePerDay;
+    }
+
+    public void setPricePerDay(double pricePerDay) {
+        this.pricePerDay = pricePerDay;
     }
 }
