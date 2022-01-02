@@ -50,13 +50,14 @@ public class VacationHomeController {
     public ResponseEntity<List<VacationHomeDto>> getAllVacationHomes() {
         List<VacationHome> vacationHomes = homeService.findAllNonDeleted();
 
-        List<VacationHomeDto> VacationHomeDto = new ArrayList<>();
+        List<VacationHomeDto> vacationHomeDtos = new ArrayList<>();
         for (VacationHome h : vacationHomes) {
             VacationHomeDto dto = new VacationHomeDto(h);
-            VacationHomeDto.add(dto);
+            vacationHomeDtos.add(dto);
+
         }
 
-        return new ResponseEntity<>(VacationHomeDto, HttpStatus.OK);
+        return new ResponseEntity<>(vacationHomeDtos, HttpStatus.OK);
     }
 
     @GetMapping(value = "/allByUser")
