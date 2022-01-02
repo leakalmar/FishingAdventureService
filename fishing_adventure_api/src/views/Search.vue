@@ -61,6 +61,7 @@
             dark
             id="picker"
             v-model="date"
+            @selected="updateDatePicker"
             range
             :enableTimePicker="true"
           ></Datepicker>
@@ -99,7 +100,9 @@
               </div>
             </div>
           </div>
+          
         </div>
+        <button v-on:click="searchByDate">Search</button>
       </div>
     </div>
     <div v-if="searching == 'cottages'" style="margin-top: 5%">
@@ -134,6 +137,7 @@ import CottageCard from "@/components/CottageCard.vue";
 import BoatCard from "@/components/BoatCard.vue";
 import AdventureCard from "@/components/AdventureCard.vue";
 import axios from "axios";
+import moment from 'moment';
 export default {
   components: { Datepicker, CottageCard, BoatCard, AdventureCard },
   setup() {
@@ -203,7 +207,33 @@ export default {
         });
     }
   },
-  methods: {},
+  methods: {
+    updateDatePicker(value) {
+      console.log("updating datepicker value");
+      this.date = value;
+    },
+    searchByDate: function() {
+      if(this.date == undefined || this.date[0] == undefined || this.date[1] == undefined){
+        return;
+      }
+
+      if (window.location.href.includes("/search/cottages")) {
+      this.searching = "cottages";
+      axios
+        .get("http://localhost:8080/vacationHome/search?start=" + moment(this.date[0]).format('yyyy-MM-DD HH:mm:ss.SSS') + "&end=" + moment(this.date[1]).format('yyyy-MM-DD HH:mm:ss.SSS') + "&persons=" + this.numberOfPersons, {
+          headers: {
+            "Access-Control-Allow-Origin": "http://localhost:8080",
+          },
+        })
+        .then((res) => {
+          this.homeEntities = res.data;
+          for (let e of this.homeEntities) {
+            e.rating = Number(e.rating).toFixed(2);
+          }
+        });
+    }
+    }
+  },
 };
 </script>
 
