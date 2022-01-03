@@ -10,6 +10,7 @@ import isa.FishingAdventure.security.util.TokenUtils;
 import isa.FishingAdventure.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +18,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
+import java.text.ParseException;
+import java.util.*;
 
 @RestController
 @Configurable
@@ -58,6 +57,23 @@ public class VacationHomeController {
         }
 
         return new ResponseEntity<>(vacationHomeDtos, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/search")
+    public ResponseEntity<List<VacationHomeDto>> getSearchedVacationHomes(@RequestParam("start") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS") Date start,
+                                                                          @RequestParam("end") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS") Date end, @RequestParam("persons") int persons) throws ParseException {
+        List<VacationHome> vacationHomes = homeService.findAllAvailableVacationHomes(start, end, persons);
+        System.out.println(vacationHomes.size());
+        System.out.println(start);
+        System.out.println(end);
+        List<VacationHomeDto> VacationHomeDto = new ArrayList<>();
+        for (VacationHome h : vacationHomes) {
+            System.out.println(h.getAvailabilityStart());
+            VacationHomeDto dto = new VacationHomeDto(h);
+            VacationHomeDto.add(dto);
+        }
+
+        return new ResponseEntity<>(VacationHomeDto, HttpStatus.OK);
     }
 
     @GetMapping(value = "/allByUser")

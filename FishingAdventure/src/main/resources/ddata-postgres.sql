@@ -78,6 +78,14 @@ VALUES (110, 31.439867194681277, -97.74321707227516, 110);
 
 
 --
+-- Data for Name: boat_fishing_equipment; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+--
+-- Data for Name: boat_navigation_equipment; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
 -- Data for Name: fishing_equipment; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 INSERT INTO fishing_equipment
@@ -96,6 +104,7 @@ INSERT INTO navigation_equipment
 VALUES (101, 'GPS');
 INSERT INTO navigation_equipment
 VALUES (102, 'Fish finder');
+
 
 
 --
@@ -183,6 +192,7 @@ INSERT INTO boat
 VALUES (118, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0,
         'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content here, content here.',
         false, 'Wildcard', 2, 50.0, 3.85, 103, 10, 1000, 178685, 10, 'type', 112);
+
 
 --
 -- Data for Name: boat_navigation_equipment; Type: TABLE DATA; Schema: public; Owner: postgres
@@ -340,7 +350,6 @@ VALUES (123, false, 'c16-5.jpg');
 --
 -- Data for Name: navigation_eq_in_boat; Type: TABLE DATA; Schema: public; Owner: postgres
 --
-
 
 --
 -- Data for Name: reservation; Type: TABLE DATA; Schema: public; Owner: postgres

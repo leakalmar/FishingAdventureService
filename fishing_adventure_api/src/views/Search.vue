@@ -35,7 +35,7 @@
       "
     >
       <div
-        class="container w-100 row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-4"
+        class="container w-100 row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-5"
         style="justify-content: space-evenly; align-items: center"
       >
         <div class="col-md-4">
@@ -48,8 +48,6 @@
         </div>
         <div
           v-if="searching == 'cottages'"
-          class="col-md-6"
-          style="min-width: 17rem"
         >
           <Datepicker
             style="
@@ -99,7 +97,13 @@
               </div>
             </div>
           </div>
+          
         </div>
+        <button class="btn btn-primary shadow-none mb-2"
+                  style="
+                    background-color: rgb(0 51 51);
+                    border-color: rgb(0 51 51);
+                  " v-on:click="search">Search</button>
       </div>
     </div>
     <div v-if="searching == 'cottages'" style="margin-top: 5%">
@@ -107,6 +111,7 @@
         v-for="homeEntity in homeEntities"
         :key="homeEntity.id"
         v-bind:entity="homeEntity"
+        v-bind:info="reservationInfo"
       ></CottageCard>
     </div>
     <div v-if="searching == 'boats'" style="margin-top: 5%">
@@ -134,6 +139,7 @@ import CottageCard from "@/components/CottageCard.vue";
 import BoatCard from "@/components/BoatCard.vue";
 import AdventureCard from "@/components/AdventureCard.vue";
 import axios from "axios";
+import moment from 'moment';
 export default {
   components: { Datepicker, CottageCard, BoatCard, AdventureCard },
   setup() {
@@ -151,14 +157,33 @@ export default {
   },
   data: function () {
     return {
-      numberOfPersons: "",
+      numberOfPersons: 0,
       searching: "",
       homeEntities: [],
       boatEntities: [],
       adventureEntities: [],
+      review:false,
+      loggedInRole:undefined,
+      showModal: false,
+      object:{},
+      reservationInfo:{}
     };
   },
   mounted: function () {
+    axios
+        .get("http://localhost:8080/users/getRole", {
+          headers: {
+            "Access-Control-Allow-Origin": "http://localhost:8080",
+            Authorization: "Bearer " + localStorage.refreshToken,
+          },
+        })
+        .then((res) => {
+          this.loggedInRole = res.data;
+          if(this.loggedInRole == 'ROLE_CLIENT'){
+              this.review = true;
+          }
+          
+        });
     if (window.location.href.includes("/search/cottages")) {
       this.searching = "cottages";
       axios
@@ -203,7 +228,46 @@ export default {
         });
     }
   },
-  methods: {},
+  methods: {
+    updateReservationInfo: function(){
+      let info = {
+        date: this.date,
+        persons: this.numberOfPersons
+      }
+      this.reservationInfo = info;
+    },
+    updateDatePicker(value) {
+      console.log("updating datepicker value");
+      this.date = value;
+    },
+    search: function() {
+      let info = {
+        date: this.date,
+        persons: this.numberOfPersons
+      }
+      this.reservationInfo = info;
+      if (window.location.href.includes("/search/cottages")) {
+        this.searching = "cottages";
+        if(this.date[0] != undefined && this.date[1] != undefined && this.numberOfPersons != 0){
+          this.searchCottagesByDateAndPersons();
+        }
+      }
+    },
+    searchCottagesByDateAndPersons: function () {
+        axios
+          .get("http://localhost:8080/vacationHome/search?start=" + moment(this.date[0]).format('yyyy-MM-DD HH:mm:ss.SSS') + "&end=" + moment(this.date[1]).format('yyyy-MM-DD HH:mm:ss.SSS') + "&persons=" + this.numberOfPersons, {
+            headers: {
+              "Access-Control-Allow-Origin": "http://localhost:8080",
+            },
+          })
+          .then((res) => {
+            this.homeEntities = res.data;
+            for (let e of this.homeEntities) {
+              e.rating = Number(e.rating).toFixed(2);
+            }
+          });
+    }
+  },
 };
 </script>
 

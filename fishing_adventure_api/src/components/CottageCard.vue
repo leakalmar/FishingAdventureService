@@ -111,6 +111,7 @@
                 ${{ entity.pricePerDay }}/day
               </p>
             </div>
+            
           </div>
         </div>
       </div>
@@ -130,7 +131,8 @@ import axios from "axios";
 
 export default {
   components: { NewCottageModal },
-  props: ["entity"],
+  props: ["entity", "info"],
+  emits: ["reservation"],
   setup(props) {
     const date = ref();
     onMounted(() => {
@@ -159,7 +161,7 @@ export default {
 
   methods: {
     openCottage: function () {
-      window.location.href = "/cottage/?id=" + this.entity.id;
+      window.location.href = "/cottage/?id=" + this.entity.id + "&date=" + this.info.date + "&persons=" + this.info.persons;
     },
     preventPropagation: function (event) {
       event.preventDefault();
@@ -180,6 +182,14 @@ export default {
     },
     getImageUrl: function (imagePath) {
       return require("@/assets/" + imagePath);
+    },
+    createReservation:function(event){
+      let object = {
+        entity: this.entity,
+        event: event
+      }
+      this.$emit('reservation', object);
+      this.preventPropagation(event);
     },
   },
 };
