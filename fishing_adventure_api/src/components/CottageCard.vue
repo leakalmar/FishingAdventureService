@@ -19,23 +19,6 @@
                 }}{{ entity.vacationHomeOwner.surname }}
               </p>
               <p
-                class="top-right-corner shadow-none"
-                v-if="review == true"
-                v-on:click="createReservation"
-              >
-                <button
-                  class="btn btn-primary shadow-none mb-2"
-                  style="
-                    background-color: rgb(0 51 25);
-                    border-color: rgb(0 51 25);
-                  "
-                  data-bs-toggle="modal"
-                  :data-bs-target="'#cottage'"
-                >
-                  Create reservation
-                </button>
-              </p>
-              <p
                 v-if="path == 'mycottages'"
                 class="top-right-corner shadow-none"
                 v-on:click="preventPropagation"
@@ -155,7 +138,7 @@ import axios from "axios";
 
 export default {
   components: { NewCottageModal },
-  props: ["entity", "review"],
+  props: ["entity", "info"],
   emits: ["reservation"],
   setup(props) {
     const date = ref();
@@ -185,7 +168,7 @@ export default {
 
   methods: {
     openCottage: function () {
-      window.location.href = "/cottage/?id=" + this.entity.id;
+      window.location.href = "/cottage/?id=" + this.entity.id + "&date=" + this.info.date + "&persons=" + this.info.persons;
     },
     preventPropagation: function (event) {
       event.preventDefault();

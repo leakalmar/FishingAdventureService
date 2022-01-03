@@ -7,7 +7,9 @@
           Enjoy in your cottage <br />
           today!
         </h2>
-        <button class="book-btn">Book a cottage</button>
+        <button data-bs-toggle="modal"
+                :data-bs-target="'#cottage'"
+        class="book-btn">Book a cottage</button>
       </div>
     </div>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-info">
@@ -259,13 +261,18 @@
       </div>
     </div>
   </div>
+  <ReservationModal :id="'cottage'" v-bind:date="date" v-bind:persons="persons"></ReservationModal>
 </template>
 
 <script>
 import axios from "axios";
+import ReservationModal from "@/components/ReservationModal.vue";
 export default {
+  components: { ReservationModal },
   data: function () {
     return {
+      date: [],
+      persons: 0,
       entity: "",
       address: "",
       location: "",
@@ -283,7 +290,11 @@ export default {
   },
   mounted() {
     window.scrollTo(0, 0);
+
     console.log(this.$route.query.id);
+    this.date = this.$route.query.date;
+    this.persons = this.$route.query.persons;
+
     axios
       .get("http://localhost:8080/vacationHome/" + this.$route.query.id, {
         headers: {
@@ -296,8 +307,8 @@ export default {
         this.address = response.data.location.address;
         this.location = response.data.location;
         (this.center.lat = response.data.location.latitude),
-          (this.center.lng = response.data.location.longitude),
-          (this.markers[0].position.lat = response.data.location.latitude);
+        (this.center.lng = response.data.location.longitude),
+        (this.markers[0].position.lat = response.data.location.latitude);
         this.markers[0].position.lng = response.data.location.longitude;
         console.log(response.data);
       });

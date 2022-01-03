@@ -59,7 +59,6 @@
             dark
             id="picker"
             v-model="date"
-            @selected="updateDatePicker"
             range
             :enableTimePicker="true"
           ></Datepicker>
@@ -112,8 +111,7 @@
         v-for="homeEntity in homeEntities"
         :key="homeEntity.id"
         v-bind:entity="homeEntity"
-        v-bind:review="review"
-        v-on:reservation="openModalReservation"
+        v-bind:info="reservationInfo"
       ></CottageCard>
     </div>
     <div v-if="searching == 'boats'" style="margin-top: 5%">
@@ -131,7 +129,6 @@
       ></AdventureCard>
     </div>
   </div>
-  <ReservationModal v-bind:cottage="object" :id="'cottage'"></ReservationModal>
 </template>
 
 <script>
@@ -141,11 +138,10 @@ import { ref, onMounted } from "vue";
 import CottageCard from "@/components/CottageCard.vue";
 import BoatCard from "@/components/BoatCard.vue";
 import AdventureCard from "@/components/AdventureCard.vue";
-import ReservationModal from "@/components/ReservationModal.vue";
 import axios from "axios";
 import moment from 'moment';
 export default {
-  components: { Datepicker, CottageCard, BoatCard, AdventureCard, ReservationModal },
+  components: { Datepicker, CottageCard, BoatCard, AdventureCard },
   setup() {
     const date = ref();
     // For demo purposes assign range from the current date
@@ -161,7 +157,7 @@ export default {
   },
   data: function () {
     return {
-      numberOfPersons: "",
+      numberOfPersons: 0,
       searching: "",
       homeEntities: [],
       boatEntities: [],
@@ -170,6 +166,7 @@ export default {
       loggedInRole:undefined,
       showModal: false,
       object:{},
+      reservationInfo:{}
     };
   },
   mounted: function () {
@@ -232,19 +229,26 @@ export default {
     }
   },
   methods: {
-    openModalReservation : function (object) {
-      this.object = object.entity;
-      object.event.preventDefault();
-      object.event.stopPropagation();
+    updateReservationInfo: function(){
+      let info = {
+        date: this.date,
+        persons: this.numberOfPersons
+      }
+      this.reservationInfo = info;
     },
     updateDatePicker(value) {
       console.log("updating datepicker value");
       this.date = value;
     },
     search: function() {
+      let info = {
+        date: this.date,
+        persons: this.numberOfPersons
+      }
+      this.reservationInfo = info;
       if (window.location.href.includes("/search/cottages")) {
         this.searching = "cottages";
-        if(this.date[0] != undefined && this.date[1] != undefined && this.numberOfPersons != undefined){
+        if(this.date[0] != undefined && this.date[1] != undefined && this.numberOfPersons != 0){
           this.searchCottagesByDateAndPersons();
         }
       }

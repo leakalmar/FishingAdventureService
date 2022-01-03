@@ -11,18 +11,8 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h3 v-if="mode == '1' && cottageName == ''">New cottage</h3>
-          <h3
-            v-if="
-              (mode == '1' && cottageName != '') |
-                (mode == '2') |
-                (mode === '3') |
-                (mode === '4') |
-                (mode === '5') |
-                (mode === '6')
-            "
-          >
-            {{ cottageName }}
+          <h3>
+            New reservation
           </h3>
           <button
             type="button"
@@ -34,107 +24,30 @@
           </button>
         </div>
         <div class="modal-body" v-if="mode == '1'">
-          <h6 style="color: white">Please enter information:</h6>
-          <input
-            v-model="cottageName"
-            type="text"
-            class="login-inputs"
-            placeholder="Cottage name"
-          />
-
+          <h6 style="color: white"><b>Select date range:</b></h6>
+          <Datepicker
+            style="
+              width: 100%;
+              margin-right: 10px;
+              border: 1px solid white;
+              border-radius: 5px;
+            "
+            dark
+            id="picker"
+            v-model="dateRange"
+            range
+            :enableTimePicker="true"
+          ></Datepicker>
+          
           <textarea
             class="login-inputs-textarea"
             placeholder="Cottage description"
-            v-model="cottageDescription"
+            v-model="numberOfPersons"
           />
           <label class="error" :id="'cottageNameErr' + cottageId" name="labels">
           </label>
         </div>
-        <div class="modal-body" v-if="mode == '2'">
-          <new-cottage-modal-images
-            v-on:uploaded="uploaded"
-            :files="files"
-            :images="images"
-          ></new-cottage-modal-images>
-          <label
-            class="error"
-            :id="'cottageImagesErr' + cottageId"
-            name="labels"
-          >
-          </label>
-        </div>
-        <div class="modal-body" v-if="mode === '3'">
-          <div class="login-title">
-            <p :id="'secondErr' + cottageId">
-              It is necessary to determine the location of the cottage by
-              filling field below. Field must contain street, house number, city
-              and coutry.
-            </p>
-          </div>
-          <new-cottage-modal-map
-            :lat="lat"
-            :lng="lng"
-            v-on:change-address="changeAddress"
-          ></new-cottage-modal-map>
-        </div>
-        <div class="modal-body" v-if="mode === '4'">
-          <new-cottage-modal-rooms
-            :rooms="rooms"
-            v-on:roomupdated="roomsUpdated"
-          ></new-cottage-modal-rooms>
-          <label class="error" :id="'roomErr' + cottageId" name="labels">
-          </label>
-        </div>
-        <div class="modal-body" v-if="mode === '5'">
-          <new-cottage-modal-rules
-            :rules="rules"
-            v-on:ruleupdated="rulesUpdated"
-          ></new-cottage-modal-rules>
-          <label class="error" :id="'ruleErr' + cottageId" name="labels">
-          </label>
-        </div>
-        <div class="modal-body" v-if="mode === '6'">
-          <new-cottage-modal-price-list
-            :priceList="priceList"
-            v-on:pricelistupdated="priceListUpdated"
-          ></new-cottage-modal-price-list>
-          <label class="error" :id="'priceListErr' + cottageId" name="labels">
-          </label>
-        </div>
-        <div class="modal-footer steps-div">
-          <button
-            v-on:click="backClick"
-            type="button"
-            :id="'back-btn' + cottageId"
-            style="visibility: hidden"
-            class="btn btn-outline-primary"
-          >
-            <i class="fas fa-chevron-left fa-xs"></i> Back
-          </button>
-          <div style="color: white; width: 115px" v-if="parseInt(mode) != 7">
-            <i
-              class="fa fa-square"
-              aria-hidden="true"
-              style="margin: 2%"
-              v-for="index in parseInt(mode)"
-              :key="index"
-            ></i>
-            <i
-              class="fa fa-square-o"
-              aria-hidden="true"
-              style="margin: 2%"
-              v-for="index in 6 - parseInt(mode)"
-              :key="index"
-            ></i>
-          </div>
-          <button
-            type="button"
-            v-if="parseInt(mode) < 6"
-            class="btn btn-outline-primary"
-            v-on:click="nextClick"
-          >
-            Next <i class="fas fa-chevron-right fa-xs"></i>
-          </button>
+        
           <button
             type="button"
             class="btn btn-outline-primary"
@@ -154,25 +67,15 @@
         </div>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
 import axios from "axios";
-import NewCottageModalImages from "./NewCottageModalImages.vue";
-import NewCottageModalMap from "./NewCottageModalMap.vue";
-import NewCottageModalRooms from "./NewCottageModalRooms.vue";
-import NewCottageModalRules from "./NewCottageModalRules.vue";
-import NewCottageModalPriceList from "./NewCottageModalPriceList.vue";
 export default {
   components: {
-    NewCottageModalImages,
-    NewCottageModalMap,
-    NewCottageModalRooms,
-    NewCottageModalRules,
-    NewCottageModalPriceList,
+   
   },
-  props: ["cottage"],
+  props: ["cottage", "date", "persons"],
   name: "RegisterModal",
   data: function () {
     return {
@@ -192,6 +95,8 @@ export default {
       flagRooms: true,
       flagPriceList: true,
       cottageId: undefined,
+      dateRange: [],
+      numberOfPersons:0,
       lat: "",
       lng: "",
     };
@@ -201,19 +106,12 @@ export default {
     element.classList.add("active");
   },
   beforeUpdate:function(){
-      this.cottageId = this.cottage.id;
-      this.cottageName = this.cottage.name;
-      this.cottageDescription = this.cottage.description;
-      this.images = this.cottage.images;
-      this.street = this.cottage.location.address.street;
-      this.city = this.cottage.location.address.city;
-      this.country = this.cottage.location.address.country;
-      this.rooms = this.cottage.rooms;
-      this.rules = this.cottage.rules;
-      this.priceList = this.cottage.additionalServices;
-      this.lat = this.cottage.location.latitude;
-      this.lng = this.cottage.location.longitude;
-
+      //this.dateRange = Date.parse(this.date.split(",")[0]);
+      this.dateRange.push(new Date(Date.parse(this.date.split(",")[0])));
+      this.dateRange.push(new Date(Date.parse(this.date.split(",")[1])));
+      this.numberOfPersons = this.persons;
+      console.log(this.dateRange);
+      
   },
   methods: {
     nextClick: function () {
