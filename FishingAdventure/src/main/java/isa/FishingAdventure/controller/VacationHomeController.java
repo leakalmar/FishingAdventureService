@@ -19,7 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 
 @RestController
 @Configurable
@@ -68,7 +71,6 @@ public class VacationHomeController {
         System.out.println(end);
         List<VacationHomeDto> VacationHomeDto = new ArrayList<>();
         for (VacationHome h : vacationHomes) {
-            System.out.println(h.getAvailabilityStart());
             VacationHomeDto dto = new VacationHomeDto(h);
             VacationHomeDto.add(dto);
         }
@@ -125,8 +127,6 @@ public class VacationHomeController {
     }
 
     private VacationHome createHome(VacationHome home, NewHomeDto dto, VacationHomeOwner owner) {
-        home.setAvailabilityEnd(new Date());
-        home.setAvailabilityStart(new Date());
         home.setAppointments(new HashSet<Appointment>());
         home.setImages(new HashSet<Image>());
         home.setRating(0.0);
@@ -164,8 +164,6 @@ public class VacationHomeController {
     public ResponseEntity<NewHomeDto> updatePriceAndDates(@PathVariable String id, @RequestBody NewHomeDto dto) {
         VacationHome oldHome = homeService.getById(Integer.parseInt(id));
         oldHome.setPricePerDay(dto.getPricePerDay());
-        oldHome.setAvailabilityStart(dto.getAvailabilityStart());
-        oldHome.setAvailabilityEnd(dto.getAvailabilityEnd());
         homeService.save(oldHome);
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }

@@ -77,8 +77,6 @@ public class NewBoatDto {
             }
         }
         this.persons = boat.getPersons();
-        this.availabilityStart = boat.getAvailabilityStart();
-        this.availabilityEnd = boat.getAvailabilityEnd();
         this.boatOwner = boat.getBoatOwner();
         this.pricePerDay = boat.getPricePerDay();
         this.fishingEquipments = boat.getFishingEquipment();

@@ -169,27 +169,27 @@ VALUES (112, true, '', 'boatOwner3@gmail.com', false, NULL, 'Toby',
 -- Data for Name: boat; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 INSERT INTO boat
-VALUES (113, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0,
+VALUES (113, 0,
         'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry''s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
         false, 'Legacy', 2, 50.0, 4.58, 102, 10, 1000, 158785, 10, 'type', 110);
 INSERT INTO boat
-VALUES (114, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0,
+VALUES (114, 0,
         'It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
         false, 'Big Nauti', 2, 50.0, 3.68, 108, 10, 1000, 158755, 10, 'type', 110);
 INSERT INTO boat
-VALUES (115, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0,
+VALUES (115, 0,
         'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.',
         false, 'Chaste', 2, 50.0, 2.91, 109, 10, 1000, 578785, 10, 'type', 111);
 INSERT INTO boat
-VALUES (116, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0,
+VALUES (116, 0,
         'Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.',
         false, 'Uptown Girl', 2, 50.0, 4.33, 106, 10, 1000, 666785, 10, 'type', 111);
 INSERT INTO boat
-VALUES (117, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0,
+VALUES (117, 0,
         'Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance.',
         false, 'Big Top', 2, 50.0, 3.97, 107, 10, 1000, 958885, 10, 'type', 112);
 INSERT INTO boat
-VALUES (118, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0,
+VALUES (118, 0,
         'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content here, content here.',
         false, 'Wildcard', 2, 50.0, 3.85, 103, 10, 1000, 178685, 10, 'type', 112);
 
@@ -263,27 +263,27 @@ VALUES (109, true,
 -- Data for Name: fishing_adventure; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 INSERT INTO fishing_adventure
-VALUES (107, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0,
+VALUES (107, 0,
         'All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet.',
         false, 'Tahoe adventure', 2, 50.0, 2.58, 108, 107);
 INSERT INTO fishing_adventure
-VALUES (108, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0,
+VALUES (108, 0,
         'The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.',
         false, 'Nevada adventure', 2, 50.0, 4.58, 105, 107);
 INSERT INTO fishing_adventure
-VALUES (109, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0,
+VALUES (109, 0,
         'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry''s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
         false, 'Oregon adventure', 2, 50.0, 3.54, 102, 108);
 INSERT INTO fishing_adventure
-VALUES (110, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0,
+VALUES (110, 0,
         'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.',
         false, 'Marion and Moultrie adventure', 2, 50.0, 4.98, 109, 108);
 INSERT INTO fishing_adventure
-VALUES (111, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0,
+VALUES (111, 0,
         'Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for lorem ipsum will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).',
         false, 'Okeechobee adventure', 2, 50.0, 2.13, 103, 109);
 INSERT INTO fishing_adventure
-VALUES (112, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0,
+VALUES (112, 0,
         'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don''t look even slightly believable.',
         false, 'Hartwell adventure', 2, 50.0, 3.38, 104, 109);
 
@@ -493,27 +493,27 @@ VALUES (103, true, '', 'homeOwner3@gmail.com', false, NULL, 'Beverly',
 --
 
 INSERT INTO vacation_home
-VALUES (101, '2021-12-10 21:55:01.501', '2021-12-10 21:55:01.501', 0,
+VALUES (101, 0,
         ' Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).',
         false, 'Lakeview Cottage', 2, 50.0, 3.89, 101, 101);
 INSERT INTO vacation_home
-VALUES (102, '2021-12-10 21:55:01.501', '2021-12-10 21:55:01.501', 0,
+VALUES (102, 0,
         ' Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).',
         false, 'Villa Madam', 2, 50.0, 4.5, 102, 101);
 INSERT INTO vacation_home
-VALUES (103, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0,
+VALUES (103, 0,
         ' Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).',
         false, 'Winter Acres', 2, 50.0, 3.25, 107, 102);
 INSERT INTO vacation_home
-VALUES (104, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0,
+VALUES (104, 0,
         ' Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).',
         false, 'Eagle Cascades', 2, 50.0, 2.5, 108, 102);
 INSERT INTO vacation_home
-VALUES (105, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0,
+VALUES (105, 0,
         ' Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).',
         false, 'Green Palace', 2, 50.0, 4.92, 109, 103);
 INSERT INTO vacation_home
-VALUES (106, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0,
+VALUES (106, 0,
         ' Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).',
         false, 'Coast House', 2, 50.0, 1.5, 110, 103);
 
@@ -526,3 +526,44 @@ VALUES (106, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0,
 --
 -- Name: additional_service_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
+
+
+--
+-- Name: availability_date_range; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+INSERT INTO availability_date_range
+VALUES (101, '2022-01-03 20:11:52.452', '2022-01-15 20:11:52.452', 101);
+INSERT INTO availability_date_range
+VALUES (102, '2022-01-03 20:11:52.452', '2022-01-15 20:11:52.452', 102);
+INSERT INTO availability_date_range
+VALUES (103, '2022-01-03 20:11:52.452', '2022-01-15 20:11:52.452', 103);
+INSERT INTO availability_date_range
+VALUES (104, '2022-01-03 20:11:52.452', '2022-01-15 20:11:52.452', 104);
+INSERT INTO availability_date_range
+VALUES (105, '2022-01-03 20:11:52.452', '2022-01-15 20:11:52.452', 105);
+INSERT INTO availability_date_range
+VALUES (106, '2022-01-03 20:11:52.452', '2022-01-15 20:11:52.452', 106);
+INSERT INTO availability_date_range
+VALUES (107, '2022-01-03 20:11:52.452', '2022-01-15 20:11:52.452', 107);
+INSERT INTO availability_date_range
+VALUES (108, '2022-01-03 20:11:52.452', '2022-01-15 20:11:52.452', 108);
+INSERT INTO availability_date_range
+VALUES (109, '2022-01-03 20:11:52.452', '2022-01-15 20:11:52.452', 109);
+INSERT INTO availability_date_range
+VALUES (110, '2022-01-03 20:11:52.452', '2022-01-15 20:11:52.452', 110);
+INSERT INTO availability_date_range
+VALUES (111, '2022-01-03 20:11:52.452', '2022-01-15 20:11:52.452', 111);
+INSERT INTO availability_date_range
+VALUES (112, '2022-01-03 20:11:52.452', '2022-01-15 20:11:52.452', 112);
+INSERT INTO availability_date_range
+VALUES (113, '2022-01-03 20:11:52.452', '2022-01-15 20:11:52.452', 113);
+INSERT INTO availability_date_range
+VALUES (114, '2022-01-03 20:11:52.452', '2022-01-15 20:11:52.452', 114);
+INSERT INTO availability_date_range
+VALUES (115, '2022-01-03 20:11:52.452', '2022-01-15 20:11:52.452', 115);
+INSERT INTO availability_date_range
+VALUES (116, '2022-01-03 20:11:52.452', '2022-01-15 20:11:52.452', 116);
+INSERT INTO availability_date_range
+VALUES (117, '2022-01-03 20:11:52.452', '2022-01-15 20:11:52.452', 117);
+INSERT INTO availability_date_range
+VALUES (118, '2022-01-03 20:11:52.452', '2022-01-15 20:11:52.452', 118);

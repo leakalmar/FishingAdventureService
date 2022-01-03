@@ -1,7 +1,6 @@
 package isa.FishingAdventure.model;
 
 import javax.persistence.*;
-import java.util.Date;
 import java.util.Set;
 
 import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
@@ -46,12 +45,6 @@ public abstract class ServiceProfile {
 
     @Column(name = "persons", nullable = false)
     private int persons;
-
-    @Column(name = "availabilityStart", nullable = false)
-    private Date availabilityStart;
-
-    @Column(name = "availabilityEnd", nullable = false)
-    private Date availabilityEnd;
 
     @Column(name = "price_per_day", nullable = false)
     private double pricePerDay;
@@ -168,22 +161,6 @@ public abstract class ServiceProfile {
 
     public void setPersons(int persons) {
         this.persons = persons;
-    }
-
-    public Date getAvailabilityStart() {
-        return availabilityStart;
-    }
-
-    public void setAvailabilityStart(Date availabilityStart) {
-        this.availabilityStart = availabilityStart;
-    }
-
-    public Date getAvailabilityEnd() {
-        return availabilityEnd;
-    }
-
-    public void setAvailabilityEnd(Date availabilityEnd) {
-        this.availabilityEnd = availabilityEnd;
     }
 
     public double getPricePerDay() {

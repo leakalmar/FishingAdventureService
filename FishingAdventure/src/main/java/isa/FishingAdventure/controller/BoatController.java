@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -125,8 +124,6 @@ public class BoatController {
         boat.setLength(dto.getLength());
         boat.setMotorNumber(dto.getMotorNumber());
         boat.setMotorPower(dto.getMotorPower());
-        boat.setAvailabilityEnd(new Date());
-        boat.setAvailabilityStart(new Date());
         boat.setAppointments(new HashSet<Appointment>());
         boat.setImages(new HashSet<Image>());
         boat.setRating(0.0);
@@ -159,8 +156,6 @@ public class BoatController {
     public ResponseEntity<NewBoatDto> updatePriceAndDates(@PathVariable String id, @RequestBody NewBoatDto dto) {
         Boat oldBoat = boatService.getById(Integer.parseInt(id));
         oldBoat.setPricePerDay(dto.getPricePerDay());
-        oldBoat.setAvailabilityStart(dto.getAvailabilityStart());
-        oldBoat.setAvailabilityEnd(dto.getAvailabilityEnd());
         boatService.save(oldBoat);
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }

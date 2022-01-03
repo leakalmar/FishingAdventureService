@@ -1,6 +1,5 @@
 package isa.FishingAdventure.service;
 
-import isa.FishingAdventure.model.Appointment;
 import isa.FishingAdventure.model.VacationHome;
 import isa.FishingAdventure.model.VacationHomeOwner;
 import isa.FishingAdventure.repository.VacationHomeRepository;
@@ -46,27 +45,28 @@ public class VacationHomeService {
     }
 
     public List<VacationHome> findAllAvailableVacationHomes(Date start, Date end, int persons) {
-        boolean available = true;
-        ArrayList<VacationHome> availableVacationHomes = new ArrayList<VacationHome>();
-        for(VacationHome vh : findAllNonDeleted()){
-            available = true;
-            if (start.after(vh.getAvailabilityStart()) && start.before(vh.getAvailabilityEnd()) && end.before(vh.getAvailabilityEnd())
-                && persons <= vh.getPersons()){
-                for(Appointment ap : vh.getAppointments()){
-                    if(start.after(ap.getStartDate()) || start.before(ap.getEndDate()) || end.before(ap.getEndDate())) {
-                        available = false;
-                        break;
-                    }
-                    System.out.println("Ovde");
-                }
-            } else{
-                available = false;
-            }
-            System.out.println(available);
-            if(available)
-                availableVacationHomes.add(vh);
-        }
-
-        return availableVacationHomes;
+//        boolean available = true;
+//        ArrayList<VacationHome> availableVacationHomes = new ArrayList<VacationHome>();
+//        for(VacationHome vh : findAllNonDeleted()){
+//            available = true;
+//            if (start.after(vh.getAvailabilityStart()) && start.before(vh.getAvailabilityEnd()) && end.before(vh.getAvailabilityEnd())
+//                && persons <= vh.getPersons()){
+//                for(Appointment ap : vh.getAppointments()){
+//                    if(start.after(ap.getStartDate()) || start.before(ap.getEndDate()) || end.before(ap.getEndDate())) {
+//                        available = false;
+//                        break;
+//                    }
+//                    System.out.println("Ovde");
+//                }
+//            } else{
+//                available = false;
+//            }
+//            System.out.println(available);
+//            if(available)
+//                availableVacationHomes.add(vh);
+//        }
+//
+//        return availableVacationHomes;
+        return new ArrayList<>();
     }
 }

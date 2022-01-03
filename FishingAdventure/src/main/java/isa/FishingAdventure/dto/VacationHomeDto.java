@@ -58,8 +58,6 @@ public class VacationHomeDto {
             }
         }
         this.persons = home.getPersons();
-        this.availabilityStart = home.getAvailabilityStart();
-        this.availabilityEnd = home.getAvailabilityEnd();
         this.vacationHomeOwner = home.getVacationHomeOwner();
         this.pricePerDay = home.getPricePerDay();
     }
