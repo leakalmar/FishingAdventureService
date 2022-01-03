@@ -115,6 +115,11 @@ const routes = [{
     component: () =>
         import ('../views/CottageProfile.vue')
 }, {
+    path: '/boat',
+    name: 'BoatProfile',
+    component: () =>
+        import ('../views/BoatProfile.vue')
+}, {
     path: '/admin/profile',
     name: 'AdminProfile',
     component: () =>
@@ -144,6 +149,20 @@ const routes = [{
     name: 'InstructorSpecialOffers',
     component: () =>
         import ('../views/InstructorSpecialOffers.vue')
+}, {
+    path: '/boats',
+    name: 'MyBoats',
+    component: () =>
+        import ('../views/MyBoats.vue'),
+    beforeEnter: (to, from, next) => {
+        checkAuthentification().then(response => {
+            if (response != "ROLE_BOAT_OWNER") {
+                next("/")
+            } else {
+                next();
+            }
+        })
+    }
 }]
 const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),

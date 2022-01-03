@@ -121,7 +121,7 @@ export default {
           }
 
           let address = {
-            street: this.street + this.street_number,
+            street: this.street_number + " " + this.street,
             city: this.city,
             postal_code: this.postal_code,
             country: this.country,

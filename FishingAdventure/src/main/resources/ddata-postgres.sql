@@ -7,6 +7,8 @@ INSERT INTO additional_service
 VALUES (102, 'Air conditioner', 2);
 INSERT INTO additional_service
 VALUES (103, 'Parking', 2);
+INSERT INTO additional_service
+VALUES (104, 'Mini bar', 5);
 
 
 --
@@ -83,6 +85,26 @@ VALUES (110, 31.439867194681277, -97.74321707227516, 110);
 --
 -- Data for Name: boat_navigation_equipment; Type: TABLE DATA; Schema: public; Owner: postgres
 --
+
+-- Data for Name: fishing_equipment; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+INSERT INTO fishing_equipment
+VALUES (101, 'Fishing rod');
+INSERT INTO fishing_equipment
+VALUES (102, 'Fishing net');
+INSERT INTO fishing_equipment
+VALUES (103, 'Small fishing set');
+
+
+
+--
+-- Data for Name: navigation_equipment; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+INSERT INTO navigation_equipment
+VALUES (101, 'GPS');
+INSERT INTO navigation_equipment
+VALUES (102, 'Fish finder');
+
 
 
 --
@@ -173,6 +195,28 @@ VALUES (118, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0,
 
 
 --
+-- Data for Name: boat_navigation_equipment; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO boat_navigation_equipment
+VALUES (113, 101);
+INSERT INTO boat_navigation_equipment
+VALUES (113, 102);
+
+
+--
+-- Data for Name: boat_fishing_equipment; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO boat_fishing_equipment
+VALUES (113, 101);
+INSERT INTO boat_fishing_equipment
+VALUES (113, 102);
+INSERT INTO boat_fishing_equipment
+VALUES (113, 103);
+
+
+--
 -- Data for Name: client; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -223,7 +267,8 @@ VALUES (107, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0,
         'All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet.',
         false, 'Tahoe adventure', 2, 50.0, 2.58, 108, 107);
 INSERT INTO fishing_adventure
-VALUES (108, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0, 'The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.',
+VALUES (108, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0,
+        'The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.',
         false, 'Nevada adventure', 2, 50.0, 4.58, 105, 107);
 INSERT INTO fishing_adventure
 VALUES (109, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0,
@@ -250,50 +295,45 @@ VALUES (112, '2021-12-10 20:11:52.452', '2021-12-10 20:11:52.452', 0,
 
 
 --
--- Data for Name: fishing_equipment; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-
---
 -- Data for Name: image; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 INSERT INTO image
-VALUES (101, false, 'c1.jpg');
+VALUES (101, true, 'c1.jpg');
 INSERT INTO image
-VALUES (102, false, 'c3.jpg');
+VALUES (102, true, 'c3.jpg');
 INSERT INTO image
-VALUES (103, false, 'c11.jpg');
+VALUES (103, true, 'c11.jpg');
 INSERT INTO image
-VALUES (104, false, 'c12.jpg');
+VALUES (104, true, 'c12.jpg');
 INSERT INTO image
-VALUES (105, false, 'c13.jpg');
+VALUES (105, true, 'c13.jpg');
 INSERT INTO image
-VALUES (106, false, 'c14.jpg');
+VALUES (106, true, 'c14.jpg');
 INSERT INTO image
-VALUES (107, false, 'fa5.jpg');
+VALUES (107, true, 'fa5.jpg');
 INSERT INTO image
-VALUES (108, false, 'fa6.jpg');
+VALUES (108, true, 'fa6.jpg');
 INSERT INTO image
-VALUES (109, false, 'fa7.jpg');
+VALUES (109, true, 'fa7.jpg');
 INSERT INTO image
-VALUES (110, false, 'fa8.jpg');
+VALUES (110, true, 'fa8.jpg');
 INSERT INTO image
-VALUES (111, false, 'fa11.jpg');
+VALUES (111, true, 'fa11.jpg');
 INSERT INTO image
-VALUES (112, false, 'fa12.jpg');
+VALUES (112, true, 'fa12.jpg');
 INSERT INTO image
-VALUES (113, false, 'b10.jpg');
+VALUES (113, true, 'b10.jpg');
 INSERT INTO image
-VALUES (114, false, 'b1.jpg');
+VALUES (114, true, 'b1.jpg');
 INSERT INTO image
-VALUES (115, false, 'b2.jpg');
+VALUES (115, true, 'b2.jpg');
 INSERT INTO image
-VALUES (116, false, 'b3.jpg');
+VALUES (116, true, 'b3.jpg');
 INSERT INTO image
-VALUES (117, false, 'b5.jpg');
+VALUES (117, true, 'b5.jpg');
 INSERT INTO image
-VALUES (118, false, 'b6.jpg');
+VALUES (118, true, 'b6.jpg');
 INSERT INTO image
 VALUES (119, false, 'c16.jpg');
 INSERT INTO image
@@ -310,12 +350,6 @@ VALUES (123, false, 'c16-5.jpg');
 --
 -- Data for Name: navigation_eq_in_boat; Type: TABLE DATA; Schema: public; Owner: postgres
 --
-
-
---
--- Data for Name: navigation_equipment; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
 
 --
 -- Data for Name: reservation; Type: TABLE DATA; Schema: public; Owner: postgres
@@ -363,6 +397,8 @@ INSERT INTO service_profile_additional_services
 VALUES (102, 102);
 INSERT INTO service_profile_additional_services
 VALUES (102, 103);
+INSERT INTO service_profile_additional_services
+VALUES (113, 104);
 
 
 --
@@ -429,6 +465,8 @@ INSERT INTO service_profile_rules
 VALUES (102, 102);
 INSERT INTO service_profile_rules
 VALUES (102, 103);
+INSERT INTO service_profile_rules
+VALUES (113, 103);
 
 --
 -- Data for Name: subscriptions; Type: TABLE DATA; Schema: public; Owner: postgres

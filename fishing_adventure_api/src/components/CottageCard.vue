@@ -46,28 +46,6 @@
                 >
                   Available:
                   <Datepicker
-                    v-if="path == 'mycottages'"
-                    style="
-                      margin-left: 2%;
-                      margin-top: 2%;
-                      border: 1px solid white;
-                      border-radius: 5px;
-                      width: 100%;
-                      box-shadow: none !important;
-                    "
-                    dark
-                    id="picker"
-                    v-model="date"
-                    range
-                    :partialRange="false"
-                    placeholder="Select date"
-                    :enableTimePicker="true"
-                    minutesIncrement="15"
-                    :minDate="new Date()"
-                    v-on:click="preventPropagation"
-                  ></Datepicker>
-                  <Datepicker
-                    v-if="path != 'mycottages'"
                     style="
                       margin-left: 2%;
                       margin-top: 2%;
@@ -109,6 +87,7 @@
                 {{ entity.location.address.country }}
               </p>
               <p
+                v-if="path != 'mycottages'"
                 class="shadow-none"
                 style="
                   margin: 0;
@@ -116,7 +95,21 @@
                   margin-left: auto;
                   font-size: x-large;
                 "
-              ></p>
+              >
+                ${{ entity.pricePerDay }}/day
+              </p>
+              <p
+                v-if="path == 'mycottages'"
+                class="shadow-none"
+                style="
+                  margin: 0;
+                  text-align: right;
+                  margin-left: auto;
+                  font-size: x-large;
+                "
+              >
+                ${{ entity.pricePerDay }}/day
+              </p>
             </div>
             
           </div>
@@ -175,14 +168,13 @@ export default {
       event.stopPropagation();
     },
     deleteCottage: function () {
-      alert(this.entity.id);
       axios
         .get(
           "http://localhost:8080/vacationHome/deleteHome/" + this.entity.id,
           {
             headers: {
               "Access-Control-Allow-Origin": "http://localhost:8080",
-              Authorization: "Bearer " + localStorage.jwt,
+              Authorization: "Bearer " + localStorage.refreshToken,
             },
           }
         )
