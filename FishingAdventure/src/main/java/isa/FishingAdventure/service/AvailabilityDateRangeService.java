@@ -1,7 +1,8 @@
 package isa.FishingAdventure.service;
 
 import isa.FishingAdventure.model.AvailabilityDateRange;
-import isa.FishingAdventure.repository.AvailabilityDateRepository;
+import isa.FishingAdventure.model.ServiceProfile;
+import isa.FishingAdventure.repository.AvailabilityDateRangeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,21 +12,25 @@ import java.util.List;
 public class AvailabilityDateRangeService {
 
     @Autowired
-    private AvailabilityDateRepository availabilityDateRepository;
+    private AvailabilityDateRangeRepository repository;
 
     public List<AvailabilityDateRange> getAllByServiceProfileId(int id) {
-        return availabilityDateRepository.getAllByServiceProfileId(id);
+        return repository.getAllByServiceProfileId(id);
     }
 
     public AvailabilityDateRange getById(int id) {
-        return availabilityDateRepository.getById(id);
+        return repository.getById(id);
     }
 
     public AvailabilityDateRange save(AvailabilityDateRange date) {
-        return availabilityDateRepository.save(date);
+        return repository.save(date);
     }
 
     public void delete(int id) {
-        availabilityDateRepository.deleteById(id);
+        repository.deleteById(id);
+    }
+
+    public List<AvailabilityDateRange> findByServiceProfile(ServiceProfile serviceProfile){
+        return repository.findByServiceProfile(serviceProfile);
     }
 }
