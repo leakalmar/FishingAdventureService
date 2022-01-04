@@ -11,4 +11,6 @@ import java.util.List;
 public interface AvailabilityDateRangeRepository extends JpaRepository<AvailabilityDateRange, Integer> {
 
     List<AvailabilityDateRange> findByServiceProfile(ServiceProfile serviceProfile);
+
+    List<AvailabilityDateRange> getAllByServiceProfileId(Integer id);
 }
