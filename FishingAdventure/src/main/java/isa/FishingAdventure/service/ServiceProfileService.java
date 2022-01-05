@@ -23,7 +23,11 @@ public class ServiceProfileService {
         return profileRepository.getById(id);
     }
 
-    public void save(ServiceProfile profileService) {
-        profileRepository.save(profileService);
+    public ServiceProfile getByName(String name) {
+        return profileRepository.getByName(name);
+    }
+
+    public void save(ServiceProfile profile) {
+        profileRepository.save(profile);
     }
 }

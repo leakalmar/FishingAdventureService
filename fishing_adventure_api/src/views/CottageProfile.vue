@@ -19,7 +19,11 @@
         <button class="subscribe-btn" v-if="!subscribed" v-on:click="subscribe">
           <i class="fas fa-bell" style="margin-right: 2rem"></i> Subscribe
         </button>
-        <button class="unsubscribe-btn" v-if="subscribed" v-on:click="unsubscribe">
+        <button
+          class="unsubscribe-btn"
+          v-if="subscribed"
+          v-on:click="unsubscribe"
+        >
           <i class="far fa-bell-slash" style="margin-right: 2rem"></i>
           Unsubscribe
         </button>
@@ -232,9 +236,16 @@
 
       <div class="special-offers-fa">
         <div class="so-title-fa">
-          <h2>Special Offers</h2>
+          <h2 style="margin-top: 2rem">Special Offers</h2>
         </div>
       </div>
+
+      <SpecialOffersCardNoImage
+        v-for="offer of offers"
+        :key="offer.offerId"
+        :offer="offer"
+        :loggedInRole="loggedInRole"
+      ></SpecialOffersCardNoImage>
 
       <div class="special-offers-fa">
         <div class="so-title-fa">
@@ -288,10 +299,12 @@
 <script>
 import axios from "axios";
 import ReservationModal from "@/components/ReservationModal.vue";
+import SpecialOffersCardNoImage from "@/components/SpecialOffersCardNoImage.vue";
 export default {
-  components: { ReservationModal },
+  components: { ReservationModal, SpecialOffersCardNoImage },
   data: function () {
     return {
+      offers: "",
       subscribed: false,
       loggedInRole: "",
       date: [],
@@ -335,38 +348,56 @@ export default {
         this.isSubscribed();
       });
 
-    console.log(this.$route.query.id);
-    this.date = this.$route.query.date;
-    this.persons = this.$route.query.persons;      
+    if (this.$route.query.id != undefined) {
+      console.log(this.$route.query.id);
+      this.date = this.$route.query.date;
+      this.persons = this.$route.query.persons;
+    }
+    axios
+      .get(
+        "http://localhost:8080/vacationHome/getServiceOffersById/" +
+          this.$route.query.id,
+        {
+          headers: {
+            "Access-Control-Allow-Origin": "http://localhost:8080",
+            Authorization: "Bearer " + localStorage.refreshToken,
+          },
+        }
+      )
+      .then((response) => {
+        this.offers = response.data;
+      });
   },
   name: "FishingAdventure",
   methods: {
-    isSubscribed: function() {
+    isSubscribed: function () {
       axios
-      .get("http://localhost:8080/users/getRole", {
-        headers: {
-          "Access-Control-Allow-Origin": "http://localhost:8080",
-          Authorization: "Bearer " + localStorage.refreshToken,
-        },
-      })
-      .then((res) => {
-        this.loggedInRole = res.data;
-      })
-      .finally(() => {
-          if(this.loggedInRole == 'ROLE_CLIENT') {
+        .get("http://localhost:8080/users/getRole", {
+          headers: {
+            "Access-Control-Allow-Origin": "http://localhost:8080",
+            Authorization: "Bearer " + localStorage.refreshToken,
+          },
+        })
+        .then((res) => {
+          this.loggedInRole = res.data;
+        })
+        .finally(() => {
+          if (this.loggedInRole == "ROLE_CLIENT") {
             axios
-            .get("http://localhost:8080/client/isSubscribed/" + this.entity.id, 
-            {
-              headers: {
-                "Access-Control-Allow-Origin": "http://localhost:8080",
-                Authorization: "Bearer " + localStorage.refreshToken,
-              },
-            })
-            .then((res) => {
-              this.subscribed = res.data;
-            });
+              .get(
+                "http://localhost:8080/client/isSubscribed/" + this.entity.id,
+                {
+                  headers: {
+                    "Access-Control-Allow-Origin": "http://localhost:8080",
+                    Authorization: "Bearer " + localStorage.refreshToken,
+                  },
+                }
+              )
+              .then((res) => {
+                this.subscribed = res.data;
+              });
           }
-      });
+        });
     },
     changeMenuDisplay: function (event) {
       let elID = event.currentTarget.id;
@@ -404,36 +435,28 @@ export default {
         document.querySelector(".menu-pl-fa").style.display = "none";
       }
     },
-    subscribe: function() {
+    subscribe: function () {
       axios
-        .get(
-          "http://localhost:8080/client/subscribe/" + this.entity.id,
-          {
-            headers: {
-              "Access-Control-Allow-Origin": "http://localhost:8080",
-              Authorization: "Bearer " + localStorage.refreshToken,
-            },
-          }
-        )
+        .get("http://localhost:8080/client/subscribe/" + this.entity.id, {
+          headers: {
+            "Access-Control-Allow-Origin": "http://localhost:8080",
+            Authorization: "Bearer " + localStorage.refreshToken,
+          },
+        })
         .then((res) => {
-          if(res.data == true)
-            this.subscribed = true;
+          if (res.data == true) this.subscribed = true;
         });
     },
-    unsubscribe: function() {
+    unsubscribe: function () {
       axios
-        .get(
-          "http://localhost:8080/client/unsubscribe/" + this.entity.id,
-          {
-            headers: {
-              "Access-Control-Allow-Origin": "http://localhost:8080",
-              Authorization: "Bearer " + localStorage.refreshToken,
-            },
-          }
-        )
+        .get("http://localhost:8080/client/unsubscribe/" + this.entity.id, {
+          headers: {
+            "Access-Control-Allow-Origin": "http://localhost:8080",
+            Authorization: "Bearer " + localStorage.refreshToken,
+          },
+        })
         .then((res) => {
-          if(res.data == true)
-            this.subscribed = false;
+          if (res.data == true) this.subscribed = false;
         });
     },
   },
