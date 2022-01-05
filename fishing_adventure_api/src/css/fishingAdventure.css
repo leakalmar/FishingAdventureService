@@ -379,3 +379,61 @@
     margin: 5px;
     text-align: center;
 }
+
+.subscribe-btn {
+    background-color: rgb(201 189 20);
+    padding: 10px 27px;
+    border: 0;
+    border-radius: 23px;
+    font-size: 22px;
+    color: white;
+    border: 2px solid rgb(201 189 20);
+    margin-top: 5px;
+    width: 5rem;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.subscribe-btn:hover {
+    cursor: pointer;
+    width: 13rem;
+    background-color: white;
+    color: rgb(201 189 20);
+    transition: 0.5s;
+}
+
+.tagline-subscribe-fa {
+    position: absolute;
+    color: white;
+    top: 0em;
+    left: 69%;
+    font-size: 26px;
+    padding: 0.7em 1.2em;
+    border-radius: 20px;
+}
+
+.tagline-subscribe-fa h2:hover {
+    cursor: default;
+}
+
+.unsubscribe-btn {
+    background-color: rgb(201 189 20);
+    padding: 10px 27px;
+    border: 0;
+    border-radius: 23px;
+    font-size: 22px;
+    color: white;
+    border: 2px solid rgb(201 189 20);
+    margin-top: 5px;
+    width: 5rem;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.unsubscribe-btn:hover {
+    cursor: pointer;
+    width: 14rem;
+    background-color: white;
+    color: rgb(201 189 20);
+    transition: 0.5s;
+}

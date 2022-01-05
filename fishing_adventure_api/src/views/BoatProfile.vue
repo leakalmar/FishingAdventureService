@@ -2,12 +2,21 @@
   <div class="fa-page">
     <div class="main-img-fa">
       <img src="@/assets/b3.jpg" alt="" />
-      <div class="tagline-fa">
+      <div class="tagline-fa" v-if="loggedInRole == 'ROLE_CLIENT'">
         <h2>
           Enjoy in your boat <br />
           today!
         </h2>
         <button class="book-btn">Book a boat</button>
+      </div>
+      <div class="tagline-subscribe-fa" v-if="loggedInRole == 'ROLE_CLIENT'">
+        <button class="subscribe-btn" v-if="!subscribed">
+          <i class="fas fa-bell" style="margin-right: 2rem"></i> Subscribe
+        </button>
+        <button class="unsubscribe-btn" v-if="subscribed">
+          <i class="far fa-bell-slash" style="margin-right: 2rem"></i>
+          Unsubscribe
+        </button>
       </div>
     </div>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-info">
@@ -285,6 +294,8 @@ import axios from "axios";
 export default {
   data: function () {
     return {
+      subscribed: false,
+      loggedInRole: "",
       entity: "",
       address: "",
       location: "",
@@ -303,6 +314,18 @@ export default {
   mounted() {
     window.scrollTo(0, 0);
     console.log(this.$route.query.id);
+
+    axios
+      .get("http://localhost:8080/users/getRole", {
+        headers: {
+          "Access-Control-Allow-Origin": "http://localhost:8080",
+          Authorization: "Bearer " + localStorage.refreshToken,
+        },
+      })
+      .then((res) => {
+        this.loggedInRole = res.data;
+      });
+
     axios
       .get("http://localhost:8080/boat/" + this.$route.query.id, {
         headers: {

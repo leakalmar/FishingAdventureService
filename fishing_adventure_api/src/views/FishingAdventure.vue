@@ -2,12 +2,21 @@
   <div class="fa-page">
     <div class="main-img-fa">
       <img src="@/assets/fa7.jpg" alt="" />
-      <div class="tagline-fa">
+      <div class="tagline-fa" v-if="loggedInRole == 'ROLE_CLIENT'">
         <h2>
           Start your adventure <br />
           today!
         </h2>
         <button class="book-btn">Book an adventure</button>
+      </div>
+      <div class="tagline-subscribe-fa" v-if="loggedInRole == 'ROLE_CLIENT'">
+        <button class="subscribe-btn" v-if="!subscribed">
+          <i class="fas fa-bell" style="margin-right: 2rem"></i> Subscribe
+        </button>
+        <button class="unsubscribe-btn" v-if="subscribed">
+          <i class="far fa-bell-slash" style="margin-right: 2rem"></i>
+          Unsubscribe
+        </button>
       </div>
     </div>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-info">
@@ -70,7 +79,7 @@
               </li>
 
               <li>
-               <i class="fas fa-circle ei-circle"></i>
+                <i class="fas fa-circle ei-circle"></i>
                 A fishing line
               </li>
               <li>
@@ -105,31 +114,33 @@
           <div class="loc-info">
             <h5>Bulevar Evrope 20</h5>
             <h5>Novi Sad</h5>
-            <h5> 45.24621, 19.81873</h5>
+            <h5>45.24621, 19.81873</h5>
           </div>
 
           <div class="map-fa">
             <GMapMap
-            :center="center"
-            :zoom="13"
-            :options="{
-                      zoomControl: true,
-                      mapTypeControl: false,
-                      scaleControl: true,
-                      streetViewControl: false,
-                      rotateControl: true,
-                      fullscreenControl: true,
-                }"
-            map-type-id="terrain"
-            style="width: 100%; height: 150px;">
+              :center="center"
+              :zoom="13"
+              :options="{
+                zoomControl: true,
+                mapTypeControl: false,
+                scaleControl: true,
+                streetViewControl: false,
+                rotateControl: true,
+                fullscreenControl: true,
+              }"
+              map-type-id="terrain"
+              style="width: 100%; height: 150px"
+            >
               <GMapCluster>
                 <GMapMarker
-                    :key="index"
-                    v-for="(m, index) in markers"
-                    :position="m.position"
-                    :clickable="false"
-                    :draggable="false"
-                    @click="center=m.position"/>
+                  :key="index"
+                  v-for="(m, index) in markers"
+                  :position="m.position"
+                  :clickable="false"
+                  :draggable="false"
+                  @click="center = m.position"
+                />
               </GMapCluster>
             </GMapMap>
           </div>
@@ -265,7 +276,7 @@
         <div class="so-title-fa">
           <h2>Special Offers</h2>
         </div>
-          <p style="font-size:24px">There are no special offers currently</p>
+        <p style="font-size: 24px">There are no special offers currently</p>
       </div>
 
       <div class="special-offers-fa">
@@ -288,10 +299,10 @@
                 align-content: center;
               "
             >
-                <i class="fas fa-star rev-star"></i>
-                <i class="fas fa-star rev-star"></i>
-                <i class="fas fa-star rev-star"></i>
-                <i class="fas fa-star rev-star"></i>
+              <i class="fas fa-star rev-star"></i>
+              <i class="fas fa-star rev-star"></i>
+              <i class="fas fa-star rev-star"></i>
+              <i class="fas fa-star rev-star"></i>
             </div>
           </div>
           <p>
@@ -309,19 +320,35 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "FishingAdventure",
   data() {
     return {
-      center: {lat: 45.24621, lng: 19.81873},
+      subscribed: false,
+      loggedInRole: "",
+      center: { lat: 45.24621, lng: 19.81873 },
       markers: [
         {
           position: {
-            lat: 45.24621, lng: 19.81873
+            lat: 45.24621,
+            lng: 19.81873,
           },
-        }
-      ]
-    }
+        },
+      ],
+    };
+  },
+  mounted() {
+    axios
+      .get("http://localhost:8080/users/getRole", {
+        headers: {
+          "Access-Control-Allow-Origin": "http://localhost:8080",
+          Authorization: "Bearer " + localStorage.refreshToken,
+        },
+      })
+      .then((res) => {
+        this.loggedInRole = res.data;
+      });
   },
   methods: {
     changeMenuDisplay: function (event) {

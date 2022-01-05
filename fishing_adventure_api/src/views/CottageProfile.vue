@@ -2,14 +2,27 @@
   <div class="fa-page">
     <div class="main-img-fa">
       <img src="@/assets/c16.jpg" alt="" />
-      <div class="tagline-fa">
+      <div class="tagline-fa" v-if="loggedInRole == 'ROLE_CLIENT'">
         <h2>
           Enjoy in your cottage <br />
           today!
         </h2>
-        <button data-bs-toggle="modal"
-                :data-bs-target="'#cottage'"
-        class="book-btn">Book a cottage</button>
+        <button
+          data-bs-toggle="modal"
+          :data-bs-target="'#cottage'"
+          class="book-btn"
+        >
+          Book a cottage
+        </button>
+      </div>
+      <div class="tagline-subscribe-fa" v-if="loggedInRole == 'ROLE_CLIENT'">
+        <button class="subscribe-btn" v-if="!subscribed">
+          <i class="fas fa-bell" style="margin-right: 2rem"></i> Subscribe
+        </button>
+        <button class="unsubscribe-btn" v-if="subscribed">
+          <i class="far fa-bell-slash" style="margin-right: 2rem"></i>
+          Unsubscribe
+        </button>
       </div>
     </div>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-info">
@@ -261,7 +274,15 @@
       </div>
     </div>
   </div>
-  <ReservationModal :id="'cottage'" v-bind:cottageId="entity.id" v-bind:date="date" v-bind:persons="persons" v-bind:additionalServices="entity.additionalServices" v-bind:price="entity.pricePerDay"></ReservationModal>
+  <ReservationModal
+    :id="'cottage'"
+    v-bind:cottageId="entity.id"
+    v-bind:date="date"
+    v-bind:persons="persons"
+    v-bind:additionalServices="entity.additionalServices"
+    v-bind:price="entity.pricePerDay"
+    v-if="loggedInRole == 'ROLE_CLIENT'"
+  ></ReservationModal>
 </template>
 
 <script>
@@ -271,6 +292,8 @@ export default {
   components: { ReservationModal },
   data: function () {
     return {
+      subscribed: false,
+      loggedInRole: "",
       date: [],
       persons: 0,
       entity: "",
@@ -290,9 +313,22 @@ export default {
   },
   mounted() {
     window.scrollTo(0, 0);
+
+    axios
+      .get("http://localhost:8080/users/getRole", {
+        headers: {
+          "Access-Control-Allow-Origin": "http://localhost:8080",
+          Authorization: "Bearer " + localStorage.refreshToken,
+        },
+      })
+      .then((res) => {
+        this.loggedInRole = res.data;
+      });
+
+    console.log(this.$route.query.id);
     this.date = this.$route.query.date;
     this.persons = this.$route.query.persons;
-    
+
     axios
       .get("http://localhost:8080/vacationHome/" + this.$route.query.id, {
         headers: {
@@ -305,8 +341,8 @@ export default {
         this.address = response.data.location.address;
         this.location = response.data.location;
         (this.center.lat = response.data.location.latitude),
-        (this.center.lng = response.data.location.longitude),
-        (this.markers[0].position.lat = response.data.location.latitude);
+          (this.center.lng = response.data.location.longitude),
+          (this.markers[0].position.lat = response.data.location.latitude);
         this.markers[0].position.lng = response.data.location.longitude;
         console.log(response.data);
       });

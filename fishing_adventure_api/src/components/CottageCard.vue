@@ -134,13 +134,17 @@ export default {
 
   methods: {
     openCottage: function () {
-      window.location.href =
-        "/cottage/?id=" +
-        this.entity.id +
-        "&date=" +
-        this.info.date +
-        "&persons=" +
-        this.info.persons;
+      if (this.path == "searchcottages") {
+        window.location.href =
+          "/cottage/?id=" +
+          this.entity.id +
+          "&date=" +
+          this.info.date +
+          "&persons=" +
+          this.info.persons;
+      } else {
+        window.location.href = "/cottage/?id=" + this.entity.id;
+      }
     },
     preventPropagation: function (event) {
       event.preventDefault();
