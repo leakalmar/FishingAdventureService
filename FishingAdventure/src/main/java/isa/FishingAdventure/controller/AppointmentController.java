@@ -37,6 +37,7 @@ public class AppointmentController {
 
     private Appointment createAppointment(AppointmentDto dto) {
         Appointment newAppointment = new Appointment();
+        newAppointment.setPlace("");
         newAppointment.setDiscount(dto.getDiscount());
         newAppointment.setReserved(false);
         newAppointment.setMaxPersons(dto.getMaxPersons());

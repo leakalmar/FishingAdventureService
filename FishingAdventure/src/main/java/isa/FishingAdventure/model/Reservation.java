@@ -8,23 +8,23 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer reservationId;
 
-    @Column(name = "place", nullable = false)
-    private String place;
+    @OneToOne(targetEntity = Appointment.class, cascade = CascadeType.MERGE)
+    private Appointment appointment;
 
-    @OneToOne(targetEntity = Appointment.class,cascade = CascadeType.MERGE)
-    public Appointment appointment;
+    @ManyToOne(targetEntity = Client.class, cascade = CascadeType.MERGE)
+    private Client client;
 
-    @ManyToOne(targetEntity = Client.class,cascade = CascadeType.MERGE)
-    public Client client;
+    @OneToOne(targetEntity = Review.class, cascade = CascadeType.MERGE)
+    private Review review;
 
-    @OneToOne(targetEntity = Review.class,cascade = CascadeType.MERGE)
-    public Review review;
+    @Column(name = "isCanceled", nullable = false)
+    private Boolean isCanceled;
 
-    public Reservation(Integer reservationId, String place, Appointment appointment, Client client) {
+    public Reservation(Integer reservationId, Appointment appointment, Client client) {
         this.reservationId = reservationId;
-        this.place = place;
         this.appointment = appointment;
         this.client = client;
+        this.isCanceled = false;
     }
 
     public Reservation() {
@@ -36,14 +36,6 @@ public class Reservation {
 
     public void setReservationId(Integer reservationId) {
         this.reservationId = reservationId;
-    }
-
-    public String getPlace() {
-        return this.place;
-    }
-
-    public void setPlace(String place) {
-        this.place = place;
     }
 
     public Appointment getAppointment() {
@@ -62,4 +54,19 @@ public class Reservation {
         this.client = client;
     }
 
+    public Review getReview() {
+        return review;
+    }
+
+    public void setReview(Review review) {
+        this.review = review;
+    }
+
+    public Boolean getCanceled() {
+        return isCanceled;
+    }
+
+    public void setCanceled(Boolean canceled) {
+        isCanceled = canceled;
+    }
 }

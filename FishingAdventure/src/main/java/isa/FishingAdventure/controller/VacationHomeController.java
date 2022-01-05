@@ -227,16 +227,18 @@ public class VacationHomeController {
     private List<AppointmentDto> getAppointmentDtos(VacationHome home) {
         List<AppointmentDto> appointmentDtos = new ArrayList<>();
         for (Appointment appointment : home.getAppointments()) {
-            AppointmentDto dto = new AppointmentDto(appointment);
-            dto.setServiceProfileName(home.getName());
-            dto.setServiceProfileId(home.getId());
-            for (Image img : home.getImages()) {
-                if (img.isCoverImage()) {
-                    dto.setCoverImage(img.getPath());
-                    break;
+            if (!appointment.isReserved()) {
+                AppointmentDto dto = new AppointmentDto(appointment);
+                dto.setServiceProfileName(home.getName());
+                dto.setServiceProfileId(home.getId());
+                for (Image img : home.getImages()) {
+                    if (img.isCoverImage()) {
+                        dto.setCoverImage(img.getPath());
+                        break;
+                    }
                 }
+                appointmentDtos.add(dto);
             }
-            appointmentDtos.add(dto);
         }
         return appointmentDtos;
     }

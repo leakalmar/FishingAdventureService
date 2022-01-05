@@ -11,6 +11,9 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer appointmentId;
 
+    @Column(name = "place", nullable = false)
+    private String place;
+
     @Column(name = "discount", nullable = false)
     private double discount;
 
@@ -64,18 +67,6 @@ public class Appointment {
 
     public void setDiscount(double discount) {
         this.discount = discount;
-    }
-
-    public boolean isIsReserved() {
-        return this.isReserved;
-    }
-
-    public boolean getIsReserved() {
-        return this.isReserved;
-    }
-
-    public void setIsReserved(boolean isReserved) {
-        this.isReserved = isReserved;
     }
 
     public Date getStartDate() {
@@ -132,5 +123,13 @@ public class Appointment {
 
     public void setChosenServices(Set<AdditionalService> chosenServices) {
         this.chosenServices = chosenServices;
+    }
+
+    public String getPlace() {
+        return place;
+    }
+
+    public void setPlace(String place) {
+        this.place = place;
     }
 }

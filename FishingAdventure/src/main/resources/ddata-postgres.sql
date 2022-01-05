@@ -62,9 +62,6 @@ VALUES (109, 38.18147925034275, -81.31890907577667, 109);
 INSERT INTO location
 VALUES (110, 31.439867194681277, -97.74321707227516, 110);
 
---
--- Data for Name: appointment; Type: TABLE DATA; Schema: public; Owner: postgres
---
 
 
 --
@@ -351,10 +348,6 @@ VALUES (123, false, 'c16-5.jpg');
 -- Data for Name: navigation_eq_in_boat; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
---
--- Data for Name: reservation; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
 
 --
 -- Data for Name: reservation_report; Type: TABLE DATA; Schema: public; Owner: postgres
@@ -400,10 +393,6 @@ VALUES (102, 103);
 INSERT INTO service_profile_additional_services
 VALUES (113, 104);
 
-
---
--- Data for Name: service_profile_appointments; Type: TABLE DATA; Schema: public; Owner: postgres
---
 
 
 --
@@ -468,9 +457,6 @@ VALUES (102, 103);
 INSERT INTO service_profile_rules
 VALUES (113, 103);
 
---
--- Data for Name: subscriptions; Type: TABLE DATA; Schema: public; Owner: postgres
---
 
 
 --
@@ -567,3 +553,49 @@ INSERT INTO availability_date_range
 VALUES (117, '2022-01-15 20:11:52.452', '2022-01-03 20:11:52.452', 117);
 INSERT INTO availability_date_range
 VALUES (118, '2022-01-15 20:11:52.452', '2022-01-03 20:11:52.452', 118);
+
+--
+-- Data for Name: subscriptions; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+INSERT INTO client_subscriptions
+VALUES (104, 101);
+INSERT INTO client_subscriptions
+VALUES (104, 113);
+INSERT INTO client_subscriptions
+VALUES (104, 107);
+
+--
+-- Data for Name: appointment; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+INSERT INTO appointment
+VALUES (101, 0, 172800000000000, '2022-01-07 15:44:00', true, 2, '', 50, '2022-01-05 15:44:00');
+INSERT INTO appointment
+VALUES (102, 0, 172800000000000, '2022-01-09 15:44:00', true, 2, '', 50, '2022-01-07 15:44:00');
+INSERT INTO appointment
+VALUES (103, 0, 172800000000000, '2022-01-11 15:44:00', true, 2, '', 50, '2022-01-09 15:44:00');
+INSERT INTO appointment
+VALUES (104, 10, 172800000000000, '2022-01-13 15:44:00', false, 2, '', 44, '2022-01-11 15:44:00');
+
+
+--
+-- Data for Name: service_profile_appointments; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+INSERT INTO service_profile_appointments
+VALUES (101, 101);
+INSERT INTO service_profile_appointments
+VALUES (107, 102);
+INSERT INTO service_profile_appointments
+VALUES (113, 103);
+INSERT INTO service_profile_appointments
+VALUES (101, 104);
+
+
+--
+-- Data for Name: reservation; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+INSERT INTO reservation
+VALUES (101, false, 101, 104, null);
+INSERT INTO reservation
+VALUES (102, false, 102, 104, null);
+INSERT INTO reservation
+VALUES (103, false, 103, 104, null);

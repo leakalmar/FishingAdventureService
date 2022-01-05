@@ -202,16 +202,18 @@ public class BoatController {
     private List<AppointmentDto> getAppointmentDtos(Boat boat) {
         List<AppointmentDto> appointmentDtos = new ArrayList<>();
         for (Appointment appointment : boat.getAppointments()) {
-            AppointmentDto dto = new AppointmentDto(appointment);
-            dto.setServiceProfileName(boat.getName());
-            dto.setServiceProfileId(boat.getId());
-            for (Image img : boat.getImages()) {
-                if (img.isCoverImage()) {
-                    dto.setCoverImage(img.getPath());
-                    break;
+            if (!appointment.isReserved()) {
+                AppointmentDto dto = new AppointmentDto(appointment);
+                dto.setServiceProfileName(boat.getName());
+                dto.setServiceProfileId(boat.getId());
+                for (Image img : boat.getImages()) {
+                    if (img.isCoverImage()) {
+                        dto.setCoverImage(img.getPath());
+                        break;
+                    }
                 }
+                appointmentDtos.add(dto);
             }
-            appointmentDtos.add(dto);
         }
         return appointmentDtos;
     }
