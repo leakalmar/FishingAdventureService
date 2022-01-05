@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.mail.MessagingException;
 import java.time.Duration;
 import java.util.HashSet;
 import java.util.Set;
@@ -28,11 +29,15 @@ public class AppointmentController {
     @PostMapping(value = "/create")
     @PreAuthorize("hasRole('ROLE_VACATION_HOME_OWNER') || hasRole('ROLE_BOAT_OWNER')")
     @Transactional
-    public ResponseEntity<AppointmentDto> create(@RequestBody AppointmentDto dto) {
+    public ResponseEntity<AppointmentDto> create(@RequestBody AppointmentDto dto) throws InterruptedException, MessagingException {
+        ResponseEntity<AppointmentDto> retVal = new ResponseEntity<AppointmentDto>(dto, HttpStatus.BAD_REQUEST);
         Appointment savedAppointment = appointmentService.save(createAppointment(dto));
-        dto.setOfferId(savedAppointment.getAppointmentId());
-        appointmentService.addAppointmentToServiceProfile(dto.getServiceProfileId(), savedAppointment);
-        return new ResponseEntity<>(dto, HttpStatus.OK);
+        Integer appointmentId = appointmentService.createAppointment(savedAppointment, dto.getServiceProfileId());
+        if (appointmentId != null) {
+            dto.setOfferId(appointmentId);
+            retVal = new ResponseEntity<>(dto, HttpStatus.OK);
+        }
+        return retVal;
     }
 
     private Appointment createAppointment(AppointmentDto dto) {

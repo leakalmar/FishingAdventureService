@@ -1,43 +1,44 @@
 package isa.FishingAdventure.service;
 
+import isa.FishingAdventure.security.util.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
-
 import org.springframework.stereotype.Service;
 
-import isa.FishingAdventure.dto.UserDto;
-import isa.FishingAdventure.model.ConfirmationToken;
-import isa.FishingAdventure.security.util.TokenUtils;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 @Service
 public class EmailService {
 
-	@Autowired
-	private JavaMailSender javaMailSender;
-	
-	@Autowired
-	private ConfirmationTokenService confirmationTokenService;
-	
-	@Autowired
-	private TokenUtils tokenUtils;
+    @Autowired
+    private JavaMailSender javaMailSender;
 
-	@Autowired
-	private Environment env;
+    @Autowired
+    private ConfirmationTokenService confirmationTokenService;
 
-	@Async
-	public void sendEmail(String email, String subject, String text) throws MailException, InterruptedException {
-		SimpleMailMessage mail = new SimpleMailMessage();
-		mail.setTo(email);
-		mail.setFrom(env.getProperty("spring.mail.username"));
-		mail.setSubject(subject);
-		mail.setText(text);
-		javaMailSender.send(mail);
+    @Autowired
+    private TokenUtils tokenUtils;
 
-		System.out.println("Email sent!");
-	}
+    @Autowired
+    private Environment env;
+
+    @Async
+    public void sendEmail(String email, String subject, String text) throws MailException, MessagingException {
+        MimeMessage mailMessage = javaMailSender.createMimeMessage();
+        mailMessage.setRecipients(Message.RecipientType.TO,
+                InternetAddress.parse(email));
+        mailMessage.setFrom(env.getProperty("spring.mail.username"));
+        mailMessage.setSubject(subject);
+        mailMessage.setContent(text, "text/html");
+        javaMailSender.send(mailMessage);
+
+        System.out.println("Email sent!");
+    }
 
 }

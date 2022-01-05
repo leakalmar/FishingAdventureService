@@ -1,14 +1,21 @@
 package isa.FishingAdventure.repository;
 
+import isa.FishingAdventure.model.Client;
+import isa.FishingAdventure.model.User;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import isa.FishingAdventure.dto.UserDto;
-import isa.FishingAdventure.model.Client;
+import java.util.List;
 
 @Repository
-public interface ClientRepository extends UserRepository{
+public interface ClientRepository extends UserRepository {
 
-	Client save(Client client);
+    Client save(Client client);
 
-	Client findByEmail(String email);
+    Client findByEmail(String email);
+
+    @Query(value = "SELECT * FROM client_subscriptions WHERE subscriptions_id = ?1", nativeQuery = true)
+    List<Integer> findClientIdBySubscription(Integer serviceProfileId);
+
+    User getByUserId(Integer id);
 }
