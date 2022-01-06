@@ -4,10 +4,7 @@ import isa.FishingAdventure.dto.AppointmentDto;
 import isa.FishingAdventure.dto.BoatDto;
 import isa.FishingAdventure.dto.NewBoatDto;
 import isa.FishingAdventure.dto.ServiceNameDto;
-import isa.FishingAdventure.model.Appointment;
-import isa.FishingAdventure.model.Boat;
-import isa.FishingAdventure.model.BoatOwner;
-import isa.FishingAdventure.model.Image;
+import isa.FishingAdventure.model.*;
 import isa.FishingAdventure.security.util.TokenUtils;
 import isa.FishingAdventure.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -164,6 +161,12 @@ public class BoatController {
         Boat boat = boatService.getById(Integer.parseInt(id));
         NewBoatDto dto = new NewBoatDto(boat);
         return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "exists/{id}")
+    public ResponseEntity<Boolean> exists(@PathVariable Integer id) {
+
+        return new ResponseEntity<>(boatService.exists(id), HttpStatus.OK);
     }
 
     @PutMapping(value = "/smallUpdate/{id}")

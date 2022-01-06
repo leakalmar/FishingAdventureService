@@ -1,11 +1,11 @@
 <template>
   <div>
     <div class="card mb-3 bg-dark mt-3" style="width: 65%; margin: auto">
-      <div class="row g-0">
+      <div class="row g-0" v-on:click="open">
         <div class="col-md-4 shadow-none">
           <img
             style="width: 100%; height: 225px; object-fit: cover"
-            src="@/assets/fa21.jpg"
+            :src="require('@/assets/' + subscription.imagePath)"
             class="img-fluid rounded-start shadow-none"
           />
         </div>
@@ -13,8 +13,8 @@
         <div class="col-md-8 shadow-none" name="main-col">
           <div class="card-body shadow-none">
             <div class="card-text shadow-none" style="display: flex">
-              <h5 class="card-title shadow-none">Marina Gibson</h5>
-              <p class="advertiserTitle shadow-none">@marinaGibson</p>
+              <h5 class="card-title shadow-none">{{subscription.name}}</h5>
+              <!--<p class="advertiserTitle shadow-none">@marinaGibson</p>-->
               <p
                 class="top-right-corner shadow-none"
               >
@@ -24,6 +24,7 @@
                     background-color: rgb(94 23 30);
                     border-color: rgb(94 23 30);
                   "
+                  v-on:click="unsubscribe"
                 >
                   Unsubscribe
                 </button>
@@ -33,8 +34,7 @@
             <div class="card-text shadow-none" style="display: flex">
               <div class="shadow-none">
                 <p class="card-text text-left shadow-none mb-1">
-                  It is a long established fact that a reader will be distracted
-                  by the readable content of a page when looking at its layout.
+                  {{subscription.description}}
                 </p>
               </div>
               <p
@@ -47,12 +47,12 @@
                   width: 30%;
                 "
               >
-                <i class="fas fa-star shadow-none"> 5.0</i>
+                <i class="fas fa-star shadow-none"> {{subscription.rating}}</i>
               </p>
             </div>
             <div class="card-text fw-bold shadow-none" style="display: flex">
               <p class="shadow-none" style="margin: 0">
-                341 Preston Street, Pheonix
+                {{subscription.location.address.street}}, {{subscription.location.address.city}}, {{subscription.location.address.country}}
               </p>
               <p
                 class="shadow-none"
@@ -73,29 +73,68 @@
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
+import axios from "axios";
 export default {
-  setup() {
-    const date = ref();
-    onMounted(() => {
-      const startDate = new Date(2021, 12, 5, 14);
-      const endDate = new Date(2021, 12, 15, 11);
-      date.value = [startDate, endDate];
-    });
-    return {
-      date,
-    };
-  },
+  props: ["subscription"],
   data: function () {
     return {
-      path: "",
+      founded: false,
     };
   },
   mounted: function () {
-    if (window.location.href.includes("/search/adventures")) {
-      this.path = "searchadventures";
-    } else if (window.location.href.includes("/adventures")) {
-      this.path = "myadventures";
+    
+  },
+  methods: {
+    unsubscribe: function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      axios
+        .get("http://localhost:8080/client/unsubscribe/" + this.subscription.id, {
+          headers: {
+            "Access-Control-Allow-Origin": "http://localhost:8080",
+            Authorization: "Bearer " + localStorage.refreshToken,
+          },
+        })
+        .then();
+
+      this.$nextTick(() => {
+          this.$emit('refresh');
+      });
+    },
+    open: function () {
+      axios
+      .get("http://localhost:8080/vacationHome/exists/" + this.subscription.id, {
+        headers: {
+          "Access-Control-Allow-Origin": "http://localhost:8080",
+          Authorization: "Bearer " + localStorage.refreshToken,
+        },
+      })
+      .then((res) => {
+        this.founded = res.data;
+        if(this.founded == true){
+          window.location.href = "/cottage/?id=" + this.subscription.id + "&date=undefined&persons=undefined";
+        } else {
+          this.findBoat();
+        }
+      });
+    },
+    findBoat: function() {
+      axios
+      .get("http://localhost:8080/boat/exists/" + this.subscription.id,
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "http://localhost:8080",
+          Authorization: "Bearer " + localStorage.refreshToken,
+        },
+      })
+      .then((res) => {
+        this.founded = res.data;
+        if(this.founded == true){
+          window.location.href = "/boat/?id=" + this.subscription.id;
+        } else {
+          window.location.href = "/fishingAdventure";
+        }
+      });
     }
   },
 };

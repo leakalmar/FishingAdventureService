@@ -99,4 +99,8 @@ public class ClientService {
         }
         return clients;
     }
+
+    public List<ServiceProfile> getClientSubscriptions(Client client) {
+        return new ArrayList<>(client.getSubscriptions());
+    }
 }

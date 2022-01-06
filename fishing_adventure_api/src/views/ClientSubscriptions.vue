@@ -13,12 +13,7 @@
           class="row row-cols-1 row-cols-sm-1 row-cols-md-4"
           style="justify-content: space-evenly; align-items: center"
         >
-          <div class="col-md-3">
-            <button type="button" class="btn btn-outline-primary text-nowrap">
-              New reservation
-            </button>
-          </div>
-          <div class="col-md-3">
+          <div class="col-md-3" style="margin-left:-23%">
             <input
               class="form-control me-2"
               type="search"
@@ -26,25 +21,13 @@
               aria-label="Search"
             />
           </div>
-          <div class="col-md-4">
-            <Datepicker
-              style="
-                width: 100%;
-                margin-right: 10px;
-                border: 1px solid white;
-                border-radius: 5px;
-              "
-              dark
-              id="picker"
-              v-model="date"
-              range
-              placeholder="Select date"
-              :enableTimePicker="false"
-            ></Datepicker>
-          </div>
-          <div class="col-md-2">
+          <div class="col-md-2" style="margin-right:-23%">
             <select
-              class="form-select form-select-dark form-select-sm text-white bg-dark"
+              class="
+                form-select form-select-dark form-select-sm
+                text-white
+                bg-dark
+              "
               aria-label=".form-select-sm example"
             >
               <option selected>All reservations</option>
@@ -56,31 +39,90 @@
         </div>
       </div>
     </div>
-    <div style="margin-top: 5%">
+    <div>
       <SubscriptionCard
-        :review="true"
-        v-for="index in 5"
-        :key="index"
+        v-for="subscription in subscriptions"
+        :key="subscription.id"
+        v-bind:subscription="subscription"
+        v-on:refresh="refresh"
       ></SubscriptionCard>
     </div>
   </div>
 </template>
 
 <script>
-import SubscriptionCard from "@/components/SubscriptionCard.vue"
+import SubscriptionCard from "@/components/SubscriptionCard.vue";
+import axios from "axios";
+import moment from "moment";
 export default {
   components: { SubscriptionCard },
   data: function () {
     return {
-      numberOfPersons: "",
-      range: {
-        start: new Date(2020, 9, 12),
-        end: new Date(2020, 9, 16),
-      },
-      date: "",
+      numberOfPersons: 0,
+      subscriptions: [],
     };
   },
-  methods: {},
+  mounted: function () {
+    axios
+      .get("http://localhost:8080/client/subscriptions", {
+        headers: {
+          "Access-Control-Allow-Origin": "http://localhost:8080",
+          Authorization: "Bearer " + localStorage.refreshToken,
+        },
+      })
+      .then((res) => {
+        this.subscriptions = res.data;
+      });
+  },
+  methods: {
+    refresh: function() {
+      this.refreshData();
+      this.refreshData();
+    },
+    refreshData: function() {
+      axios
+      .get("http://localhost:8080/client/subscriptions", {
+        headers: {
+          "Access-Control-Allow-Origin": "http://localhost:8080",
+          Authorization: "Bearer " + localStorage.refreshToken,
+        },
+      })
+      .then((res) => {
+        this.subscriptions = res.data;
+      });
+    },
+    search: function () {
+      if (
+        this.date[0] != undefined &&
+        this.date[1] != undefined &&
+        this.numberOfPersons != 0
+      ) {
+        this.searchByDateAndPersons();
+      }
+    },
+    searchByDateAndPersons: function () {
+      axios
+        .get(
+          "http://localhost:8080/vacationHome/search?start=" +
+            moment(this.date[0]).format("yyyy-MM-DD HH:mm:ss.SSS") +
+            "&end=" +
+            moment(this.date[1]).format("yyyy-MM-DD HH:mm:ss.SSS") +
+            "&persons=" +
+            this.numberOfPersons,
+          {
+            headers: {
+              "Access-Control-Allow-Origin": "http://localhost:8080",
+            },
+          }
+        )
+        .then((res) => {
+          this.homeEntities = res.data;
+          for (let e of this.homeEntities) {
+            e.rating = Number(e.rating).toFixed(2);
+          }
+        });
+    },
+  },
 };
 </script>
 

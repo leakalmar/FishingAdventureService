@@ -1,5 +1,6 @@
 package isa.FishingAdventure.controller;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import isa.FishingAdventure.dto.*;
 import isa.FishingAdventure.model.*;
 import isa.FishingAdventure.security.util.TokenUtils;
@@ -189,6 +190,11 @@ public class VacationHomeController {
         VacationHome home = homeService.getById(Integer.parseInt(id));
         NewHomeDto dto = new NewHomeDto(home);
         return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "exists/{id}")
+    public ResponseEntity<Boolean> exists(@PathVariable Integer id) {
+        return new ResponseEntity<>(homeService.exists(id), HttpStatus.OK);
     }
 
     @PutMapping(value = "/smallUpdate/{id}")

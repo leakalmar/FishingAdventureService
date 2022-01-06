@@ -124,4 +124,8 @@ public class VacationHomeService {
 
         return available;
     }
+
+    public boolean exists(Integer id) {
+        return homeRepository.findById(id).isPresent();
+    }
 }

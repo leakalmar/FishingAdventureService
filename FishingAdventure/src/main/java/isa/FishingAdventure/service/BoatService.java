@@ -36,4 +36,8 @@ public class BoatService {
     public Boat getById(int id) {
         return boatRepository.getById(id);
     }
+
+    public boolean exists(Integer id) {
+        return boatRepository.findById(id).isPresent();
+    }
 }
