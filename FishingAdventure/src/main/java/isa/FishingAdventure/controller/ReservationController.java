@@ -49,6 +49,16 @@ public class ReservationController {
         return new ResponseEntity<>(reservationDtos, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/client/past")
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
+    @Transactional
+    public ResponseEntity<List<ReservationDto>> getClientPastReservations(@RequestHeader("Authorization") String token) {
+        List<Reservation> reservations = reservationService.getClientPastReservations(token);
+        List<ServiceProfile> serviceProfiles = reservationService.getServiceProfiles(reservations);
+        List<ReservationDto> reservationDtos = createReservationDtos(reservations, serviceProfiles);
+        return new ResponseEntity<>(reservationDtos, HttpStatus.OK);
+    }
+
     private List<ReservationDto> createReservationDtos(List<Reservation> reservations, List<ServiceProfile> serviceProfiles) {
         List<ReservationDto> reservationDtos = new ArrayList<>();
         for(int i = 0; i < reservations.size(); i++){

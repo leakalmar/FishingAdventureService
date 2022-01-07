@@ -77,11 +77,24 @@
                   v-if="current == false"
                   class="btn btn-primary shadow-none mb-2"
                   style="
+                    background-color: rgb(0 102 102);
+                    border-color: rgb(0 102 102);
+                  "
+                >
+                  Review
+                </button>
+              </div>
+
+              <div class="manageReservation shadow-none">
+                <button
+                  v-if="current == false"
+                  class="btn btn-primary shadow-none mb-2"
+                  style="
                     background-color: rgb(94 23 30);
                     border-color: rgb(94 23 30);
                   "
                 >
-                  Create complaint
+                  Complaint
                 </button>
                 <button
                   class="btn btn-primary shadow-none"

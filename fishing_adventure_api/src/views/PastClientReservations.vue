@@ -55,8 +55,9 @@
       <ClientReservationCard
         :review="false"
         :current="false"
-        v-for="index in 5"
-        :key="index"
+        v-for="reservation in pastReservations"
+        :key="reservation.id"
+        :reservation="reservation"
       ></ClientReservationCard>
     </div>
   </div>
@@ -64,17 +65,32 @@
 
 <script>
 import ClientReservationCard from "@/components/ClientReservationCard.vue";
+import axios from "axios"
 export default {
   components: { ClientReservationCard },
   data: function () {
     return {
       numberOfPersons: "",
+      pastReservations: [],
       range: {
         start: new Date(2020, 9, 12),
         end: new Date(2020, 9, 16),
       },
       date: "",
     };
+  },
+  mounted(){
+    axios
+      .get("http://localhost:8080/reservation/client/past", {
+        headers: {
+          "Access-Control-Allow-Origin": "http://localhost:8080",
+          Authorization: "Bearer " + localStorage.refreshToken,
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+        this.pastReservations = res.data;
+      });
   },
   methods: {},
 };
