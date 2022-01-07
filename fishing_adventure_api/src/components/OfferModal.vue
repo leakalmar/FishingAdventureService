@@ -9,7 +9,7 @@
     v-on:show="closeModal"
   >
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content" style="height: 43rem">
+      <div class="modal-content" style="height: 48rem">
         <div class="modal-header">
           <h3>New offer</h3>
           <button
@@ -38,7 +38,25 @@
               </option>
             </select>
           </div>
-          <h6 style="color: white; margin: 5% 0">Offer will be active:</h6>
+          <h6 style="color: white; margin: 5% 0">
+            Offer will be active until:
+          </h6>
+
+          <Datepicker
+            style="
+              width: 100%;
+              margin-right: 10px;
+              border: 1px solid white;
+              border-radius: 5px;
+            "
+            dark
+            placeholder="Select date.."
+            v-model="offerEndDate"
+            :enableTimePicker="true"
+          ></Datepicker>
+
+          <h6 style="color: white; margin: 5% 0">Reservation dates:</h6>
+
           <Datepicker
             style="
               width: 100%;
@@ -49,6 +67,7 @@
             dark
             id="picker"
             v-model="dateRange"
+            @closed="dateRangeChanged"
             placeholder="Select dates.."
             range
             :enableTimePicker="true"
@@ -110,13 +129,12 @@
             <span class="input-group-text" style="width: 5rem">Price:</span>
             <input
               type="number"
-              v-model="pricePerDay"
-              :max="originalPricePerDay"
+              v-model="priceField"
+              :max="originalTotalPrice"
               min="0"
               class="form-control"
               v-on:change="recalculatePrice"
             />
-            <span class="input-group-text" style="width: 4rem">$/day</span>
           </div>
 
           <h6 style="color: red; margin-top: 1rem">
@@ -147,7 +165,7 @@ export default {
       serviceProfileId: "",
       persons: 1,
       maxPersons: "",
-      pricePerDay: "",
+      priceField: "",
       originalPricePerDay: "",
       selectData: "",
       entityType: "",
@@ -156,6 +174,8 @@ export default {
       dateRange: [],
       chosenServices: [],
       error: "",
+      offerEndDate: undefined,
+      originalTotalPrice: "",
     };
   },
   mounted: function () {
@@ -233,7 +253,6 @@ export default {
             }
           )
           .then((res) => {
-            this.pricePerDay = res.data.price;
             this.originalPricePerDay = res.data.price;
             this.maxPersons = res.data.persons;
             this.serviceProfileId = res.data.serviceProfileId;
@@ -246,23 +265,42 @@ export default {
         this.serviceProfileId = "";
         this.persons = 1;
         this.maxPersons = 1;
-        this.pricePerDay = "";
+        this.priceField = "";
         this.originalPricePerDay = "";
         this.discount = 0;
         this.additionalServices = [];
         this.dateRange = [];
         this.chosenServices = [];
         this.error = "";
+        this.offerEndDate = undefined;
+      }
+      this.dateRangeChanged();
+    },
+    dateRangeChanged: function () {
+      if (this.dateRange[0] != undefined && this.dateRange[1] != undefined) {
+        let duration = this.dateRange[1] - this.dateRange[0];
+        let days = duration / (1000 * 3600 * 24);
+        days = parseInt(days, 10);
+        let hours = duration - days * 24;
+        hours = parseInt(hours, 10);
+        if (hours > 12) {
+          days += 1;
+        }
+        this.priceField = days * this.originalPricePerDay;
+        this.originalTotalPrice = days * this.originalPricePerDay;
+        this.recalculatePrice();
       }
     },
     check: function (additionalService) {
       var checkBox = document.getElementById(additionalService.id);
       if (checkBox.checked === true) {
         this.chosenServices.push(additionalService);
-        this.originalPricePerDay += additionalService.price;
+        this.originalTotalPrice += additionalService.price;
+        this.priceField += additionalService.price;
       } else {
         const index = this.chosenServices.indexOf(additionalService);
-        this.originalPricePerDay -= additionalService.price;
+        this.originalTotalPrice -= additionalService.price;
+        this.priceField -= additionalService.price;
         if (index > -1) {
           this.chosenServices.splice(index, 1);
         }
@@ -271,14 +309,24 @@ export default {
       this.recalculatePrice();
     },
     recalculatePrice: function () {
+      let duration = this.dateRange[1] - this.dateRange[0];
+      let days = duration / (1000 * 3600 * 24);
+      days = parseInt(days, 10);
+      let hours = duration - days * 24;
+      hours = parseInt(hours, 10);
+      if (hours > 12) {
+        days += 1;
+      }
+
       let percentage = (
-        (100 * this.pricePerDay) /
-        this.originalPricePerDay
+        (100 * this.priceField) /
+        this.originalTotalPrice
       ).toFixed(2);
       this.discount = (100 - percentage).toFixed(2);
     },
     createOffer: function () {
       if (
+        this.offerEndDate == undefined ||
         this.dateRange[0] == undefined ||
         document.getElementsByTagName("select")[0].value == ""
       ) {
@@ -287,14 +335,19 @@ export default {
         this.error = "";
       }
 
+      let now = new Date();
+      let offerDuration = this.offerEndDate - now;
+      console.log(offerDuration);
+      console.log(this.offerEndDate);
       let offerDto = {
         serviceProfileId: this.serviceProfileId,
         discount: this.discount,
         startDate: this.dateRange[0],
         endDate: this.dateRange[1],
         maxPersons: this.persons,
-        price: this.pricePerDay,
+        price: this.priceField,
         chosenServices: this.chosenServices,
+        duration: offerDuration,
       };
       axios
         .post("http://localhost:8080/appointment/create", offerDto, {
@@ -304,13 +357,13 @@ export default {
           },
         })
         .then(() => {
-          window.location.reload();
+          //window.location.reload();
         });
     },
     closeModal: function () {
       this.persons = 1;
       this.maxPersons = 1;
-      this.pricePerDay = "";
+      this.priceField = "";
       this.originalPricePerDay = "";
       this.selectData = "";
       this.entityType = "";

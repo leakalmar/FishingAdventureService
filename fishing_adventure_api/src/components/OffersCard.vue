@@ -30,21 +30,23 @@
               <div class="shadow-none" style="width: 100%">
                 <div class="row shadow-none">
                   <p class="card-text text-left shadow-none col-md-4">
-                    Starts:
+                    Reservation starts:
                   </p>
                   <p class="card-text text-left shadow-none col-md-8">
                     {{ starts }}
                   </p>
                 </div>
                 <div class="row shadow-none">
-                  <p class="card-text text-left shadow-none col-md-4">Ends:</p>
+                  <p class="card-text text-left shadow-none col-md-4">
+                    Reservation ends:
+                  </p>
                   <p class="card-text text-left shadow-none col-md-8">
                     {{ ends }}
                   </p>
                 </div>
                 <div class="row shadow-none">
                   <p class="card-text text-left shadow-none col-md-4">
-                    Duration:
+                    Offer active:
                   </p>
                   <p class="card-text text-left shadow-none col-md-8">
                     {{ durationString }}
@@ -87,7 +89,7 @@
 
               <div class="manageReservation shadow-none">
                 <button class="btn btn-outline-primary shadow-none mb-2">
-                  Close
+                  Close offer
                 </button>
               </div>
             </div>
@@ -115,16 +117,19 @@ export default {
   mounted() {
     this.ends = new Date(this.offer.endDate);
     this.starts = new Date(this.offer.startDate);
-    this.duration = this.ends - this.starts;
+    let offerEnds = this.offer.dateCreated + this.offer.duration;
     this.ends = moment(this.ends).format("MM/DD/yyyy HH:mm");
     this.starts = moment(this.starts).format("MM/DD/yyyy HH:mm");
-    let days = this.duration / (1000 * 3600 * 24);
-    days = parseInt(days, 10);
-    let hours = this.duration / (1000 * 3600) - 24 * days;
-    hours = parseInt(hours, 10);
-    let minutes = this.duration / (1000 * 60) - days * 24 * 60 - hours * 60;
-    minutes = parseInt(minutes, 10);
-    this.durationString = days + "d " + hours + "h " + minutes + "m";
+    let offerDuration = offerEnds - new Date();
+    if (this.offer.dateCreated < new Date()) {
+      let days = offerDuration / (1000 * 3600 * 24);
+      days = parseInt(days, 10);
+      let hours = offerDuration / (1000 * 3600) - days * 24;
+      hours = parseInt(hours, 10);
+      let minutes = offerDuration / (1000 * 60) - days * 24 * 60 - hours * 60;
+      minutes = parseInt(minutes, 10);
+      this.durationString = days + "d " + hours + "h " + minutes + "m";
+    }
   },
 };
 </script>
@@ -158,6 +163,11 @@ div {
 .row {
   align-items: center;
 }
+
+.row p {
+  width: 10rem;
+}
+
 .card :hover {
   cursor: pointer;
   box-shadow: 2px 2px 15px 2px rgba(187, 178, 178, 0.664);
@@ -186,6 +196,7 @@ div {
   display: flex;
   flex-direction: column;
   margin-right: 1rem;
+  white-space: nowrap;
 }
 
 .card-body {

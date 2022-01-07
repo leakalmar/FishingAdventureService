@@ -53,22 +53,22 @@
     </div>
 
     <div style="margin-top: 5%">
-      <SpecialOffersCard
+      <OffersCard
         v-for="offer of offers"
         :key="offer.offerId"
         :offer="offer"
-      ></SpecialOffersCard>
+      ></OffersCard>
     </div>
   </div>
   <OfferModal id="OfferModal"></OfferModal>
 </template>
 
 <script>
-import SpecialOffersCard from "@/components/SpecialOffersCard.vue";
+import OffersCard from "@/components/OffersCard.vue";
 import OfferModal from "@/components/OfferModal.vue";
 import axios from "axios";
 export default {
-  components: { SpecialOffersCard, OfferModal },
+  components: { OffersCard, OfferModal },
   data: function () {
     return {
       numberOfPersons: "",
@@ -78,44 +78,14 @@ export default {
   },
   mounted() {
     axios
-      .get("http://localhost:8080/users/getRole", {
+      .get("http://localhost:8080/appointment/getOffersByAdvertiser", {
         headers: {
           "Access-Control-Allow-Origin": "http://localhost:8080",
           Authorization: "Bearer " + localStorage.refreshToken,
         },
       })
       .then((res) => {
-        let loggedInRole = res.data;
-
-        if (loggedInRole == "ROLE_VACATION_HOME_OWNER") {
-          this.entityType = "cottage";
-          axios
-            .get("http://localhost:8080/vacationHome/getServiceOffersByUser", {
-              headers: {
-                "Access-Control-Allow-Origin": "http://localhost:8080",
-                Authorization: "Bearer " + localStorage.refreshToken,
-              },
-            })
-            .then((res) => {
-              this.offers = res.data;
-            });
-        } else if (loggedInRole == "ROLE_BOAT_OWNER") {
-          this.entityType = "boat";
-          axios
-            .get("http://localhost:8080/boat/getServiceOffersByUser", {
-              headers: {
-                "Access-Control-Allow-Origin": "http://localhost:8080",
-                Authorization: "Bearer " + localStorage.refreshToken,
-              },
-            })
-            .then((res) => {
-              this.offers = res.data;
-            });
-        } else {
-          window.location.href = "/";
-        }
-        // else if(loggedInRole == "ROLE_FISHING_INSTRUCTOR"){
-        // }
+        this.offers = res.data;
       });
   },
   methods: {},

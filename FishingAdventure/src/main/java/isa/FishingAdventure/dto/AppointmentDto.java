@@ -3,6 +3,7 @@ package isa.FishingAdventure.dto;
 import isa.FishingAdventure.model.AdditionalService;
 import isa.FishingAdventure.model.Appointment;
 
+import java.time.Duration;
 import java.util.Date;
 import java.util.Set;
 
@@ -27,7 +28,11 @@ public class AppointmentDto {
 
     private double price;
 
-    public Set<AdditionalService> chosenServices;
+    private Set<AdditionalService> chosenServices;
+
+    private Date dateCreated;
+
+    private Duration duration;
 
     public AppointmentDto(Integer serviceProfileId, double discount, Date startDate, Date endDate, int maxPersons, double price, Set<AdditionalService> chosenServices) {
         this.serviceProfileId = serviceProfileId;
@@ -50,6 +55,8 @@ public class AppointmentDto {
         this.maxPersons = appointment.getMaxPersons();
         this.price = appointment.getPrice();
         this.chosenServices = appointment.getChosenServices();
+        this.dateCreated = appointment.getDateCreated();
+        this.duration = appointment.getDuration();
     }
 
     public Integer getOfferId() {
@@ -130,5 +137,21 @@ public class AppointmentDto {
 
     public void setServiceProfileName(String serviceProfileName) {
         this.serviceProfileName = serviceProfileName;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
     }
 }

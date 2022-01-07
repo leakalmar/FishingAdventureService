@@ -568,14 +568,20 @@ VALUES (104, 107);
 -- Data for Name: appointment; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 INSERT INTO appointment
-VALUES (101, 0, 172800000000000, '2022-01-07 15:44:00', true, 2, '', 50, '2022-01-05 15:44:00');
+VALUES (101, '2022-01-07 15:44:00', 0, 604779299000000000, '2022-01-07 15:44:00', true, 2, '', 50,
+        '2022-01-05 15:44:00');
 INSERT INTO appointment
-VALUES (102, 0, 172800000000000, '2022-01-09 15:44:00', true, 2, '', 50, '2022-01-07 15:44:00');
+VALUES (102, '2022-01-09 15:44:00', 0, 604779299000000000, '2022-01-09 15:44:00', true, 2, '', 50,
+        '2022-01-07 15:44:00');
 INSERT INTO appointment
-VALUES (103, 0, 172800000000000, '2022-01-11 15:44:00', true, 2, '', 50, '2022-01-09 15:44:00');
+VALUES (103, '2022-01-11 15:44:00', 0, 604779299000000000, '2022-01-11 15:44:00', true, 2, '', 50,
+        '2022-01-09 15:44:00');
 INSERT INTO appointment
-VALUES (104, 10, 172800000000000, '2022-01-13 15:44:00', false, 2, '', 44, '2022-01-11 15:44:00');
-
+VALUES (104, '2022-01-25 15:44:00', 10, 604779299000000000, '2022-01-13 15:44:00', false, 2, '', 44,
+        '2022-01-11 15:44:00');
+INSERT INTO appointment
+VALUES (105, '2022-01-05 15:43:20.716', 20, 604779299000000000, '2022-01-15 15:43:00', false, 2, '', 40,
+        '2022-01-14 15:43:00');
 
 --
 -- Data for Name: service_profile_appointments; Type: TABLE DATA; Schema: public; Owner: postgres
@@ -588,6 +594,8 @@ INSERT INTO service_profile_appointments
 VALUES (113, 103);
 INSERT INTO service_profile_appointments
 VALUES (101, 104);
+INSERT INTO service_profile_appointments
+VALUES (113, 105);
 
 
 --

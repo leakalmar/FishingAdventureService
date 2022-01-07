@@ -253,12 +253,12 @@
         </div>
       </div>
 
-      <SpecialOffersCardNoImage
+      <OffersCardNoImage
         v-for="offer of offers"
         :key="offer.offerId"
         :offer="offer"
         :loggedInRole="loggedInRole"
-      ></SpecialOffersCardNoImage>
+      ></OffersCardNoImage>
 
       <div class="special-offers-fa">
         <div class="so-title-fa">
@@ -302,9 +302,9 @@
 
 <script>
 import axios from "axios";
-import SpecialOffersCardNoImage from "@/components/SpecialOffersCardNoImage.vue";
+import OffersCardNoImage from "@/components/OffersCardNoImage.vue";
 export default {
-  components: { SpecialOffersCardNoImage },
+  components: { OffersCardNoImage },
   data: function () {
     return {
       offers: "",
@@ -356,7 +356,8 @@ export default {
           (this.markers[0].position.lat = response.data.location.latitude);
         this.markers[0].position.lng = response.data.location.longitude;
         console.log(response.data);
-      }).finally(() => {
+      })
+      .finally(() => {
         this.isSubscribed();
       });
 

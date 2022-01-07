@@ -20,7 +20,7 @@
               <div class="shadow-none" style="width: 100%">
                 <div class="row shadow-none">
                   <p class="card-text text-left shadow-none col-md-4">
-                    Duration:
+                    Offer active:
                   </p>
                   <p class="card-text text-left shadow-none col-md-4">
                     {{ durationString }}
@@ -96,20 +96,18 @@ export default {
   mounted() {
     this.ends = new Date(this.offer.endDate);
     this.starts = new Date(this.offer.startDate);
-    this.duration = this.ends - this.starts;
+    let offerEnds = this.offer.dateCreated + this.offer.duration;
     this.ends = moment(this.ends).format("MM/DD/yyyy HH:mm");
     this.starts = moment(this.starts).format("MM/DD/yyyy HH:mm");
-    let days = this.duration / (1000 * 3600 * 24);
-    days = parseInt(days, 10);
-    let hours = this.duration / (1000 * 3600) - 24 * days;
-    hours = parseInt(hours, 10);
-    let minutes = this.duration / (1000 * 60) - days * 24 * 60 - hours * 60;
-    minutes = parseInt(minutes, 10);
-    this.durationString = days + "d " + hours + "h " + minutes + "m";
-
-    //TO DO: mooliim vas da neko napise sugavi uslov... Ja sam nesposobna, Lea :)
-    if (this.starts >= new Date() && this.ends <= new Date()) {
-      document.getElementById("book-btn").classList.add("disabled");
+    let offerDuration = offerEnds - new Date();
+    if (this.offer.dateCreated < new Date()) {
+      let days = offerDuration / (1000 * 3600 * 24);
+      days = parseInt(days, 10);
+      let hours = offerDuration / (1000 * 3600) - days * 24;
+      hours = parseInt(hours, 10);
+      let minutes = offerDuration / (1000 * 60) - days * 24 * 60 - hours * 60;
+      minutes = parseInt(minutes, 10);
+      this.durationString = days + "d " + hours + "h " + minutes + "m";
     }
   },
 };

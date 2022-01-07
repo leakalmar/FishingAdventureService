@@ -9,14 +9,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import java.time.Duration;
+import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -26,13 +25,23 @@ public class AppointmentController {
     @Autowired
     private AppointmentService appointmentService;
 
+
+    // TODO: add role for fishing instructor
+    @GetMapping(value = "/getOffersByAdvertiser")
+    @PreAuthorize("hasRole('ROLE_VACATION_HOME_OWNER') || hasRole('ROLE_BOAT_OWNER')")
+    @Transactional
+    public ResponseEntity<List<AppointmentDto>> getOffersByAdvertiser(@RequestHeader("Authorization") String token) throws MessagingException {
+        return new ResponseEntity<>(appointmentService.getOffersByAdvertiser(token), HttpStatus.OK);
+    }
+
+    // TODO: add role for fishing instructor
     @PostMapping(value = "/create")
     @PreAuthorize("hasRole('ROLE_VACATION_HOME_OWNER') || hasRole('ROLE_BOAT_OWNER')")
     @Transactional
     public ResponseEntity<AppointmentDto> create(@RequestBody AppointmentDto dto) throws InterruptedException, MessagingException {
         ResponseEntity<AppointmentDto> retVal = new ResponseEntity<AppointmentDto>(dto, HttpStatus.BAD_REQUEST);
-        Appointment savedAppointment = appointmentService.save(createAppointment(dto));
-        Integer appointmentId = appointmentService.createAppointment(savedAppointment, dto.getServiceProfileId());
+        Appointment savedAppointment = createAppointment(dto);
+        Integer appointmentId = appointmentService.createAppointment(savedAppointment, dto.getDuration(), dto.getServiceProfileId());
         if (appointmentId != null) {
             dto.setOfferId(appointmentId);
             retVal = new ResponseEntity<>(dto, HttpStatus.OK);
@@ -42,6 +51,7 @@ public class AppointmentController {
 
     private Appointment createAppointment(AppointmentDto dto) {
         Appointment newAppointment = new Appointment();
+        newAppointment.setDateCreated(new Date());
         newAppointment.setPlace("");
         newAppointment.setDiscount(dto.getDiscount());
         newAppointment.setReserved(false);

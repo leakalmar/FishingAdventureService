@@ -1,6 +1,5 @@
 package isa.FishingAdventure.controller;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import isa.FishingAdventure.dto.*;
 import isa.FishingAdventure.model.*;
 import isa.FishingAdventure.security.util.TokenUtils;
@@ -209,45 +208,14 @@ public class VacationHomeController {
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/getServiceOffersByUser")
-    @PreAuthorize("hasRole('ROLE_VACATION_HOME_OWNER')")
-    @Transactional
-    public ResponseEntity<List<AppointmentDto>> getServiceOffersByUser(@RequestHeader("Authorization") String token) {
-        String email = tokenUtils.getEmailFromToken(token.split(" ")[1]);
-        VacationHomeOwner owner = homeOwnerService.findByEmail(email);
-
-        List<AppointmentDto> appointmentDtos = new ArrayList<>();
-        for (VacationHome home : homeService.findByVacationHomeOwner(owner)) {
-            appointmentDtos.addAll(getAppointmentDtos(home));
-        }
-        return new ResponseEntity<>(appointmentDtos, HttpStatus.OK);
-    }
-
+    // TODO: create same method in FishingAdventureContoller
     @GetMapping(value = "/getServiceOffersById/{id}")
     @Transactional
     public ResponseEntity<List<AppointmentDto>> getServiceOffersById(@PathVariable String id) {
         VacationHome home = homeService.getById(Integer.parseInt(id));
-        return new ResponseEntity<>(getAppointmentDtos(home), HttpStatus.OK);
+        return new ResponseEntity<>(homeService.getAppointmentDtos(home), HttpStatus.OK);
     }
 
-    private List<AppointmentDto> getAppointmentDtos(VacationHome home) {
-        List<AppointmentDto> appointmentDtos = new ArrayList<>();
-        for (Appointment appointment : home.getAppointments()) {
-            if (!appointment.isReserved()) {
-                AppointmentDto dto = new AppointmentDto(appointment);
-                dto.setServiceProfileName(home.getName());
-                dto.setServiceProfileId(home.getId());
-                for (Image img : home.getImages()) {
-                    if (img.isCoverImage()) {
-                        dto.setCoverImage(img.getPath());
-                        break;
-                    }
-                }
-                appointmentDtos.add(dto);
-            }
-        }
-        return appointmentDtos;
-    }
 }
 
 	

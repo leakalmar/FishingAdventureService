@@ -1,14 +1,19 @@
 package isa.FishingAdventure.service;
 
+import isa.FishingAdventure.dto.AppointmentDto;
 import isa.FishingAdventure.model.AdditionalService;
 import isa.FishingAdventure.model.Appointment;
 import isa.FishingAdventure.model.ServiceProfile;
 import isa.FishingAdventure.model.User;
 import isa.FishingAdventure.repository.AppointmentRepository;
+import isa.FishingAdventure.security.util.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -26,6 +31,18 @@ public class AppointmentService {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private TokenUtils tokenUtils;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private VacationHomeService vacationHomeService;
+
+    @Autowired
+    private BoatService boatService;
+
     public Appointment save(Appointment newAppointment) {
         return appointmentRepository.save(newAppointment);
     }
@@ -36,7 +53,9 @@ public class AppointmentService {
         serviceProfileService.save(profile);
     }
 
-    public Integer createAppointment(Appointment newAppointment, Integer serviceProfileId) throws InterruptedException, MessagingException {
+    public Integer createAppointment(Appointment newAppointment, Duration duration, Integer serviceProfileId) throws MessagingException {
+        newAppointment.setDateCreated(new Date());
+        newAppointment.setDuration(duration);
         Appointment savedAppointment = save(newAppointment);
         addAppointmentToServiceProfile(serviceProfileId, newAppointment);
         ServiceProfile serviceProfile = serviceProfileService.getById(serviceProfileId);
@@ -67,5 +86,25 @@ public class AppointmentService {
         content.append("Sincerely,\n").append("Angler");
 
         return content.toString();
+    }
+
+    // TODO: add for FishingInstructor
+    public List<AppointmentDto> getOffersByAdvertiser(String token) {
+        String email = tokenUtils.getEmailFromToken(token.split(" ")[1]);
+        User owner = userService.findByEmail(email);
+
+        List<AppointmentDto> dtos = new ArrayList<>();
+        switch (owner.getUserType().getName()) {
+            case "ROLE_VACATION_HOME_OWNER":
+                dtos = vacationHomeService.getOffersByAdvertiser(owner.getEmail());
+                break;
+            case "ROLE_BOAT_OWNER":
+                dtos = boatService.getOffersByAdvertiser(owner.getEmail());
+                break;
+            default:
+                break;
+        }
+
+        return dtos;
     }
 }

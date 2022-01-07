@@ -240,12 +240,12 @@
         </div>
       </div>
 
-      <SpecialOffersCardNoImage
+      <OffersCardNoImage
         v-for="offer of offers"
         :key="offer.offerId"
         :offer="offer"
         :loggedInRole="loggedInRole"
-      ></SpecialOffersCardNoImage>
+      ></OffersCardNoImage>
 
       <div class="special-offers-fa">
         <div class="so-title-fa">
@@ -299,9 +299,9 @@
 <script>
 import axios from "axios";
 import ReservationModal from "@/components/ReservationModal.vue";
-import SpecialOffersCardNoImage from "@/components/SpecialOffersCardNoImage.vue";
+import OffersCardNoImage from "@/components/OffersCardNoImage.vue";
 export default {
-  components: { ReservationModal, SpecialOffersCardNoImage },
+  components: { ReservationModal, OffersCardNoImage },
   data: function () {
     return {
       offers: "",

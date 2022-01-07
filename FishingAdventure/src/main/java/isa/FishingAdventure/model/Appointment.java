@@ -35,6 +35,9 @@ public class Appointment {
     @Column(name = "price", nullable = false)
     private double price;
 
+    @Column(name = "dateCreated", nullable = false)
+    private Date dateCreated;
+
     @ManyToMany(targetEntity = AdditionalService.class, cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     public Set<AdditionalService> chosenServices;
 
@@ -48,6 +51,7 @@ public class Appointment {
         this.maxPersons = maxPersons;
         this.price = price;
         this.chosenServices = chosenServices;
+        this.dateCreated = new Date();
     }
 
     public Appointment() {
@@ -131,5 +135,13 @@ public class Appointment {
 
     public void setPlace(String place) {
         this.place = place;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
     }
 }

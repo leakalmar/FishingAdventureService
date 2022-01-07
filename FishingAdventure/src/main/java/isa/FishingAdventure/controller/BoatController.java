@@ -4,7 +4,10 @@ import isa.FishingAdventure.dto.AppointmentDto;
 import isa.FishingAdventure.dto.BoatDto;
 import isa.FishingAdventure.dto.NewBoatDto;
 import isa.FishingAdventure.dto.ServiceNameDto;
-import isa.FishingAdventure.model.*;
+import isa.FishingAdventure.model.Appointment;
+import isa.FishingAdventure.model.Boat;
+import isa.FishingAdventure.model.BoatOwner;
+import isa.FishingAdventure.model.Image;
 import isa.FishingAdventure.security.util.TokenUtils;
 import isa.FishingAdventure.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -181,43 +184,12 @@ public class BoatController {
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/getServiceOffersByUser")
-    @PreAuthorize("hasRole('ROLE_BOAT_OWNER')")
-    @Transactional
-    public ResponseEntity<List<AppointmentDto>> getServiceOffersByUser(@RequestHeader("Authorization") String token) {
-        String email = tokenUtils.getEmailFromToken(token.split(" ")[1]);
-        BoatOwner owner = boatOwnerService.findByEmail(email);
-
-        List<AppointmentDto> appointmentDtos = new ArrayList<>();
-        for (Boat boat : boatService.findByBoatOwner(owner)) {
-            appointmentDtos.addAll(getAppointmentDtos(boat));
-        }
-        return new ResponseEntity<>(appointmentDtos, HttpStatus.OK);
-    }
-
     @GetMapping(value = "/getServiceOffersById/{id}")
     @Transactional
     public ResponseEntity<List<AppointmentDto>> getServiceOffersById(@PathVariable String id) {
         Boat boat = boatService.getById(Integer.parseInt(id));
-        return new ResponseEntity<>(getAppointmentDtos(boat), HttpStatus.OK);
+        return new ResponseEntity<>(boatService.getAppointmentDtos(boat), HttpStatus.OK);
     }
 
-    private List<AppointmentDto> getAppointmentDtos(Boat boat) {
-        List<AppointmentDto> appointmentDtos = new ArrayList<>();
-        for (Appointment appointment : boat.getAppointments()) {
-            if (!appointment.isReserved()) {
-                AppointmentDto dto = new AppointmentDto(appointment);
-                dto.setServiceProfileName(boat.getName());
-                dto.setServiceProfileId(boat.getId());
-                for (Image img : boat.getImages()) {
-                    if (img.isCoverImage()) {
-                        dto.setCoverImage(img.getPath());
-                        break;
-                    }
-                }
-                appointmentDtos.add(dto);
-            }
-        }
-        return appointmentDtos;
-    }
+
 }
