@@ -98,6 +98,7 @@ export default {
       .then((res) => {
         this.searchResults = res.data;
         this.entities = res.data;
+        console.log(this.entities);
       });
   },
   methods: {

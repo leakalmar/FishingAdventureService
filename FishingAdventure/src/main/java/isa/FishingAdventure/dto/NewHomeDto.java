@@ -2,6 +2,7 @@ package isa.FishingAdventure.dto;
 
 import isa.FishingAdventure.model.*;
 
+import java.util.Date;
 import java.util.Set;
 
 
@@ -34,6 +35,8 @@ public class NewHomeDto {
     private int persons;
 
     private double pricePerDay;
+
+    private boolean hasAppointments;
 
     public Set<Room> getRooms() {
         return rooms;
@@ -171,6 +174,14 @@ public class NewHomeDto {
         this.persons = home.getPersons();
         this.vacationHomeOwner = home.getVacationHomeOwner();
         this.pricePerDay = home.getPricePerDay();
+        this.hasAppointments = false;
+        for (Appointment appointment : home.getAppointments()) {
+            System.out.println(appointment.getEndDate().toString());
+            if (appointment.isReserved() && appointment.getEndDate().after(new Date())) {
+                this.hasAppointments = true;
+                break;
+            }
+        }
     }
 
     public int getPersons() {
@@ -187,5 +198,13 @@ public class NewHomeDto {
 
     public void setPricePerDay(double pricePerDay) {
         this.pricePerDay = pricePerDay;
+    }
+
+    public boolean isHasAppointments() {
+        return hasAppointments;
+    }
+
+    public void setHasAppointments(boolean hasAppointments) {
+        this.hasAppointments = hasAppointments;
     }
 }

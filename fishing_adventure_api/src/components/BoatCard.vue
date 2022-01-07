@@ -30,6 +30,12 @@
                   :data-bs-target="'#boatEntity' + boatEntity.id"
                 ></i>
                 <i
+                  class="fas fa-edit fa-lg shadow-none me-3"
+                  style="color: #293c4e"
+                  v-if="boatEntity.hasAppointments"
+                  v-on:click="showAlert"
+                ></i>
+                <i
                   class="fas fa-minus-square fa-lg shadow-none"
                   v-on:click="deleteBoat"
                 ></i>
@@ -131,6 +137,14 @@ export default {
     }
   },
   methods: {
+    showAlert: function () {
+      if (this.entity.hasAppointments) {
+        this.$toast.show(
+          "Cottage can't be deleted because it has existing reservations."
+        );
+        return;
+      }
+    },
     openBoat: function () {
       window.location.href = "/boat/?id=" + this.boatEntity.id;
     },
@@ -139,6 +153,12 @@ export default {
       event.stopPropagation();
     },
     deleteBoat: function () {
+      if (this.boatEntity.hasAppointments) {
+        this.$toast.show(
+          "Cottage can't be edited because it has existing reservations."
+        );
+        return;
+      }
       axios
         .get("http://localhost:8080/boat/deleteBoat/" + this.boatEntity.id, {
           headers: {

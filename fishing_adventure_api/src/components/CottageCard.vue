@@ -28,6 +28,13 @@
                   style="color: #293c4e"
                   data-bs-toggle="modal"
                   :data-bs-target="'#entity' + entity.id"
+                  v-if="!entity.hasAppointments"
+                ></i>
+                <i
+                  class="fas fa-edit fa-lg shadow-none me-3"
+                  style="color: #293c4e"
+                  v-if="entity.hasAppointments"
+                  v-on:click="showAlert"
                 ></i>
                 <i
                   class="fas fa-minus-square fa-lg shadow-none"
@@ -133,6 +140,14 @@ export default {
   },
 
   methods: {
+    showAlert: function () {
+      if (this.entity.hasAppointments) {
+        this.$toast.show(
+          "Cottage can't be deleted because it has existing reservations."
+        );
+        return;
+      }
+    },
     openCottage: function () {
       if (this.path == "searchcottages") {
         window.location.href =
@@ -151,6 +166,13 @@ export default {
       event.stopPropagation();
     },
     deleteCottage: function () {
+      if (this.entity.hasAppointments) {
+        this.$toast.show(
+          "Cottage can't be edited because it has existing reservations."
+        );
+        return;
+      }
+
       axios
         .get(
           "http://localhost:8080/vacationHome/deleteHome/" + this.entity.id,
