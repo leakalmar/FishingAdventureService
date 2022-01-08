@@ -7,9 +7,6 @@
         style="font-family: 'Font Awesome 5 Pro'"
       ></i>
     </div>
-    <h2 style="color: white">
-      You can cancel your reservation up to 3 days before it is scheduled
-    </h2>
     <div style="background-color: #212529; padding: 15px">
       <div class="container w-100" style="flex-direction: column">
         <div
@@ -109,6 +106,9 @@ export default {
           else this.reservations.push(d);
         }
       });
+      this.$toast.show(
+          "You can cancel your reservation up to 3 days before it is scheduled.", {duration: 5000}
+        );
   },
   methods: {},
 };

@@ -57,6 +57,7 @@ public class AppointmentController {
         newAppointment.setReserved(false);
         newAppointment.setMaxPersons(dto.getMaxPersons());
         newAppointment.setPrice(dto.getPrice());
+        newAppointment.setOwnerPresence(false);
 
         newAppointment.setStartDate(dto.getStartDate());
         newAppointment.setEndDate(dto.getEndDate());
