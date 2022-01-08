@@ -1,7 +1,7 @@
 <template>
-  <NavBar></NavBar>
+  <NavBar id="bar"></NavBar>
   <router-view />
-  <Footer></Footer>
+  <Footer id="footer"></Footer>
 </template>
 
 <script>
@@ -11,6 +11,12 @@ export default {
   components: {
     NavBar,
     Footer,
+  },
+  mounted() {
+    if (window.location.href.includes("auth")) {
+      document.getElementById("bar").style = "display:none";
+      document.getElementById("footer").style = "display:none";
+    }
   },
 };
 </script>

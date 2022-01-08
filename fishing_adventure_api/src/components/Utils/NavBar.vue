@@ -222,8 +222,8 @@
         </div>
       </div>
     </nav>
+    <register-modal></register-modal>
   </div>
-  <register-modal></register-modal>
 </template>
 
 <script>

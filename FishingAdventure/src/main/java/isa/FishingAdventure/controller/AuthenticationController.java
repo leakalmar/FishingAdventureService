@@ -312,7 +312,7 @@ public class AuthenticationController {
                 "\t\t<center style='color:#ffffff; font-family:Oswald, sans-serif; font-size:12px; font-weight:700; line-height:12px;  mso-text-raise:1px'>CONFIRM ACCOUNT</center>\n" +
                 "\t</v:roundrect></a>\n" +
                 "<![endif]--> \n" +
-                "                       <!--[if !mso]><!-- --><span class=\"msohide es-button-border\" style=\"border-style:solid;border-color:#1B2A2F;background:#2d516f;border-width:0px;display:inline-block;border-radius:0px;width:auto;mso-hide:all\"><a href=\"http://localhost:8080/auth/confirm-account?token=");
+                "                       <!--[if !mso]><!-- --><span class=\"msohide es-button-border\" style=\"border-style:solid;border-color:#1B2A2F;background:#2d516f;border-width:0px;display:inline-block;border-radius:0px;width:auto;mso-hide:all\"><a href=\"http://localhost:8081/auth/confirm-account?token=");
         html.append(token);
         html.append("\" class=\"es-button\" target=\"_blank\" style=\"mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#FFFFFF;font-size:12px;border-style:solid;border-color:#2d516f;border-width:25px 40px 25px 40px;display:inline-block;background:#2d516f;border-radius:0px;font-family:Oswald, sans-serif;font-weight:bold;font-style:normal;line-height:14px;width:auto;text-align:center\">CONFIRM ACCOUNT</a></span> \n" +
                 "                       <!--<![endif]--></td> \n" +
@@ -321,7 +321,7 @@ public class AuthenticationController {
                 "                      <td align=\"left\" style=\"padding:0;Margin:0;padding-bottom:20px\"><p style=\"Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'Open Sans', sans-serif;line-height:30px;color:#262626;font-size:20px\">If that doesn't work, copy and paste the following link in your browser:</p></td> \n" +
                 "                     </tr> \n" +
                 "                     <tr style=\"border-collapse:collapse\"> \n" +
-                "                      <td align=\"center\" style=\"padding:0;Margin:0;padding-bottom:20px\"><p style=\"Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'Open Sans', sans-serif;line-height:30px;color:#262626;font-size:20px\"><strong><a target=\"_blank\" style=\"-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:none;color:#2d516f;font-size:20px\" href=\"\">http://localhost:8080/auth/confirm-account?token=");
+                "                      <td align=\"center\" style=\"padding:0;Margin:0;padding-bottom:20px\"><p style=\"Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'Open Sans', sans-serif;line-height:30px;color:#262626;font-size:20px\"><strong><a target=\"_blank\" style=\"-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:none;color:#2d516f;font-size:20px\" href=\"\">http://localhost:8081/auth/confirm-account?token=");
         html.append(token);
         html.append("</a></strong></p></td> \n" +
                 "                     </tr> \n" +

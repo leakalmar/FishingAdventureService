@@ -9,6 +9,11 @@ const routes = [{
         checkAuthentification();
     }
 }, {
+    path: '/auth/:id',
+    name: 'ConfirmToken',
+    component: () =>
+        import ('../ConfirmToken.vue'),
+}, {
     path: '/profile',
     name: 'profile',
     component: () =>
