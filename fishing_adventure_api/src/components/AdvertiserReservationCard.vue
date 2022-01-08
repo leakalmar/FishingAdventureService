@@ -5,7 +5,7 @@
         <div class="col-md-4 shadow-none">
           <img
             style="width: 100%; height: 225px; object-fit: cover"
-            src="@/assets/c2.jpg"
+            :src="require('@/assets/' + entity.imagePath)"
             class="img-fluid rounded-start shadow-none"
           />
         </div>
@@ -13,16 +13,23 @@
         <div class="col-md-8 shadow-none" name="main-col">
           <div class="card-body shadow-none">
             <div class="card-text shadow-none" style="display: flex">
-              <h5 class="card-title shadow-none">Villa Madam</h5>
-              <p class="reservationStatus shadow-none" v-if="review != true">
-                <b class="shadow-none">Panding</b>
+              <h5 class="card-title shadow-none">{{ entity.name }}</h5>
+              <p class="reservationStatus shadow-none" style="background-color: #A28800" v-if=" entity.status == 'Upcoming'">
+                <b class="shadow-none">Upcoming</b>
               </p>
               <p
                 class="reservationStatus shadow-none"
-                style="background-color: #0c442a"
-                v-if="review == true"
+                style="background-color: #41005F"
+                v-if="entity.status == 'Finished'"
               >
                 <b class="shadow-none">Finished</b>
+              </p>
+              <p
+                class="reservationStatus shadow-none"
+                style="background-color: #0C442A"
+                v-if="entity.status == 'Current'"
+              >
+                <b class="shadow-none">Current</b>
               </p>
             </div>
             <div
@@ -35,7 +42,7 @@
                     Client:
                   </p>
                   <p class="advertiserTitle shadow-none col-md-6">
-                    @alexaLopez
+                    @{{ entity.clientName }}{{ entity.clientSurname }}
                   </p>
                 </div>
                 <div class="row shadow-none">
@@ -43,72 +50,52 @@
                     Period:
                   </p>
                   <p class="card-text text-left shadow-none col-md-8">
-                    {{ date }}
+                    {{ startDate }} - {{ endDate }}
                   </p>
                 </div>
                 <div class="row shadow-none">
                   <p class="card-text text-left shadow-none col-md-4">Price:</p>
                   <p class="card-text text-left shadow-none col-md-8">
-                    50 <i class="fas fa-dollar-sign"></i>
+                    {{ entity.price }} <i class="fas fa-dollar-sign"></i>
                   </p>
                 </div>
                 <div class="row shadow-none">
                   <p class="card-text text-left shadow-none col-md-4">
                     Persons:
                   </p>
-                  <p class="card-text text-left shadow-none col-md-8">2</p>
+                  <p class="card-text text-left shadow-none col-md-8"> {{ entity.persons }} </p>
                 </div>
                 <p class="card-text text-left shadow-none">
                   Additional services:
                 </p>
 
                 <div class="row shadow-none" style="margin-left: 1%">
-                  <p class="additionalServices shadow-none">
-                    <i class="fas fa-wifi fa-xs shadow-none"></i> WiFi
+                  <p class="additionalServices shadow-none" v-if="entity.additionalServices.length == 0"
+                  >
+                    Not included
                   </p>
-                  <p class="additionalServices shadow-none">
-                    <i class="fas fa-tv fa-xs shadow-none"></i> TV
-                  </p>
-                  <p class="additionalServices shadow-none">
-                    <i class="fas fa-fan fa-xs shadow-none"></i> Air Conditioner
-                  </p>
-                  <p class="additionalServices shadow-none">
-                    <i class="fas fa-parking fa-xs shadow-none"></i> Private
-                    parking
-                  </p>
-                  <p class="additionalServices shadow-none">
-                    <i class="fas fa-glass-martini-alt"></i> Bar
+                  <p class="additionalServices shadow-none" v-for="service of entity.additionalServices" :key="service.id">
+                      {{ service.name }}
                   </p>
                 </div>
               </div>
 
               <div class="manageReservation shadow-none">
                 <button
-                  v-if="review != true"
+                  v-if="entity.status == 'Finished'"
                   class="btn btn-primary shadow-none mb-2"
-                  style="background-color: #0c442a; border-color: #0c442a"
+                  style="background-color: #592073; border-color: #B89FC3; width:max-content; margin-bottom: 3rem!important;"
                 >
-                  Create
+                  Write report
                 </button>
+
                 <button
-                  v-if="review != true"
-                  class="btn btn-primary shadow-none"
-                  style="
-                    background-color: rgb(94 23 30);
-                    border-color: rgb(94 23 30);
-                  "
+                  v-if="entity.status == 'Current'"
+                  class="btn btn-primary shadow-none mb-2"
+                  style="background-color: #026756; border-color: #A0C6C0; width:max-content; margin-bottom: 3rem!important;"
+                  v-on:click="createReservation"
                 >
-                  Reject
-                </button>
-                <button
-                  v-if="review == true"
-                  class="btn btn-primary shadow-none"
-                  style="
-                    background-color: rgb(255 217 0 / 59%);
-                    border-color: rgb(255 217 0 / 59%);
-                  "
-                >
-                  Review
+                  New reservation
                 </button>
               </div>
             </div>
@@ -120,13 +107,28 @@
 </template>
 
 <script>
+import moment from "moment";
 export default {
-  props: ["review"],
+  props: ["entity"],
+  emits: ["createReservation"],
   data: function () {
     return {
       date: "12/20/2021 - 12/25/2021",
+      startDate: "",
+      endDate: "",
     };
   },
+  mounted() {
+    this.startDate = new Date(this.entity.startDate);
+    this.endDate = new Date(this.entity.endDate);
+    this.startDate = moment(this.startDate).format("MM/DD/yyyy HH:mm");
+    this.endDate = moment(this.endDate).format("MM/DD/yyyy HH:mm");
+  },
+  methods: {
+    createReservation: function() {
+      this.$emit("createReservation", this.entity.clientEmail, this.entity.clientName, this.entity.clientSurname);
+    }
+  }
 };
 </script>
 <style scoped>
