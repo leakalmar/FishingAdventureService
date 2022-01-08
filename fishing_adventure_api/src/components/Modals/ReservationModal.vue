@@ -140,13 +140,15 @@
             <b>{{ error }}</b>
           </h6>
         </div>
-        <button
-          type="button"
-          class="btn btn-outline-primary"
-          v-on:click="createReservation"
-        >
-          Create
-        </button>
+        <div class="modal-footer steps-div">
+          <button
+            type="button"
+            class="btn btn-outline-primary"
+            v-on:click="createReservation"
+          >
+            Create
+          </button>
+        </div>
       </div>
     </div>
   </div>

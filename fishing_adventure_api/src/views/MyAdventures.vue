@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import AdventureCard from "@/components/AdventureCard.vue";
+import AdventureCard from "@/components/EntityCards/AdventureCard.vue";
 import axios from "axios";
 export default {
   components: { AdventureCard },
@@ -88,14 +88,12 @@ export default {
   },
   mounted: function () {
     axios
-      .get(
-        "http://localhost:8080/fishingAdventure/allByUser", {
-          headers: {
-            "Access-Control-Allow-Origin": "http://localhost:8080",
-            Authorization: "Bearer " + localStorage.refreshToken,
-          },
-        }
-      )
+      .get("http://localhost:8080/fishingAdventure/allByUser", {
+        headers: {
+          "Access-Control-Allow-Origin": "http://localhost:8080",
+          Authorization: "Bearer " + localStorage.refreshToken,
+        },
+      })
       .then((res) => {
         this.searchResults = res.data;
         this.entities = res.data;

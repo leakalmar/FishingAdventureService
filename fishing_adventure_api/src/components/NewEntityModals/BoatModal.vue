@@ -100,23 +100,23 @@
           </label>
         </div>
         <div class="modal-body" v-if="mode == '2'">
-          <new-boat-modal-boat-info
+          <boat-modal-boat-info
             :length="length"
             :motorNumber="motorNumber"
             :maxSpeed="maxSpeed"
             :motorPower="motorPower"
             :type="type"
             v-on:infoupdated="infoUpdate"
-          ></new-boat-modal-boat-info>
+          ></boat-modal-boat-info>
           <label class="error" :id="'boatInfoErr' + boatId" name="labels">
           </label>
         </div>
         <div class="modal-body" v-if="mode == '3'">
-          <new-boat-modal-images
+          <boat-modal-images
             v-on:uploaded="uploaded"
             :files="files"
             :images="images"
-          ></new-boat-modal-images>
+          ></boat-modal-images>
           <label class="error" :id="'boatImagesErr' + boatId" name="labels">
           </label>
         </div>
@@ -128,39 +128,39 @@
               coutry.
             </p>
           </div>
-          <new-boat-modal-map
+          <boat-modal-map
             :lat="lat"
             :lng="lng"
             v-on:change-address="changeAddress"
-          ></new-boat-modal-map>
+          ></boat-modal-map>
         </div>
         <div class="modal-body" v-if="mode === '5'">
-          <new-boat-modal-fishing-eq
+          <boat-modal-fishing-eq
             :equipment="equipment"
             v-on:equipupdated="equipUpdated"
-          ></new-boat-modal-fishing-eq>
+          ></boat-modal-fishing-eq>
           <label class="error" :id="'equipErr' + boatId" name="labels"> </label>
         </div>
         <div class="modal-body" v-if="mode === '6'">
-          <new-boat-modal-navigation-eq
+          <boat-modal-navigation-eq
             :navEquipment="navEquipment"
             v-on:navequipupdated="navEquipUpdated"
-          ></new-boat-modal-navigation-eq>
+          ></boat-modal-navigation-eq>
           <label class="error" :id="'navEquipErr' + boatId" name="labels">
           </label>
         </div>
         <div class="modal-body" v-if="mode === '7'">
-          <new-boat-modal-rules
+          <boat-modal-rules
             :rules="rules"
             v-on:ruleupdated="rulesUpdated"
-          ></new-boat-modal-rules>
+          ></boat-modal-rules>
           <label class="error" :id="'ruleErr' + boatId" name="labels"> </label>
         </div>
         <div class="modal-body" v-if="mode === '8'">
-          <new-boat-modal-price-list
+          <boat-modal-price-list
             :priceList="priceList"
             v-on:pricelistupdated="priceListUpdated"
-          ></new-boat-modal-price-list>
+          ></boat-modal-price-list>
           <label class="error" :id="'priceListErr' + boatId" name="labels">
           </label>
         </div>
@@ -233,22 +233,22 @@
 
 <script>
 import axios from "axios";
-import NewBoatModalImages from "./../NewCottageModalImages.vue";
-import NewBoatModalMap from "./../NewCottageModalMap.vue";
-import NewBoatModalRules from "./../NewCottageModalRules.vue";
-import NewBoatModalPriceList from "./../NewCottageModalPriceList.vue";
-import NewBoatModalFishingEq from "./NewBoatModalFishingEq.vue";
-import NewBoatModalNavigationEq from "./NewBoatModalNavigationEq.vue";
-import NewBoatModalBoatInfo from "./NewBoatModalBoatInfo.vue";
+import BoatModalImages from "./CottageModalImages.vue";
+import BoatModalMap from "./CottageModalMap.vue";
+import BoatModalRules from "./CottageModalRules.vue";
+import BoatModalPriceList from "./CottageModalPriceList.vue";
+import BoatModalFishingEq from "./BoatModalFishingEq.vue";
+import BoatModalNavigationEq from "./BoatModalNavigationEq.vue";
+import BoatModalBoatInfo from "./BoatModalBoatInfo.vue";
 export default {
   components: {
-    NewBoatModalImages,
-    NewBoatModalMap,
-    NewBoatModalRules,
-    NewBoatModalPriceList,
-    NewBoatModalFishingEq,
-    NewBoatModalNavigationEq,
-    NewBoatModalBoatInfo,
+    BoatModalImages,
+    BoatModalMap,
+    BoatModalRules,
+    BoatModalPriceList,
+    BoatModalFishingEq,
+    BoatModalNavigationEq,
+    BoatModalBoatInfo,
   },
   props: ["boat"],
   data: function () {

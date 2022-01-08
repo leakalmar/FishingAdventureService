@@ -35,11 +35,7 @@
       "
     >
       <div
-        class="
-          container
-          w-100
-          row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-5
-        "
+        class="container w-100 row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-5"
         style="justify-content: space-evenly; align-items: center"
       >
         <div class="col-md-4">
@@ -139,9 +135,9 @@
 import Datepicker from "vue3-date-time-picker";
 import "vue3-date-time-picker/dist/main.css";
 import { ref, onMounted } from "vue";
-import CottageCard from "@/components/CottageCard.vue";
-import BoatCard from "@/components/BoatCard.vue";
-import AdventureCard from "@/components/AdventureCard.vue";
+import CottageCard from "@/components/EntityCards/CottageCard.vue";
+import BoatCard from "@/components/EntityCards/BoatCard.vue";
+import AdventureCard from "@/components/EntityCards/AdventureCard.vue";
 import axios from "axios";
 import moment from "moment";
 export default {
@@ -251,18 +247,12 @@ export default {
       this.reservationInfo = info;
       if (window.location.href.includes("/search/cottages")) {
         this.searching = "cottages";
-        if (
-          this.date[0] != undefined &&
-          this.date[1] != undefined
-        ) {
+        if (this.date[0] != undefined && this.date[1] != undefined) {
           this.searchCottagesByDateAndPersons();
         }
       } else if (window.location.href.includes("/search/boats")) {
         this.searching = "boats";
-        if (
-          this.date[0] != undefined &&
-          this.date[1] != undefined
-        ) {
+        if (this.date[0] != undefined && this.date[1] != undefined) {
           this.searchBoatsByDateAndPersons();
         }
       }

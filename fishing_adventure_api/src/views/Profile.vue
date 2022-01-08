@@ -1,20 +1,20 @@
 <template>
   <div>
     <UserInfo></UserInfo>
-    <HomeOwnerStatistics
+    <StatisticsHomeOwner
       v-if="loggedInRole == 'ROLE_VACATION_HOME_OWNER'"
-    ></HomeOwnerStatistics>
+    ></StatisticsHomeOwner>
     <StatisticsClient v-if="loggedInRole == 'ROLE_CLIENT'"></StatisticsClient>
   </div>
 </template>
 
 <script>
-import UserInfo from "@/components/UserInfo.vue";
-import HomeOwnerStatistics from "@/components/HomeOwnerStatistics.vue";
-import StatisticsClient from "@/components/StatisticsClient.vue";
+import UserInfo from "@/components/UserProfile/UserInfo.vue";
+import StatisticsHomeOwner from "@/components/UserProfile/StatisticsHomeOwner.vue";
+import StatisticsClient from "@/components/UserProfile/StatisticsClient.vue";
 import axios from "axios";
 export default {
-  components: { UserInfo, HomeOwnerStatistics, StatisticsClient },
+  components: { UserInfo, StatisticsHomeOwner, StatisticsClient },
   data: function () {
     return {
       loggedInRole: "",

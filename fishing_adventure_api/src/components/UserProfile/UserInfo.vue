@@ -254,7 +254,7 @@
 
 <script>
 import axios from "axios";
-import DeleteAccountModal from "@/components/DeleteAccountModal.vue"
+import DeleteAccountModal from "@/components/UserProfile/DeleteAccountModal.vue"
 export default {
   data: function () {
     return {

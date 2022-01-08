@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import VCalendar from "@/components/Calendar.vue";
+import VCalendar from "@/components/Utils/Calendar.vue";
 import axios from "axios";
 export default {
   components: { VCalendar },

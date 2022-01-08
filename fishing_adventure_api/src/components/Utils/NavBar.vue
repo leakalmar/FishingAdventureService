@@ -3,7 +3,7 @@
     <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
       <div class="container-fluid">
         <a class="navbar-brand" href="/">
-          <img src="../assets/logo_white.png" alt="" width="150" height="50" />
+          <img src="@/assets/logo_white.png" alt="" width="150" height="50" />
         </a>
         <button
           class="navbar-toggler"
@@ -157,7 +157,13 @@
                   >
                 </li>
 
-                <li v-if="loggedInRole == 'ROLE_FISHING_INSTRUCTOR' || loggedInRole == 'ROLE_VACATION_HOME_OWNER' || loggedInRole == 'ROLE_BOAT_OWNER'">
+                <li
+                  v-if="
+                    loggedInRole == 'ROLE_FISHING_INSTRUCTOR' ||
+                    loggedInRole == 'ROLE_VACATION_HOME_OWNER' ||
+                    loggedInRole == 'ROLE_BOAT_OWNER'
+                  "
+                >
                   <a class="dropdown-item" href="/reservations">Reservations</a>
                 </li>
               </ul>
@@ -221,7 +227,7 @@
 </template>
 
 <script>
-import RegisterModal from "@/components/RegisterModal.vue";
+import RegisterModal from "@/components/Modals/RegisterModal.vue";
 import axios from "axios";
 
 export default {

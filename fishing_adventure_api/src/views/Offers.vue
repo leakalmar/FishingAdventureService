@@ -64,8 +64,8 @@
 </template>
 
 <script>
-import OffersCard from "@/components/OffersCard.vue";
-import OfferModal from "@/components/OfferModal.vue";
+import OffersCard from "@/components/OfferCards/OffersCard.vue";
+import OfferModal from "@/components/Modals/OfferModal.vue";
 import axios from "axios";
 export default {
   components: { OffersCard, OfferModal },

@@ -96,7 +96,6 @@ public class ReservationController {
             newAppointment.getChosenServices().add(as);
         }
         newAppointment.setPrice(dto.getPrice());
-        newAppointment.setDateCreated(new Date());
         newAppointment.setOwnerPresence(dto.isOwnersPresence());
         return newAppointment;
     }

@@ -13,7 +13,7 @@
           class="row row-cols-1 row-cols-sm-1 row-cols-md-4"
           style="justify-content: space-evenly; align-items: center"
         >
-          <div class="col-md-3" style="margin-left:-23%">
+          <div class="col-md-3" style="margin-left: -23%">
             <input
               class="form-control me-2"
               type="search"
@@ -21,13 +21,9 @@
               aria-label="Search"
             />
           </div>
-          <div class="col-md-2" style="margin-right:-23%">
+          <div class="col-md-2" style="margin-right: -23%">
             <select
-              class="
-                form-select form-select-dark form-select-sm
-                text-white
-                bg-dark
-              "
+              class="form-select form-select-dark form-select-sm text-white bg-dark"
               aria-label=".form-select-sm example"
             >
               <option selected>All reservations</option>
@@ -51,7 +47,7 @@
 </template>
 
 <script>
-import SubscriptionCard from "@/components/SubscriptionCard.vue";
+import SubscriptionCard from "@/components/EntityCards/SubscriptionCard.vue";
 import axios from "axios";
 import moment from "moment";
 export default {
@@ -75,22 +71,22 @@ export default {
       });
   },
   methods: {
-    refresh: function() {
+    refresh: function () {
       this.refreshData();
       this.refreshData();
       this.refreshData();
     },
-    refreshData: function() {
+    refreshData: function () {
       axios
-      .get("http://localhost:8080/client/subscriptions", {
-        headers: {
-          "Access-Control-Allow-Origin": "http://localhost:8080",
-          Authorization: "Bearer " + localStorage.refreshToken,
-        },
-      })
-      .then((res) => {
-        this.subscriptions = res.data;
-      });
+        .get("http://localhost:8080/client/subscriptions", {
+          headers: {
+            "Access-Control-Allow-Origin": "http://localhost:8080",
+            Authorization: "Bearer " + localStorage.refreshToken,
+          },
+        })
+        .then((res) => {
+          this.subscriptions = res.data;
+        });
     },
     search: function () {
       if (

@@ -57,7 +57,7 @@
       ></AdvertiserReservationCard>
     </div>
   </div>
-  <AdvertiserReservationModal 
+  <AdvertiserReservationModal
     id="AdvertiserReservationModal"
     :clientEmail="clientEmail"
     :clientName="clientName"
@@ -66,9 +66,9 @@
 </template>
 
 <script>
-import AdvertiserReservationCard from "@/components/AdvertiserReservationCard.vue";
-import AdvertiserReservationModal from "@/components/AdvertiserReservationModal.vue";
-import { Modal } from 'bootstrap';
+import AdvertiserReservationCard from "@/components/ReservationCards/AdvertiserReservationCard.vue";
+import AdvertiserReservationModal from "@/components/Modals/AdvertiserReservationModal.vue";
+import { Modal } from "bootstrap";
 import axios from "axios";
 export default {
   components: { AdvertiserReservationCard, AdvertiserReservationModal },
@@ -90,14 +90,12 @@ export default {
   },
   mounted: function () {
     axios
-      .get(
-        "http://localhost:8080/reservation/allByAdvertiser", {
-          headers: {
-            "Access-Control-Allow-Origin": "http://localhost:8080",
-            Authorization: "Bearer " + localStorage.refreshToken,
-          },
-        }
-      )
+      .get("http://localhost:8080/reservation/allByAdvertiser", {
+        headers: {
+          "Access-Control-Allow-Origin": "http://localhost:8080",
+          Authorization: "Bearer " + localStorage.refreshToken,
+        },
+      })
       .then((res) => {
         this.searchResults = res.data;
         this.entities = res.data;
@@ -108,10 +106,10 @@ export default {
       this.clientEmail = email;
       this.clientName = clientName;
       this.clientSurname = clientSurname;
-      var myModal = document.getElementById('AdvertiserReservationModal');
-      var modal = Modal.getOrCreateInstance(myModal)
-      modal.show()
-    }
+      var myModal = document.getElementById("AdvertiserReservationModal");
+      var modal = Modal.getOrCreateInstance(myModal);
+      modal.show();
+    },
   },
 };
 </script>

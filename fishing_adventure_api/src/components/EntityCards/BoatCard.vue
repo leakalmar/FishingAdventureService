@@ -1,11 +1,11 @@
 <template>
   <div>
     <div class="card mb-3 bg-dark mt-3" style="width: 65%; margin: auto">
-      <div class="row g-0" v-on:click="openCottage">
+      <div class="row g-0" v-on:click="openBoat">
         <div class="col-md-4 shadow-none">
           <img
             style="width: 100%; height: 225px; object-fit: cover"
-            :src="getImageUrl(entity.imagePath)"
+            :src="require('@/assets/' + boatEntity.imagePath)"
             class="img-fluid rounded-start shadow-none"
           />
         </div>
@@ -13,13 +13,13 @@
         <div class="col-md-8 shadow-none" name="main-col">
           <div class="card-body shadow-none">
             <div class="card-text shadow-none" style="display: flex">
-              <h5 class="card-title shadow-none">{{ entity.name }}</h5>
+              <h5 class="card-title shadow-none">{{ boatEntity.name }}</h5>
               <p class="advertiserTitle shadow-none">
-                @{{ entity.vacationHomeOwner.name
-                }}{{ entity.vacationHomeOwner.surname }}
+                @{{ boatEntity.boatOwner.name
+                }}{{ boatEntity.boatOwner.surname }}
               </p>
               <p
-                v-if="path == 'mycottages'"
+                v-if="path == 'myboats'"
                 class="top-right-corner shadow-none"
                 v-on:click="preventPropagation"
               >
@@ -27,25 +27,24 @@
                   class="fas fa-edit fa-lg shadow-none me-3"
                   style="color: #293c4e"
                   data-bs-toggle="modal"
-                  :data-bs-target="'#entity' + entity.id"
-                  v-if="!entity.hasAppointments"
+                  :data-bs-target="'#boatEntity' + boatEntity.id"
                 ></i>
                 <i
                   class="fas fa-edit fa-lg shadow-none me-3"
                   style="color: #293c4e"
-                  v-if="entity.hasAppointments"
+                  v-if="boatEntity.hasAppointments"
                   v-on:click="showAlert"
                 ></i>
                 <i
                   class="fas fa-minus-square fa-lg shadow-none"
-                  v-on:click="deleteCottage"
+                  v-on:click="deleteBoat"
                 ></i>
               </p>
             </div>
             <div class="card-text shadow-none" style="display: flex">
               <div class="shadow-none">
                 <p class="card-text text-left shadow-none mb-1">
-                  {{ entity.description }}
+                  {{ boatEntity.description }}
                 </p>
               </div>
               <p
@@ -58,17 +57,17 @@
                   width: 30%;
                 "
               >
-                <i class="fas fa-star shadow-none"> {{ entity.rating }}</i>
+                <i class="fas fa-star shadow-none"> {{ boatEntity.rating }}</i>
               </p>
             </div>
             <div class="card-text fw-bold shadow-none" style="display: flex">
               <p class="shadow-none" style="margin: 0">
-                {{ entity.location.address.street }},
-                {{ entity.location.address.city }},
-                {{ entity.location.address.country }}
+                {{ boatEntity.location.address.street }},
+                {{ boatEntity.location.address.city }},
+                {{ boatEntity.location.address.country }}
               </p>
               <p
-                v-if="path != 'mycottages'"
+                v-if="path != 'myboats'"
                 class="shadow-none"
                 style="
                   margin: 0;
@@ -77,10 +76,10 @@
                   font-size: x-large;
                 "
               >
-                ${{ entity.pricePerDay }}/day
+                ${{ boatEntity.pricePerDay }}/day
               </p>
               <p
-                v-if="path == 'mycottages'"
+                v-if="path == 'myboats'"
                 class="shadow-none"
                 style="
                   margin: 0;
@@ -89,7 +88,7 @@
                   font-size: x-large;
                 "
               >
-                ${{ entity.pricePerDay }}/day
+                ${{ boatEntity.pricePerDay }}/day
               </p>
             </div>
           </div>
@@ -97,27 +96,27 @@
       </div>
     </div>
   </div>
-  <NewCottageModal
-    v-if="path == 'mycottages'"
-    :cottage="entity"
-    :id="'entity' + entity.id"
-  ></NewCottageModal>
+  <BoatModal
+    v-if="path == 'myboats'"
+    :boat="boatEntity"
+    :id="'boatEntity' + boatEntity.id"
+  ></BoatModal>
 </template>
 
 <script>
 import { ref, onMounted } from "vue";
-import NewCottageModal from "@/components/NewCottageModal.vue";
 import axios from "axios";
+import BoatModal from "../NewEntityModals/BoatModal.vue";
 
 export default {
-  components: { NewCottageModal },
-  props: ["entity", "info"],
+  components: { BoatModal },
+  props: ["boatEntity", "info"],
   emits: ["reservation"],
   setup(props) {
     const date = ref();
     onMounted(() => {
-      const startDate = new Date(props.entity.availabilityStart);
-      const endDate = new Date(props.entity.availabilityEnd);
+      const startDate = new Date(props.boatEntity.availabilityStart);
+      const endDate = new Date(props.boatEntity.availabilityEnd);
       startDate.setHours(startDate.getHours() - 1);
       endDate.setHours(endDate.getHours() - 1);
       date.value = [startDate, endDate];
@@ -132,13 +131,12 @@ export default {
     };
   },
   mounted: function () {
-    if (window.location.href.includes("/search/cottages")) {
-      this.path = "searchcottages";
-    } else if (window.location.href.includes("/cottages")) {
-      this.path = "mycottages";
+    if (window.location.href.includes("/search/boats")) {
+      this.path = "searchboats";
+    } else if (window.location.href.includes("/boats")) {
+      this.path = "myboats";
     }
   },
-
   methods: {
     showAlert: function () {
       if (this.entity.hasAppointments) {
@@ -148,45 +146,38 @@ export default {
         return;
       }
     },
-    openCottage: function () {
-      if (this.path == "searchcottages") {
+    openBoat: function () {
+      if (this.path == "searchboats") {
         window.location.href =
-          "/cottage/?id=" +
-          this.entity.id +
+          "/boat/?id=" +
+          this.boatEntity.id +
           "&date=" +
           this.info.date +
           "&persons=" +
           this.info.persons;
       } else {
-        window.location.href = "/cottage/?id=" + this.entity.id;
+        window.location.href = "/boat/?id=" + this.boatEntity.id;
       }
     },
     preventPropagation: function (event) {
       event.preventDefault();
       event.stopPropagation();
     },
-    deleteCottage: function () {
-      if (this.entity.hasAppointments) {
+    deleteBoat: function () {
+      if (this.boatEntity.hasAppointments) {
         this.$toast.show(
           "Cottage can't be edited because it has existing reservations."
         );
         return;
       }
-
       axios
-        .get(
-          "http://localhost:8080/vacationHome/deleteHome/" + this.entity.id,
-          {
-            headers: {
-              "Access-Control-Allow-Origin": "http://localhost:8080",
-              Authorization: "Bearer " + localStorage.refreshToken,
-            },
-          }
-        )
+        .get("http://localhost:8080/boat/deleteBoat/" + this.boatEntity.id, {
+          headers: {
+            "Access-Control-Allow-Origin": "http://localhost:8080",
+            Authorization: "Bearer " + localStorage.refreshToken,
+          },
+        })
         .then(window.location.reload());
-    },
-    getImageUrl: function (imagePath) {
-      return require("@/assets/" + imagePath);
     },
     createReservation: function (event) {
       let object = {

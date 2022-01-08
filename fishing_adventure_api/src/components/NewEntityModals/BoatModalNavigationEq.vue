@@ -42,7 +42,7 @@
 <script>
 export default {
   props: ["navEquipment"],
-  name: "NewBoatModalFishingEq",
+  name: "BoatModalFishingEq",
   data: function () {
     return {
       newEquipment: [],

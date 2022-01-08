@@ -73,9 +73,9 @@
 </template>
 
 <script>
-import BoatCard from "@/components/BoatCard.vue";
+import BoatCard from "@/components/EntityCards/BoatCard.vue";
 import axios from "axios";
-import NewBoatModal from "@/components/NewBoatModal/NewBoatModal.vue";
+import NewBoatModal from "@/components/NewEntityModals/BoatModal.vue";
 export default {
   components: { BoatCard, NewBoatModal },
   data: function () {

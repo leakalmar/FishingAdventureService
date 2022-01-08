@@ -100,11 +100,11 @@
           </label>
         </div>
         <div class="modal-body" v-if="mode == '2'">
-          <new-cottage-modal-images
+          <cottage-modal-images
             v-on:uploaded="uploaded"
             :files="files"
             :images="images"
-          ></new-cottage-modal-images>
+          ></cottage-modal-images>
           <label
             class="error"
             :id="'cottageImagesErr' + cottageId"
@@ -120,33 +120,33 @@
               and coutry.
             </p>
           </div>
-          <new-cottage-modal-map
+          <cottage-modal-map
             :lat="lat"
             :lng="lng"
             v-on:change-address="changeAddress"
-          ></new-cottage-modal-map>
+          ></cottage-modal-map>
         </div>
         <div class="modal-body" v-if="mode === '4'">
-          <new-cottage-modal-rooms
+          <cottage-modal-rooms
             :rooms="rooms"
             v-on:roomupdated="roomsUpdated"
-          ></new-cottage-modal-rooms>
+          ></cottage-modal-rooms>
           <label class="error" :id="'roomErr' + cottageId" name="labels">
           </label>
         </div>
         <div class="modal-body" v-if="mode === '5'">
-          <new-cottage-modal-rules
+          <cottage-modal-rules
             :rules="rules"
             v-on:ruleupdated="rulesUpdated"
-          ></new-cottage-modal-rules>
+          ></cottage-modal-rules>
           <label class="error" :id="'ruleErr' + cottageId" name="labels">
           </label>
         </div>
         <div class="modal-body" v-if="mode === '6'">
-          <new-cottage-modal-price-list
+          <cottage-modal-price-list
             :priceList="priceList"
             v-on:pricelistupdated="priceListUpdated"
-          ></new-cottage-modal-price-list>
+          ></cottage-modal-price-list>
           <label class="error" :id="'priceListErr' + cottageId" name="labels">
           </label>
         </div>
@@ -219,18 +219,18 @@
 
 <script>
 import axios from "axios";
-import NewCottageModalImages from "./NewCottageModalImages.vue";
-import NewCottageModalMap from "./NewCottageModalMap.vue";
-import NewCottageModalRooms from "./NewCottageModalRooms.vue";
-import NewCottageModalRules from "./NewCottageModalRules.vue";
-import NewCottageModalPriceList from "./NewCottageModalPriceList.vue";
+import CottageModalImages from "./CottageModalImages.vue";
+import CottageModalMap from "./CottageModalMap.vue";
+import CottageModalRooms from "./CottageModalRooms.vue";
+import CottageModalRules from "./CottageModalRules.vue";
+import CottageModalPriceList from "./CottageModalPriceList.vue";
 export default {
   components: {
-    NewCottageModalImages,
-    NewCottageModalMap,
-    NewCottageModalRooms,
-    NewCottageModalRules,
-    NewCottageModalPriceList,
+    CottageModalImages,
+    CottageModalMap,
+    CottageModalRooms,
+    CottageModalRules,
+    CottageModalPriceList,
   },
   props: ["cottage"],
   name: "RegisterModal",

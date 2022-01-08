@@ -67,14 +67,14 @@ const routes = [{
     }
 }, {
     path: '/client/currentReservations',
-    name: 'CurrentClientReservations',
+    name: 'ClientCurrentReservations',
     component: () =>
-        import ('../views/CurrentClientReservations.vue')
+        import ('../views/ClientCurrentReservations.vue')
 }, {
     path: '/client/pastReservations',
-    name: 'PastClientReservations',
+    name: 'ClientPastReservations',
     component: () =>
-        import ('../views/PastClientReservations.vue')
+        import ('../views/ClientPastReservations.vue')
 }, {
     path: '/client/subscriptions',
     name: 'ClientSubscriptions',
@@ -82,9 +82,9 @@ const routes = [{
         import ('../views/ClientSubscriptions.vue')
 }, {
     path: '/specialOffers',
-    name: 'SpecialOffers',
+    name: 'Offers',
     component: () =>
-        import ('../views/SpecialOffers.vue'),
+        import ('../views/Offers.vue'),
     beforeEnter: (to, from, next) => {
         checkAuthentification().then(response => {
             if (response != "ROLE_VACATION_HOME_OWNER" && response != "ROLE_BOAT_OWNER") {
@@ -110,19 +110,19 @@ const routes = [{
     }
 }, {
     path: '/fishingAdventure',
-    name: 'FishingAdventure',
+    name: 'ProfileAdventure',
     component: () =>
-        import ('../views/FishingAdventure.vue')
+        import ('../views/ProfileAdventure.vue')
 }, {
     path: '/cottage',
-    name: 'CottageProfile',
+    name: 'ProfileCottage',
     component: () =>
-        import ('../views/CottageProfile.vue')
+        import ('../views/ProfileCottage.vue')
 }, {
     path: '/boat',
-    name: 'BoatProfile',
+    name: 'ProfileBoat',
     component: () =>
-        import ('../views/BoatProfile.vue')
+        import ('../views/ProfileBoat.vue')
 }, {
     path: '/admin/profile',
     name: 'AdminProfile',
@@ -140,32 +140,32 @@ const routes = [{
         import ('../views/RegistrationRequests.vue')
 }, {
     path: '/fishingAdventures',
-    name: 'MyFishingAdventures',
+    name: 'MyAdventures',
     component: () =>
-        import ('../views/MyFishingAdventures.vue'),
-        beforeEnter: (to, from, next) => {
-            checkAuthentification().then(response => {
-                if (response != "ROLE_FISHING_INSTRUCTOR") {
-                    next("/")
-                } else {
-                    next();
-                }
-            })
-        }
+        import ('../views/MyAdventures.vue'),
+    beforeEnter: (to, from, next) => {
+        checkAuthentification().then(response => {
+            if (response != "ROLE_FISHING_INSTRUCTOR") {
+                next("/")
+            } else {
+                next();
+            }
+        })
+    }
 }, {
     path: '/reservations',
     name: 'Reservations',
     component: () =>
         import ('../views/Reservations.vue'),
-        beforeEnter: (to, from, next) => {
-            checkAuthentification().then(response => {
-                if ((response != "ROLE_FISHING_INSTRUCTOR") && (response != "ROLE_VACATION_HOME_OWNER") && (response != "ROLE_BOAT_OWNER")) {
-                    next("/")
-                } else {
-                    next();
-                }
-            })
-        }
+    beforeEnter: (to, from, next) => {
+        checkAuthentification().then(response => {
+            if ((response != "ROLE_FISHING_INSTRUCTOR") && (response != "ROLE_VACATION_HOME_OWNER") && (response != "ROLE_BOAT_OWNER")) {
+                next("/")
+            } else {
+                next();
+            }
+        })
+    }
 }, {
     path: '/boats',
     name: 'MyBoats',

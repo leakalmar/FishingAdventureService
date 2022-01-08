@@ -59,7 +59,7 @@
 <script>
 export default {
   props: ["type", "length", "motorNumber", "motorPower", "maxSpeed"],
-  name: "NewBoatModalBoatInfo",
+  name: "BoatModalBoatInfo",
   data: function () {
     return {
       typeB: "",

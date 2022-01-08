@@ -1,15 +1,15 @@
 <template>
   <div>
     <UserInfo></UserInfo>
-    <HomeOwnerStatistics></HomeOwnerStatistics>
+    <StatisticsHomeOwner></StatisticsHomeOwner>
   </div>
 </template>
 
 <script>
-import UserInfo from "@/components/UserInfo.vue";
-import HomeOwnerStatistics from "@/components/HomeOwnerStatistics.vue";
+import UserInfo from "@/components/UserProfile/UserInfo.vue";
+import StatisticsHomeOwner from "@/components/UserProfile/StatisticsHomeOwner.vue";
 export default {
-  components: { UserInfo, HomeOwnerStatistics },
+  components: { UserInfo, StatisticsHomeOwner },
 };
 </script>
 

@@ -1,10 +1,10 @@
 <template>
   <div class="fa-page">
     <div class="main-img-fa">
-      <img src="@/assets/c16.jpg" alt="" />
+      <img src="@/assets/b3.jpg" alt="" />
       <div class="tagline-fa" v-if="loggedInRole == 'ROLE_CLIENT'">
         <h2>
-          Enjoy in your cottage <br />
+          Enjoy in your boat <br />
           today!
         </h2>
         <button
@@ -12,7 +12,7 @@
           :data-bs-target="'#cottage'"
           class="book-btn"
         >
-          Book a cottage
+          Book a boat
         </button>
       </div>
       <div class="tagline-subscribe-fa" v-if="loggedInRole == 'ROLE_CLIENT'">
@@ -68,21 +68,40 @@
             <h5>For up to {{ entity.persons }} people</h5>
           </div>
           <p>{{ entity.description }}</p>
+          <div style="display: flex; justify-content: center">
+            <div class="boatInfo">Type: {{ entity.type }}</div>
+            <div class="boatInfo">Length: {{ entity.length }}</div>
+            <div class="boatInfo">Max speed: {{ entity.maxSpeed }}</div>
+            <div class="boatInfo">Motor number: {{ entity.motorNumber }}</div>
+            <div class="boatInfo">Motor power: {{ entity.motorPower }}</div>
+          </div>
         </div>
 
         <div class="menu-ex-info-fa" style="display: none">
           <div class="ei-bonus">
-            <h4>Rooms:</h4>
+            <h4>Equipment:</h4>
             <table class="table table-striped">
               <tbody>
-                <tr v-for="(room, index) in entity.rooms" :key="room.id">
+                <tr
+                  v-for="fishingEq in entity.fishingEquipments"
+                  :key="fishingEq.id"
+                >
                   <td class="as-title" style="color: white">
-                    Room {{ index }}
+                    <i class="fas fa-fish" style="color: white"></i>
                   </td>
-                  <td>
-                    <span class="as-price"
-                      >{{ room.bedNumber }} <i class="fas fa-bed"></i
-                    ></span>
+                  <td class="as-title" style="color: white">
+                    {{ fishingEq.name }}
+                  </td>
+                </tr>
+                <tr
+                  v-for="navigationEq in entity.navigationEquipments"
+                  :key="navigationEq.id"
+                >
+                  <td class="as-title" style="color: white">
+                    <i class="fas fa-compass" style="color: white"></i>
+                  </td>
+                  <td class="as-title" style="color: white">
+                    {{ navigationEq.name }}
                   </td>
                 </tr>
               </tbody>
@@ -298,8 +317,8 @@
 
 <script>
 import axios from "axios";
-import ReservationModal from "@/components/ReservationModal.vue";
-import OffersCardNoImage from "@/components/OffersCardNoImage.vue";
+import ReservationModal from "@/components/Modals/ReservationModal.vue";
+import OffersCardNoImage from "@/components/OfferCards/OffersCardNoImage.vue";
 export default {
   components: { ReservationModal, OffersCardNoImage },
   data: function () {
@@ -326,9 +345,21 @@ export default {
   },
   mounted() {
     window.scrollTo(0, 0);
+    console.log(this.$route.query.id);
 
     axios
-      .get("http://localhost:8080/vacationHome/" + this.$route.query.id, {
+      .get("http://localhost:8080/users/getRole", {
+        headers: {
+          "Access-Control-Allow-Origin": "http://localhost:8080",
+          Authorization: "Bearer " + localStorage.refreshToken,
+        },
+      })
+      .then((res) => {
+        this.loggedInRole = res.data;
+      });
+
+    axios
+      .get("http://localhost:8080/boat/" + this.$route.query.id, {
         headers: {
           "Access-Control-Allow-Origin": "http://localhost:8080",
           Authorization: "Bearer " + localStorage.refreshToken,
@@ -353,9 +384,10 @@ export default {
       this.date = this.$route.query.date;
       this.persons = this.$route.query.persons;
     }
+
     axios
       .get(
-        "http://localhost:8080/vacationHome/getServiceOffersById/" +
+        "http://localhost:8080/boat/getServiceOffersById/" +
           this.$route.query.id,
         {
           headers: {

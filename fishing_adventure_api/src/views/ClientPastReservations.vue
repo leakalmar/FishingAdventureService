@@ -64,8 +64,8 @@
 </template>
 
 <script>
-import ClientReservationCard from "@/components/ClientReservationCard.vue";
-import axios from "axios"
+import ClientReservationCard from "@/components/ReservationCards/ClientReservationCard.vue";
+import axios from "axios";
 export default {
   components: { ClientReservationCard },
   data: function () {
@@ -79,7 +79,7 @@ export default {
       date: "",
     };
   },
-  mounted(){
+  mounted() {
     axios
       .get("http://localhost:8080/reservation/client/past", {
         headers: {

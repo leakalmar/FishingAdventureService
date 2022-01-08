@@ -69,15 +69,15 @@
       ></CottageCard>
     </div>
   </div>
-  <NewCottageModal></NewCottageModal>
+  <CottageModal></CottageModal>
 </template>
 
 <script>
-import CottageCard from "@/components/CottageCard.vue";
+import CottageCard from "@/components/EntityCards/CottageCard.vue";
 import axios from "axios";
-import NewCottageModal from "@/components/NewCottageModal.vue";
+import CottageModal from "@/components/NewEntityModals/CottageModal.vue";
 export default {
-  components: { CottageCard, NewCottageModal },
+  components: { CottageCard, CottageModal },
   data: function () {
     return {
       clickedCottageForEdit: "",

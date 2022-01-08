@@ -7,7 +7,9 @@
         style="font-family: 'Font Awesome 5 Pro'"
       ></i>
     </div>
-    <h2 style="color:white;"> You can cancel your reservation up to 3 days before it is scheduled</h2>
+    <h2 style="color: white">
+      You can cancel your reservation up to 3 days before it is scheduled
+    </h2>
     <div style="background-color: #212529; padding: 15px">
       <div class="container w-100" style="flex-direction: column">
         <div
@@ -72,7 +74,7 @@
 </template>
 
 <script>
-import ClientReservationCard from "@/components/ClientReservationCard.vue";
+import ClientReservationCard from "@/components/ReservationCards/ClientReservationCard.vue";
 import axios from "axios";
 import moment from "moment";
 export default {
@@ -81,8 +83,8 @@ export default {
     return {
       numberOfPersons: "",
       date: "",
-      nonCancellable:[],
-      reservations:[],
+      nonCancellable: [],
+      reservations: [],
       range: {
         start: new Date(),
         end: new Date(),
@@ -101,11 +103,10 @@ export default {
         console.log(res.data);
         var currentDate = new Date();
         currentDate.setDate(currentDate.getDate() + 3);
-        for(let d of res.data) {
-          if(moment(d.startDate).isBefore(moment(currentDate)))
+        for (let d of res.data) {
+          if (moment(d.startDate).isBefore(moment(currentDate)))
             this.nonCancellable.push(d);
-          else
-            this.reservations.push(d);
+          else this.reservations.push(d);
         }
       });
   },

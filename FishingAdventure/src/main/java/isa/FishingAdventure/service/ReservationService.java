@@ -63,24 +63,19 @@ public class ReservationService {
 
     public boolean createReservation(String token, Appointment newAppointment, Integer serviceProfileId) {
         try {
-            System.out.println("//////////////////////////////1");
             String email = tokenUtils.getEmailFromToken(token.split(" ")[1]);
-            System.out.println("//////////////////////////////2");
             Client client = clientService.findByEmail(email);
-            System.out.println("//////////////////////////////3");
             appointmentService.save(newAppointment);
-            System.out.println("//////////////////////////////2");
             ServiceProfile serviceProfile = serviceProfileService.getById(serviceProfileId);
             serviceProfile.getAppointments().add(newAppointment);
             serviceProfileService.save(serviceProfile);
-            System.out.println("//////////////////////////////3");
             Reservation newReservation = new Reservation();
             newReservation.setAppointment(newAppointment);
             newReservation.setClient(client);
             newReservation.setCanceled(false);
             save(newReservation);
             String emailText = createEmail(client, newAppointment, serviceProfile);
-            emailService.sendEmail(email, "Reservation conformation", emailText);
+            emailService.sendEmail(email, "Reservation confirmation", emailText);
 
         } catch (Exception e) {
             return true;
@@ -130,7 +125,7 @@ public class ReservationService {
         }
         return currentReservations;
     }
-    
+
     public List<AdvertiserReservationDto> findAllReservationsByAdvertiser(String email, String role) {
         List<AdvertiserReservationDto> reservationDtos = new ArrayList<>();
         if (role.equals("ROLE_FISHING_INSTRUCTOR"))
@@ -150,7 +145,7 @@ public class ReservationService {
             List<AdvertiserReservationDto> resDtos = getReservationsFromAppointments(adventure.getAppointments());
             for (AdvertiserReservationDto reservationDto : resDtos) {
                 reservationDto.setName(adventure.getName());
-                for(Image img : adventure.getImages()) {
+                for (Image img : adventure.getImages()) {
                     if (img.isCoverImage()) {
                         reservationDto.setImagePath(img.getPath());
                         break;
