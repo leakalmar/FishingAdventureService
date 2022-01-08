@@ -15,10 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "reservation")
@@ -33,7 +30,7 @@ public class ReservationController {
     @Transactional
     public ResponseEntity<NewReservationDto> saveNewAppointment(@RequestHeader("Authorization") String token, @RequestBody NewReservationDto dto) {
         Appointment newAppointment = getNewAppointment(dto);
-        boolean sucess = reservationService.createReservation(token, newAppointment, dto.getCottageId());
+        boolean sucess = reservationService.createReservation(token, newAppointment, dto.getServiceId());
         if (!sucess)
             return new ResponseEntity<>(dto, HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(dto, HttpStatus.OK);
@@ -93,6 +90,8 @@ public class ReservationController {
             newAppointment.getChosenServices().add(as);
         }
         newAppointment.setPrice(dto.getPrice());
+        newAppointment.setDateCreated(new Date());
+        newAppointment.setOwnerPresence(dto.isOwnersPresence());
         return newAppointment;
     }
 }

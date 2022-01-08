@@ -53,7 +53,7 @@
             v-if="selectedDateRange != undefined"
             v-model="selectedDateRange"
             range
-            calendar-button=false
+            calendar-button="false"
             :enableTimePicker="true"
           ></Datepicker>
 
@@ -84,7 +84,26 @@
             <div id="table-scroll">
               <table class="table">
                 <tbody>
-                  <tr v-if="addServices == undefined || !addServices.length" style="color: white;"> No additional services available </tr>
+                  <tr
+                    v-if="
+                      (addServices == undefined || !addServices.length) &&
+                      boat != true
+                    "
+                    style="color: white"
+                  >
+                    No additional services available
+                  </tr>
+                  <tr v-if="boat">
+                    <td style="color: white">Boat owner</td>
+                    <td style="color: white">free</td>
+                    <td>
+                      <input
+                        id="checkBoatOwner"
+                        type="checkbox"
+                        v-on:click="checkBoatOwner()"
+                      />
+                    </td>
+                  </tr>
                   <tr
                     v-for="additionalService in additionalServices"
                     :key="additionalService.id"
@@ -138,11 +157,11 @@ import axios from "axios";
 import moment from "moment";
 export default {
   components: {},
-  props: ["cottageId", "date", "persons", "additionalServices", "price"],
+  props: ["serviceId", "date", "persons", "additionalServices", "price"],
   name: "RegisterModal",
   data: function () {
     return {
-      addServices:[],
+      addServices: [],
       dateRange: [],
       selectedDateRange: undefined,
       numberOfPersons: 1,
@@ -152,6 +171,9 @@ export default {
       chosenServices: [],
       availableForPersons: true,
       availableForDateRange: true,
+      boat: false,
+      boatOwner: false,
+      boatOwnerAvailable: true,
       error: "",
     };
   },
@@ -159,22 +181,37 @@ export default {
     var element = document.getElementById("logIn-btn");
     element.classList.add("active");
     this.addServices = this.additionalServices;
+    this.boatOwnerAvailable = true;
   },
   beforeUpdate: function () {
     this.addServices = this.additionalServices;
+    if (window.location.href.includes("boat")) this.boat = true;
+
     if (this.date != "undefined") {
       this.dateRange.push(new Date(Date.parse(this.date.split(",")[0])));
       this.dateRange.push(new Date(Date.parse(this.date.split(",")[1])));
     } else {
-      if(this.dateRange == null) { this.dateRange = []}
-        this.dateRange.push(new Date());
-        this.dateRange.push(new Date());
+      if (this.dateRange == null) {
+        this.dateRange = [];
+      }
+      this.dateRange.push(new Date());
+      this.dateRange.push(new Date());
     }
     if (this.persons != "undefined") {
-      this.numberOfPersons = this.persons;
+      if (this.persons != 0) this.numberOfPersons = this.persons;
     }
   },
   methods: {
+    checkBoatOwner: function () {
+      var checkBox = document.getElementById("checkBoatOwner");
+      if (checkBox.checked === true) {
+        this.boatOwner = true;
+        this.boatOwnerAvailable = false;
+      } else {
+        this.boatOwner = false;
+        this.boatOwnerAvailable = true;
+      }
+    },
     check: function (additionalService) {
       var checkBox = document.getElementById(additionalService.id);
       if (checkBox.checked === true) {
@@ -195,7 +232,9 @@ export default {
       if (this.date != undefined) {
         this.selectedDateRange = this.dateRange;
       } else {
-        if(this.dateRange == null) { this.dateRange = []}
+        if (this.dateRange == null) {
+          this.dateRange = [];
+        }
         this.dateRange.push(new Date());
         this.dateRange.push(new Date());
       }
@@ -205,7 +244,7 @@ export default {
       axios
         .get(
           "http://localhost:8080/vacationHome/available/dateRange?id=" +
-            this.cottageId +
+            this.serviceId +
             "&start=" +
             moment(this.selectedDateRange[0]).format(
               "yyyy-MM-DD HH:mm:ss.SSS"
@@ -226,10 +265,20 @@ export default {
     },
     changePersons: function () {
       this.numOfPersons = parseInt(this.numberOfPersons);
+      this.checkPersons();
+    },
+    checkPersons: function () {
+      if (window.location.href.includes("cottage")) {
+        this.checkPersonsForCottage();
+      } else if (window.location.href.includes("boat")) {
+        this.checkPersonsForBoat();
+      }
+    },
+    checkPersonsForCottage: function () {
       axios
         .get(
           "http://localhost:8080/vacationHome/available/persons?id=" +
-            this.cottageId +
+            this.serviceId +
             "&number=" +
             this.numOfPersons,
           {
@@ -244,11 +293,11 @@ export default {
           console.log(this.availableForPersons);
         });
     },
-    checkPersons: function () {
+    checkPersonsForBoat: function () {
       axios
         .get(
-          "http://localhost:8080/vacationHome/available/persons?id=" +
-            this.cottageId +
+          "http://localhost:8080/boat/available/persons?id=" +
+            this.serviceId +
             "&number=" +
             this.numOfPersons,
           {
@@ -277,10 +326,17 @@ export default {
         return;
       }
 
+      if (window.location.href.includes("cottage")) {
+        this.checkCottageAvailability();
+      } else if (window.location.href.includes("boat")) {
+        this.checkBoatAvailability();
+      }
+    },
+    checkCottageAvailability: function () {
       axios
         .get(
           "http://localhost:8080/vacationHome/available/dateRange?id=" +
-            this.cottageId +
+            this.serviceId +
             "&start=" +
             moment(this.selectedDateRange[0]).format(
               "yyyy-MM-DD HH:mm:ss.SSS"
@@ -301,18 +357,69 @@ export default {
         .finally(() => {
           this.saveReservation();
         });
-
-      
     },
-    saveReservation: function() {
-      if (this.availableForPersons && this.availableForDateRange) {
+    checkBoatAvailability: function () {
+      axios
+        .get(
+          "http://localhost:8080/boat/available/dateRange?id=" +
+            this.serviceId +
+            "&start=" +
+            moment(this.selectedDateRange[0]).format(
+              "yyyy-MM-DD HH:mm:ss.SSS"
+            ) +
+            "&end=" +
+            moment(this.selectedDateRange[1]).format("yyyy-MM-DD HH:mm:ss.SSS"),
+          {
+            headers: {
+              "Access-Control-Allow-Origin": "http://localhost:8080",
+              Authorization: "Bearer " + localStorage.refreshToken,
+            },
+          }
+        )
+        .then((response) => {
+          this.availableForDateRange = response.data;
+          console.log(this.availableForDateRange);
+          if (this.boatOwner == true) {
+            axios
+              .get(
+                "http://localhost:8080/boatOwner/available/dateRange?id=" +
+                  this.serviceId +
+                  "&start=" +
+                  moment(this.selectedDateRange[0]).format(
+                    "yyyy-MM-DD HH:mm:ss.SSS"
+                  ) +
+                  "&end=" +
+                  moment(this.selectedDateRange[1]).format(
+                    "yyyy-MM-DD HH:mm:ss.SSS"
+                  ),
+                {
+                  headers: {
+                    "Access-Control-Allow-Origin": "http://localhost:8080",
+                    Authorization: "Bearer " + localStorage.refreshToken,
+                  },
+                }
+              )
+              .then((res) => (this.boatOwnerAvailable = res.data));
+          }
+        })
+        .finally(() => {
+          this.saveReservation();
+        });
+    },
+    saveReservation: function () {
+      if (
+        this.availableForPersons &&
+        this.availableForDateRange &&
+        this.boatOwnerAvailable
+      ) {
         let reservation = {
-          cottageId: this.cottageId,
+          serviceId: this.serviceId,
           startDate: this.selectedDateRange[0],
           endDate: this.selectedDateRange[1],
           persons: this.numOfPersons,
           chosenServices: this.chosenServices,
           price: this.totalPrice,
+          ownersPresence: this.boatOwner,
         };
         console.log(reservation);
 
@@ -327,7 +434,9 @@ export default {
       } else {
         if (this.availableForPersons == false)
           this.error = "Not available for " + this.numOfPersons + " persons!";
-        else this.error = "Not available for selected date range!";
+        else if (this.availableForDateRange == false)
+          this.error = "Not available for selected date range!";
+        else this.error = "Boat owner is not available";
       }
     },
     closeModal: function () {
