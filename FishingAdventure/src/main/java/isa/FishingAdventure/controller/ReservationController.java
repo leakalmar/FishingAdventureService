@@ -3,10 +3,7 @@ package isa.FishingAdventure.controller;
 import isa.FishingAdventure.dto.AdvertiserReservationDto;
 import isa.FishingAdventure.dto.NewReservationDto;
 import isa.FishingAdventure.dto.ReservationDto;
-import isa.FishingAdventure.model.AdditionalService;
-import isa.FishingAdventure.model.Appointment;
-import isa.FishingAdventure.model.Reservation;
-import isa.FishingAdventure.model.ServiceProfile;
+import isa.FishingAdventure.model.*;
 import isa.FishingAdventure.security.util.TokenUtils;
 import isa.FishingAdventure.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +69,12 @@ public class ReservationController {
             dto.setPrice(reservations.get(i).getAppointment().getPrice());
             dto.setChosenServices(new ArrayList<>(reservations.get(i).getAppointment().getChosenServices()));
             dto.setServiceName(serviceProfiles.get(i).getName());
+            for(Image im : serviceProfiles.get(i).getImages()){
+                if(im.isCoverImage()) {
+                    dto.setImagePath(im.getPath());
+                }
+            }
+
             reservationDtos.add(dto);
         }
         return reservationDtos;

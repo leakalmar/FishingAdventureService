@@ -5,7 +5,7 @@
         <div class="col-md-4 shadow-none">
           <img
             style="width: 100%; height: 225px; object-fit: cover"
-            src="@/assets/c2.jpg"
+            :src="require('@/assets/' + reservation.imagePath)"
             class="img-fluid rounded-start shadow-none"
           />
         </div>
