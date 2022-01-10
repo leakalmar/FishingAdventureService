@@ -10,10 +10,10 @@
         <button class="book-btn">Book an adventure</button>
       </div>
       <div class="tagline-subscribe-fa" v-if="loggedInRole == 'ROLE_CLIENT'">
-        <button class="subscribe-btn" v-if="!subscribed">
+        <button class="subscribe-btn" v-if="!subscribed" v-on:click="subscribe">
           <i class="fas fa-bell" style="margin-right: 1.1rem"></i> Subscribe
         </button>
-        <button class="unsubscribe-btn" v-if="subscribed">
+        <button class="unsubscribe-btn" v-if="subscribed" v-on:click="unsubscribe">
           <i class="far fa-bell-slash" style="margin-right: 1.1rem"></i>
           Unsubscribe
         </button>
@@ -56,7 +56,7 @@
         <div class="menu-about-fa" style="text-align: justify">
           <div class="ma-top-part">
             <h3>{{ entity.name }}</h3>
-            <h5>For up to  {{ entity.persons }} people</h5>
+            <h5>For up to {{ entity.persons }} people</h5>
           </div>
           <p>
             {{ entity.description }}
@@ -66,11 +66,16 @@
         <div class="menu-ex-info-fa" style="display: none">
           <div class="ei-bonus">
             <h4>With every reservation you will get:</h4>
-            <ul  v-for="fishingEq in entity.fishingEquipment"
-                  :key="fishingEq.id">
+            <ul
+              v-for="fishingEq in entity.fishingEquipment"
+              :key="fishingEq.id"
+            >
               <li>
-                <i class="fas fa-circle ei-circle" style="margin-bottom: 2px"></i>
-                 {{ fishingEq.name }}
+                <i
+                  class="fas fa-circle ei-circle"
+                  style="margin-bottom: 2px"
+                ></i>
+                {{ fishingEq.name }}
               </li>
             </ul>
           </div>
@@ -103,7 +108,7 @@
             <h5>{{ location.latitude }}, {{ location.longitude }}</h5>
           </div>
 
-           <div class="map-fa">
+          <div class="map-fa">
             <GMapMap
               :center="center"
               :zoom="13"
@@ -169,7 +174,7 @@
       <div class="pa-title-fa">
         <h2>Previous adventures</h2>
       </div>
-     <div
+      <div
         id="carouselExampleIndicators"
         class="carousel slide"
         data-bs-ride="carousel"
@@ -315,17 +320,19 @@ export default {
         },
       })
       .then((response) => {
-        
         console.log(response.data);
         this.entity = response.data;
         this.location = response.data.location;
         this.address = this.location.address;
-        this.instructorFullName = response.data.fishingInstructor.name + " " + response.data.fishingInstructor.surname;
+        this.instructorFullName =
+          response.data.fishingInstructor.name +
+          " " +
+          response.data.fishingInstructor.surname;
         this.instructorBiography = response.data.fishingInstructor.biography;
-        (this.center.lat =  this.location.latitude),
-          (this.center.lng =  this.location.longitude),
-          (this.markers[0].position.lat =  this.location.latitude);
-        this.markers[0].position.lng =  this.location.longitude;
+        (this.center.lat = this.location.latitude),
+          (this.center.lng = this.location.longitude),
+          (this.markers[0].position.lat = this.location.latitude);
+        this.markers[0].position.lng = this.location.longitude;
       })
       .finally(() => {
         this.isSubscribed();
@@ -423,6 +430,30 @@ export default {
         document.querySelector(".menu-instr-fa").style.display = "block";
       }
     },
+    subscribe: function () {
+    axios
+      .get("http://localhost:8080/client/subscribe/" + this.entity.id, {
+        headers: {
+          "Access-Control-Allow-Origin": "http://localhost:8080",
+          Authorization: "Bearer " + localStorage.refreshToken,
+        },
+      })
+      .then((res) => {
+        if (res.data == true) this.subscribed = true;
+      });
+  },
+  unsubscribe: function () {
+    axios
+      .get("http://localhost:8080/client/unsubscribe/" + this.entity.id, {
+        headers: {
+          "Access-Control-Allow-Origin": "http://localhost:8080",
+          Authorization: "Bearer " + localStorage.refreshToken,
+        },
+      })
+      .then((res) => {
+        if (res.data == true) this.subscribed = false;
+      });
+  },
   },
 };
 </script>
