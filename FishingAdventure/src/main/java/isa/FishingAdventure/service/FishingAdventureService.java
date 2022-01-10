@@ -38,18 +38,20 @@ public class FishingAdventureService{
 	public boolean isInstructorAvailable(FishingInstructor instructor, Date start, Date end) {
 		List<FishingAdventure> adventures = findByFishingInstructor(instructor);
 
-		boolean available = true;
-		AvailabilityDateRange availabilityPeriod = dateRangeService.findByServiceProfile(adventures.get(0)).get(0);
-		if (start.after(availabilityPeriod.getStartDate()) && end.before(availabilityPeriod.getEndDate())) {
-			for (FishingAdventure adventure : adventures) {
-				if (areAdventuresOverlaping(start, end, new ArrayList<>(adventure.getAppointments()))) {
-					available = false;
-					break;
+		boolean available = false;
+		List<AvailabilityDateRange> availabilityPeriods = dateRangeService.findByServiceProfile(adventures.get(0));
+		for (AvailabilityDateRange period : availabilityPeriods) {
+			if (start.after(period.getStartDate()) && end.before(period.getEndDate())) {
+				available = true;
+				for (FishingAdventure adventure : adventures) {
+					if (areAdventuresOverlaping(start, end, new ArrayList<>(adventure.getAppointments()))) {
+						available = false;
+						break;
+					}
 				}
+                if (available)
+					break;
 			}
-		}
-		else {
-			available = false;
 		}
 		return available;
 	}

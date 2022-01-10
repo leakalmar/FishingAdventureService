@@ -177,7 +177,7 @@
       <div class="pa-title-fa">
         <h2>Previous adventures</h2>
       </div>
-      <div
+     <div
         id="carouselExampleIndicators"
         class="carousel slide"
         data-bs-ride="carousel"
@@ -191,46 +191,25 @@
       >
         <div class="carousel-indicators">
           <button
+            v-for="(image, index) in entity.images"
+            :key="image.id"
+            :class="{ active: index === counter }"
             type="button"
             data-bs-target="#carouselExampleIndicators"
-            data-bs-slide-to="0"
-            class="active"
+            :data-bs-slide-to="index"
             aria-current="true"
-            aria-label="Slide 1"
-          ></button>
-          <button
-            type="button"
-            data-bs-target="#carouselExampleIndicators"
-            data-bs-slide-to="1"
-            aria-label="Slide 2"
-          ></button>
-          <button
-            type="button"
-            data-bs-target="#carouselExampleIndicators"
-            data-bs-slide-to="2"
-            aria-label="Slide 3"
+            :aria-label="'Slide ' + index"
           ></button>
         </div>
         <div class="carousel-inner">
-          <div class="carousel-item active">
+          <div
+            class="carousel-item"
+            :class="{ active: index === counter }"
+            v-for="(image, index) in entity.images"
+            :key="image.id"
+          >
             <img
-              src="@/assets/fa18.jpg"
-              class="d-block w-100"
-              alt="..."
-              style="object-fit: contain; height: 450px"
-            />
-          </div>
-          <div class="carousel-item">
-            <img
-              src="@/assets/fa19.jpg"
-              class="d-block w-100"
-              alt="..."
-              style="object-fit: contain; height: 450px"
-            />
-          </div>
-          <div class="carousel-item">
-            <img
-              src="@/assets/fa20.jpg"
+              :src="require('@/assets/' + image.path)"
               class="d-block w-100"
               alt="..."
               style="object-fit: contain; height: 450px"
@@ -344,15 +323,17 @@ export default {
         },
       })
       .then((response) => {
-        this.entity = response.data;
-        this.address = response.data.location.address;
-        this.instructorFullName = response.data.fishingInstructor.Name + " " + response.data.fishingInstructor.Surname;
-        this.instructorBiography = response.data.fishingInstructor.biography;
-        (this.center.lat = response.data.location.latitude),
-          (this.center.lng = response.data.location.longitude),
-          (this.markers[0].position.lat = response.data.location.latitude);
-        this.markers[0].position.lng = response.data.location.longitude;
+        
         console.log(response.data);
+        this.entity = response.data;
+        this.location = response.data.location;
+        this.address = this.location.address;
+        this.instructorFullName = response.data.fishingInstructor.name + " " + response.data.fishingInstructor.surname;
+        this.instructorBiography = response.data.fishingInstructor.biography;
+        (this.center.lat =  this.location.latitude),
+          (this.center.lng =  this.location.longitude),
+          (this.markers[0].position.lat =  this.location.latitude);
+        this.markers[0].position.lng =  this.location.longitude;
       })
       .finally(() => {
         this.isSubscribed();

@@ -98,7 +98,7 @@
         </div>
         <button
           class="btn btn-primary shadow-none mb-2"
-          style="background-color: rgb(0 51 51); border-color: rgb(0 51 51); width: 10%; margin-bottom:0!important"
+          style="background-color: rgb(0 51 51); border-color: rgb(0 51 51); width: 10%; margin-bottom:0!important; min-width: fit-content;"
           v-on:click="search"
         >
           Search

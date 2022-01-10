@@ -60,12 +60,13 @@ public class NewAdventureDto {
         this.description = adventure.getDescription();
         this.cancellationRule = adventure.getCancellationRule();
         this.rating = adventure.getRating();
-        this.location = adventure.location;
+        this.location = adventure.getLocation();
         this.rules = adventure.getRules();
         this.images = adventure.getImages();
-        this.fishingInstructor = adventure.fishingInstructor;
+        this.fishingInstructor = adventure.getFishingInstructor();
         this.persons = adventure.getPersons();
         this.price = adventure.getPricePerDay();
+        this.additionalServices = adventure.getAdditionalServices();
         this.duration = adventure.getAdventureDuration().toMinutes();
         for (Image img : adventure.getImages()) {
             if (img.isCoverImage()) {
