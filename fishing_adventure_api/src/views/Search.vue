@@ -78,7 +78,7 @@
             <span class="input-group-text">Rating</span>
             <div
               class="rating-div form-control"
-              style="min-width: 135px; padding: 0"
+              style="min-width: fit-content; min-height: fit-content; padding: 3px"
               v-on:click="searchCottage"
             >
               <div class="rating" style="height: 0">
@@ -98,7 +98,7 @@
         </div>
         <button
           class="btn btn-primary shadow-none mb-2"
-          style="background-color: rgb(0 51 51); border-color: rgb(0 51 51)"
+          style="background-color: rgb(0 51 51); border-color: rgb(0 51 51); width: 10%; margin-bottom:0!important"
           v-on:click="search"
         >
           Search

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import isa.FishingAdventure.dto.AppointmentDto;
+import isa.FishingAdventure.dto.NewAdventureDto;
 import isa.FishingAdventure.dto.ServiceNameDto;
 import isa.FishingAdventure.security.util.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import isa.FishingAdventure.dto.FishingAdventureDto;
@@ -48,6 +51,14 @@ public class FishingAdventureController{
 
 		return new ResponseEntity<>(fishingAdventureDtos, HttpStatus.OK);
 	}
+
+	@Transactional
+	@GetMapping(value = "/{id}")
+	public ResponseEntity<NewAdventureDto> getById(@PathVariable String id) {
+		FishingAdventure adventure = adventureService.getById(Integer.parseInt(id));
+		NewAdventureDto dto = new NewAdventureDto(adventure);
+		return new ResponseEntity<>(dto, HttpStatus.OK);
+	}
 	
 	@GetMapping(value = "/allByUser")
 	@PreAuthorize("hasRole('ROLE_FISHING_INSTRUCTOR')")
@@ -75,6 +86,13 @@ public class FishingAdventureController{
 		}
 
 		return new ResponseEntity<>(adventures, HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/getServiceOffersById/{id}")
+	@Transactional
+	public ResponseEntity<List<AppointmentDto>> getServiceOffersById(@PathVariable String id) {
+		FishingAdventure adventure = adventureService.getById(Integer.parseInt(id));
+		return new ResponseEntity<>(adventureService.getAppointmentDtos(adventure), HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/getDurationById/{id}")

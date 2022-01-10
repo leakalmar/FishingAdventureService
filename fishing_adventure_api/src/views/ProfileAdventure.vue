@@ -11,10 +11,10 @@
       </div>
       <div class="tagline-subscribe-fa" v-if="loggedInRole == 'ROLE_CLIENT'">
         <button class="subscribe-btn" v-if="!subscribed">
-          <i class="fas fa-bell" style="margin-right: 2rem"></i> Subscribe
+          <i class="fas fa-bell" style="margin-right: 1.1rem"></i> Subscribe
         </button>
         <button class="unsubscribe-btn" v-if="subscribed">
-          <i class="far fa-bell-slash" style="margin-right: 2rem"></i>
+          <i class="far fa-bell-slash" style="margin-right: 1.1rem"></i>
           Unsubscribe
         </button>
       </div>
@@ -55,17 +55,11 @@
       <div class="menu-body-fa">
         <div class="menu-about-fa" style="text-align: justify">
           <div class="ma-top-part">
-            <h3>Adventure Title</h3>
-            <h5>For up to 3 people</h5>
+            <h3>{{ entity.name }}</h3>
+            <h5>For up to  {{ entity.persons }} people</h5>
           </div>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
+            {{ entity.description }}
           </p>
         </div>
 
@@ -92,19 +86,19 @@
           <div class="ei-rules">
             <h4>Rulebook:</h4>
             <ul>
-              <li>
-                <i class="far fa-check-circle ei-check-mark"></i>
-                Pets
-              </li>
+              <li v-for="rule in entity.rules" :key="rule.id">
+                <i
+                  v-if="rule.isEnforced == true"
+                  class="far fa-check-circle"
+                  style="color: green; margin-right: 2%"
+                ></i>
 
-              <li>
-                <i class="far fa-times-circle ei-cross"></i>
-                No smoking
-              </li>
-
-              <li>
-                <i class="far fa-times-circle ei-cross"></i>
-                No littering
+                <i
+                  v-if="rule.isEnforced == false"
+                  class="far fa-times-circle"
+                  style="color: red; margin-right: 2%"
+                ></i>
+                {{ rule.content }}
               </li>
             </ul>
           </div>
@@ -112,12 +106,12 @@
 
         <div class="menu-loc-fa" style="display: none">
           <div class="loc-info">
-            <h5>Bulevar Evrope 20</h5>
-            <h5>Novi Sad</h5>
-            <h5>45.24621, 19.81873</h5>
+            <h5>{{ address.street }}</h5>
+            <h5>{{ address.city }}</h5>
+            <h5>{{ location.latitude }}, {{ location.longitude }}</h5>
           </div>
 
-          <div class="map-fa">
+           <div class="map-fa">
             <GMapMap
               :center="center"
               :zoom="13"
@@ -150,16 +144,14 @@
           <h5>Additional services:</h5>
           <table class="table table-striped">
             <tbody>
-              <tr>
-                <td class="as-title">Fishing boat</td>
-                <td><span class="as-price">$45</span></td>
-                <td>you will not be restricted to only fishing on the shore</td>
-              </tr>
-
-              <tr>
-                <td class="as-title">Professional fishing gear</td>
-                <td><span class="as-price">$70</span></td>
-                <td>high quality rods, reels and lures</td>
+              <tr
+                v-for="service in entity.additionalServices"
+                :key="service.id"
+              >
+                <td class="as-title">{{ service.name }}</td>
+                <td>
+                  <span class="as-price">${{ service.price }}</span>
+                </td>
               </tr>
             </tbody>
 
@@ -173,14 +165,9 @@
         </div>
 
         <div class="menu-instr-fa" style="display: none">
-          <h4>John Smith</h4>
+          <h4>{{ instructorFullName }}</h4>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur.
+            {{ instructorBiography }}
           </p>
         </div>
       </div>
@@ -325,32 +312,102 @@ export default {
   name: "FishingAdventure",
   data() {
     return {
+      offers: "",
       subscribed: false,
       loggedInRole: "",
-      center: { lat: 45.24621, lng: 19.81873 },
+      date: [],
+      persons: 1,
+      entity: "",
+      address: "",
+      location: "",
+      counter: 0,
+      instructorFullName: "",
+      instructorBiography: "",
+      center: { lat: 0, lng: 0 },
       markers: [
         {
           position: {
-            lat: 45.24621,
-            lng: 19.81873,
+            lat: 0,
+            lng: 0,
           },
         },
       ],
     };
   },
   mounted() {
+    window.scrollTo(0, 0);
     axios
-      .get("http://localhost:8080/users/getRole", {
+      .get("http://localhost:8080/fishingAdventure/" + this.$route.query.id, {
         headers: {
           "Access-Control-Allow-Origin": "http://localhost:8080",
           Authorization: "Bearer " + localStorage.refreshToken,
         },
       })
-      .then((res) => {
-        this.loggedInRole = res.data;
+      .then((response) => {
+        this.entity = response.data;
+        this.address = response.data.location.address;
+        this.instructorFullName = response.data.fishingInstructor.Name + " " + response.data.fishingInstructor.Surname;
+        this.instructorBiography = response.data.fishingInstructor.biography;
+        (this.center.lat = response.data.location.latitude),
+          (this.center.lng = response.data.location.longitude),
+          (this.markers[0].position.lat = response.data.location.latitude);
+        this.markers[0].position.lng = response.data.location.longitude;
+        console.log(response.data);
+      })
+      .finally(() => {
+        this.isSubscribed();
+      });
+
+    if (this.$route.query.id != undefined) {
+      console.log(this.$route.query.id);
+      this.date = this.$route.query.date;
+      this.persons = this.$route.query.persons;
+    }
+    axios
+      .get(
+        "http://localhost:8080/fishingAdventure/getServiceOffersById/" +
+          this.$route.query.id,
+        {
+          headers: {
+            "Access-Control-Allow-Origin": "http://localhost:8080",
+            Authorization: "Bearer " + localStorage.refreshToken,
+          },
+        }
+      )
+      .then((response) => {
+        this.offers = response.data;
       });
   },
   methods: {
+    isSubscribed: function () {
+      axios
+        .get("http://localhost:8080/users/getRole", {
+          headers: {
+            "Access-Control-Allow-Origin": "http://localhost:8080",
+            Authorization: "Bearer " + localStorage.refreshToken,
+          },
+        })
+        .then((res) => {
+          this.loggedInRole = res.data;
+        })
+        .finally(() => {
+          if (this.loggedInRole == "ROLE_CLIENT") {
+            axios
+              .get(
+                "http://localhost:8080/client/isSubscribed/" + this.entity.id,
+                {
+                  headers: {
+                    "Access-Control-Allow-Origin": "http://localhost:8080",
+                    Authorization: "Bearer " + localStorage.refreshToken,
+                  },
+                }
+              )
+              .then((res) => {
+                this.subscribed = res.data;
+              });
+          }
+        });
+    },
     changeMenuDisplay: function (event) {
       let elID = event.currentTarget.id;
       document.getElementById("about-fa").style.borderBottom = "0px";

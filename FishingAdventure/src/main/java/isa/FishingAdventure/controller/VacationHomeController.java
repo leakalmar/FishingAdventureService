@@ -208,7 +208,6 @@ public class VacationHomeController {
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
-    // TODO: create same method in FishingAdventureContoller
     @GetMapping(value = "/getServiceOffersById/{id}")
     @Transactional
     public ResponseEntity<List<AppointmentDto>> getServiceOffersById(@PathVariable String id) {

@@ -114,7 +114,7 @@ const routes = [{
         })
     }
 }, {
-    path: '/fishingAdventure',
+    path: '/adventure',
     name: 'ProfileAdventure',
     component: () =>
         import ('../views/ProfileAdventure.vue')

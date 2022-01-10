@@ -149,7 +149,7 @@ export default {
   },
   methods: {
     openAdventure: function () {
-      window.location.href = "/fishingAdventure";
+      window.location.href = "/adventure?id=" + this.adventureEntity.id;
     },
   },
 };

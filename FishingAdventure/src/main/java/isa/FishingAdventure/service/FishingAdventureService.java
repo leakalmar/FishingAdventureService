@@ -4,13 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import isa.FishingAdventure.model.Appointment;
-import isa.FishingAdventure.model.AvailabilityDateRange;
+import isa.FishingAdventure.dto.AppointmentDto;
+import isa.FishingAdventure.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import isa.FishingAdventure.model.FishingAdventure;
-import isa.FishingAdventure.model.FishingInstructor;
 import isa.FishingAdventure.repository.FishingAdventureRepository;
 
 @Service
@@ -72,4 +70,27 @@ public class FishingAdventureService{
 		return isOverlaping;
 	}
 
+	public FishingAdventure getById(int id) {
+		return adventureRepository.getById(id);
+	}
+
+	public List<AppointmentDto> getAppointmentDtos(FishingAdventure adventure) {
+		List<AppointmentDto> appointmentDtos = new ArrayList<>();
+		for (Appointment appointment : adventure.getAppointments()) {
+			if (!appointment.isReserved()
+					&& Date.from(appointment.getDateCreated().toInstant().plusMillis(appointment.getDuration().toMillis() / 1000)).after(new Date())) {
+				AppointmentDto dto = new AppointmentDto(appointment);
+				dto.setServiceProfileName(adventure.getName());
+				dto.setServiceProfileId(adventure.getId());
+				for (Image img : adventure.getImages()) {
+					if (img.isCoverImage()) {
+						dto.setCoverImage(img.getPath());
+						break;
+					}
+				}
+				appointmentDtos.add(dto);
+			}
+		}
+		return appointmentDtos;
+	}
 }

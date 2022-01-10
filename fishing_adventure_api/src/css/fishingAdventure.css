@@ -381,15 +381,15 @@
 }
 
 .subscribe-btn {
-    background-color: rgb(201 189 20);
-    padding: 10px 27px;
+    background-color: #BDB76B;
+    padding: 10px 22px;
     border: 0;
-    border-radius: 23px;
+    border-radius: 50px;
     font-size: 22px;
-    color: white;
-    border: 2px solid rgb(201 189 20);
+    color: black;
+    border: 2px solid #BDB76B;
     margin-top: 5px;
-    width: 5rem;
+    width: 4.3rem;
     overflow: hidden;
     white-space: nowrap;
 }
@@ -397,9 +397,8 @@
 .subscribe-btn:hover {
     cursor: pointer;
     width: 13rem;
-    background-color: white;
-    color: rgb(201 189 20);
-    transition: 0.5s;
+    background-color: #DEDBB5;
+    transition: 0.8s;
 }
 
 .tagline-subscribe-fa {
@@ -417,15 +416,15 @@
 }
 
 .unsubscribe-btn {
-    background-color: rgb(201 189 20);
-    padding: 10px 27px;
+    background-color: #BDB76B;
+    padding: 10px 22px;
     border: 0;
-    border-radius: 23px;
+    border-radius: 50px;
     font-size: 22px;
-    color: white;
-    border: 2px solid rgb(201 189 20);
+    color: black;
+    border: 2px solid #BDB76B;
     margin-top: 5px;
-    width: 5rem;
+    width: 4.7rem;
     overflow: hidden;
     white-space: nowrap;
 }
@@ -433,7 +432,6 @@
 .unsubscribe-btn:hover {
     cursor: pointer;
     width: 14rem;
-    background-color: white;
-    color: rgb(201 189 20);
-    transition: 0.5s;
+    background-color: #DEDBB5;
+    transition: 0.8s;
 }

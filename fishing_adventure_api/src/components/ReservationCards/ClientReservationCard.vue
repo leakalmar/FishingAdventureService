@@ -23,7 +23,7 @@
                   <p class="card-text text-left shadow-none col-md-4">
                     Client:
                   </p>
-                  <p class="advertiserTitle shadow-none col-md-6">
+                  <p class="advertiserTitle shadow-none col-md-6" style="margin-left: 11px;">
                     {{ client.email }}
                   </p>
                 </div>

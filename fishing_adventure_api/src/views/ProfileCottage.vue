@@ -17,14 +17,14 @@
       </div>
       <div class="tagline-subscribe-fa" v-if="loggedInRole == 'ROLE_CLIENT'">
         <button class="subscribe-btn" v-if="!subscribed" v-on:click="subscribe">
-          <i class="fas fa-bell" style="margin-right: 2rem"></i> Subscribe
+          <i class="fas fa-bell" style="margin-right: 1.1rem"></i> Subscribe
         </button>
         <button
           class="unsubscribe-btn"
           v-if="subscribed"
           v-on:click="unsubscribe"
         >
-          <i class="far fa-bell-slash" style="margin-right: 2rem"></i>
+          <i class="far fa-bell-slash" style="margin-right: 1.1rem"></i>
           Unsubscribe
         </button>
       </div>
