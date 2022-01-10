@@ -284,7 +284,16 @@ VALUES (112, 0,
         'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don''t look even slightly believable.',
         false, 'Hartwell adventure', 2, 50.0, 3.38, 104, 7200000000000, 109);
 
+--
+-- Data for Name: fishing_adventure_fishing_equipment; Type: TABLE DATA; Schema: public; Owner: postgres
+--
 
+INSERT INTO fishing_adventure_fishing_equipment
+VALUES (107, 101);
+INSERT INTO fishing_adventure_fishing_equipment
+VALUES (108, 102);
+INSERT INTO fishing_adventure_fishing_equipment
+VALUES (109, 103);
 
 --
 -- Data for Name: fishing_eq_in_boat; Type: TABLE DATA; Schema: public; Owner: postgres

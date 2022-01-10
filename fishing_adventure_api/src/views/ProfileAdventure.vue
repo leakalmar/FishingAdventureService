@@ -66,19 +66,11 @@
         <div class="menu-ex-info-fa" style="display: none">
           <div class="ei-bonus">
             <h4>With every reservation you will get:</h4>
-            <ul>
+            <ul  v-for="fishingEq in entity.fishingEquipment"
+                  :key="fishingEq.id">
               <li>
-                <i class="fas fa-circle ei-circle"></i>
-                A fishing rod and reel
-              </li>
-
-              <li>
-                <i class="fas fa-circle ei-circle"></i>
-                A fishing line
-              </li>
-              <li>
-                <i class="fas fa-circle ei-circle"></i>
-                A tackle box
+                <i class="fas fa-circle ei-circle" style="margin-bottom: 2px"></i>
+                 {{ fishingEq.name }}
               </li>
             </ul>
           </div>

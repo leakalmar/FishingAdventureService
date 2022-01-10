@@ -25,6 +25,8 @@ public class NewAdventureDto {
 
     private FishingInstructor fishingInstructor;
 
+    private Set<FishingEquipment> fishingEquipment;
+
     private String imagePath;
 
     private int persons;
@@ -64,6 +66,7 @@ public class NewAdventureDto {
         this.rules = adventure.getRules();
         this.images = adventure.getImages();
         this.fishingInstructor = adventure.getFishingInstructor();
+        this.fishingEquipment = adventure.getFishingEquipment();
         this.persons = adventure.getPersons();
         this.price = adventure.getPricePerDay();
         this.additionalServices = adventure.getAdditionalServices();
@@ -154,6 +157,14 @@ public class NewAdventureDto {
 
     public void setFishingInstructor(FishingInstructor fishingInstructor) {
         this.fishingInstructor = fishingInstructor;
+    }
+
+    public Set<FishingEquipment> getFishingEquipment() {
+        return fishingEquipment;
+    }
+
+    public void setFishingEquipment(Set<FishingEquipment> fishingEquipment) {
+        this.fishingEquipment = fishingEquipment;
     }
 
     public String getImagePath() {

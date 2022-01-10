@@ -13,6 +13,9 @@ public class FishingAdventure extends ServiceProfile {
     @Column(name = "adventureDuration", nullable = false)
     public Duration adventureDuration;
 
+    @ManyToMany(targetEntity = FishingEquipment.class, cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    public Set<FishingEquipment> fishingEquipment;
+
     public FishingAdventure() {
     }
 
@@ -35,5 +38,13 @@ public class FishingAdventure extends ServiceProfile {
 
     public void setAdventureDuration(Duration adventureDuration) {
         this.adventureDuration = adventureDuration;
+    }
+
+    public Set<FishingEquipment> getFishingEquipment() {
+        return fishingEquipment;
+    }
+
+    public void setFishingEquipment(Set<FishingEquipment> fishingEquipment) {
+        this.fishingEquipment = fishingEquipment;
     }
 }
