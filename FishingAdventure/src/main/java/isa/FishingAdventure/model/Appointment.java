@@ -1,8 +1,12 @@
 package isa.FishingAdventure.model;
 
 import javax.persistence.*;
+
+import isa.FishingAdventure.dto.AppointmentDto;
+
 import java.time.Duration;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -47,7 +51,9 @@ public class Appointment {
     @Column(name = "is_cancelled", nullable = false)
     private Boolean isCancelled;
 
-    public Appointment(Integer appointmentId, double discount, boolean isReserved, Date startDate, Date endDate, Duration duration, int maxPersons, double price, Set<AdditionalService> chosenServices, boolean ownerPresence, boolean isCancelled) {
+    public Appointment(Integer appointmentId, double discount, boolean isReserved, Date startDate, Date endDate,
+            Duration duration, int maxPersons, double price, Set<AdditionalService> chosenServices,
+            boolean ownerPresence, boolean isCancelled) {
         this.appointmentId = appointmentId;
         this.discount = discount;
         this.isReserved = isReserved;
@@ -60,6 +66,29 @@ public class Appointment {
         this.dateCreated = new Date();
         this.ownerPresence = ownerPresence;
         this.isCancelled = isCancelled;
+    }
+
+    public Appointment(AppointmentDto dto) {
+        this.dateCreated = new Date();
+        this.place = "";
+        this.discount = dto.getDiscount();
+        this.isReserved = false;
+        this.maxPersons = dto.getMaxPersons();
+        this.price = dto.getPrice();
+        this.ownerPresence = dto.getOwnerPresence();
+        this.isCancelled = false;
+
+        this.startDate = dto.getStartDate();
+        this.endDate = dto.getEndDate();
+        long duration = (dto.getEndDate().getTime() - dto.getStartDate().getTime()) / (1000 * 60 * 60 * 24);
+        this.duration = Duration.ofDays(duration);
+
+        this.chosenServices = new HashSet<>();
+
+        for (AdditionalService as : dto.getChosenServices()) {
+            this.chosenServices.add(as);
+        }
+
     }
 
     public Appointment() {

@@ -11,7 +11,6 @@ import java.util.Set;
 
 public class AppointmentDto {
 
-
     private Integer offerId;
 
     private Integer serviceProfileId;
@@ -36,7 +35,10 @@ public class AppointmentDto {
 
     private Duration duration;
 
-    public AppointmentDto(Integer serviceProfileId, double discount, Date startDate, Date endDate, int maxPersons, double price, Set<AdditionalService> chosenServices) {
+    private Boolean ownerPresence;
+
+    public AppointmentDto(Integer serviceProfileId, double discount, Date startDate, Date endDate, int maxPersons,
+            double price, Set<AdditionalService> chosenServices) {
         this.serviceProfileId = serviceProfileId;
         this.discount = discount;
         this.startDate = startDate;
@@ -59,9 +61,11 @@ public class AppointmentDto {
         this.chosenServices = appointment.getChosenServices();
         this.dateCreated = appointment.getDateCreated();
         this.duration = appointment.getDuration();
+        this.ownerPresence = appointment.getOwnerPresence();
     }
 
     public AppointmentDto(Appointment appointment, ServiceProfile profile) {
+        this.ownerPresence = appointment.getOwnerPresence();
         this.offerId = appointment.getAppointmentId();
         this.discount = appointment.getDiscount();
         this.startDate = appointment.getStartDate();
@@ -176,4 +180,13 @@ public class AppointmentDto {
     public void setDuration(Duration duration) {
         this.duration = duration;
     }
+
+    public Boolean getOwnerPresence() {
+        return this.ownerPresence;
+    }
+
+    public void setOwnerPresence(Boolean ownerPresence) {
+        this.ownerPresence = ownerPresence;
+    }
+
 }

@@ -211,7 +211,7 @@ export default {
       priceForServices: 0,
       adventureDurationInMins: [],
       available: false,
-      ownerPresence: "",
+      ownerPresence: false,
     };
   },
   mounted: function () {
@@ -433,6 +433,7 @@ export default {
         document.getElementById("noOwnerPresence").classList.add("active");
         this.ownerPresence = false;
       }
+      this.dateRangeChanged();
     },
     check: function (additionalService) {
       var checkBox = document.getElementById(additionalService.id);
@@ -451,8 +452,9 @@ export default {
     },
     createReservation: function () {
       if (!this.available) {
-        if (this.entityType != "boat")
+        if (this.entityType != "boat") {
           this.error = "Chosen date is not available.";
+        }
       } else if (this.maxPersons < this.persons) {
         this.error = "Maximum number of people is " + this.maxPersons + ".";
       } else {

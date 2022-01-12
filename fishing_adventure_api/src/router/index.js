@@ -106,7 +106,7 @@ const routes = [{
         import ('../views/Calendar.vue'),
     beforeEnter: (to, from, next) => {
         checkAuthentification().then(response => {
-            if (response != "ROLE_VACATION_HOME_OWNER" && response != "ROLE_BOAT_OWNER") {
+            if (response != "ROLE_VACATION_HOME_OWNER" && response != "ROLE_BOAT_OWNER" && response != "ROLE_FISHING_INSTRUCTOR") {
                 next("/")
             } else {
                 next();

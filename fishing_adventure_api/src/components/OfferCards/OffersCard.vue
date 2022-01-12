@@ -55,7 +55,16 @@
                 <div class="row shadow-none">
                   <p class="card-text text-left shadow-none col-md-4">Price:</p>
                   <p class="card-text text-left shadow-none col-md-8">
-                    <i class="fas fa-dollar-sign shadow-none" style="font-size: 80%"></i>{{ offer.price }} <span class="shadow-none" v-if="this.entityType != 'adventure'">/day</span>
+                    <i
+                      class="fas fa-dollar-sign shadow-none"
+                      style="font-size: 80%"
+                    ></i
+                    >{{ offer.price }}
+                    <span
+                      class="shadow-none"
+                      v-if="this.entityType != 'adventure'"
+                      >/day</span
+                    >
                   </p>
                 </div>
                 <div class="row shadow-none">
@@ -122,15 +131,13 @@ export default {
     this.ends = moment(this.ends).format("MM/DD/yyyy HH:mm");
     this.starts = moment(this.starts).format("MM/DD/yyyy HH:mm");
     let offerDuration = offerEnds - new Date();
-    if (this.offer.dateCreated < new Date()) {
-      let days = offerDuration / (1000 * 3600 * 24);
-      days = parseInt(days, 10);
-      let hours = offerDuration / (1000 * 3600) - days * 24;
-      hours = parseInt(hours, 10);
-      let minutes = offerDuration / (1000 * 60) - days * 24 * 60 - hours * 60;
-      minutes = parseInt(minutes, 10);
-      this.durationString = days + "d " + hours + "h " + minutes + "m";
-    }
+    let days = offerDuration / (1000 * 3600 * 24);
+    days = parseInt(days, 10);
+    let hours = offerDuration / (1000 * 3600) - days * 24;
+    hours = parseInt(hours, 10);
+    let minutes = offerDuration / (1000 * 60) - days * 24 * 60 - hours * 60;
+    minutes = parseInt(minutes, 10);
+    this.durationString = days + "d " + hours + "h " + minutes + "m";
   },
 };
 </script>

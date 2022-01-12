@@ -9,7 +9,7 @@
     v-on:show="closeModal"
   >
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content" style="height: 48rem">
+      <div class="modal-content" id="modalContent">
         <div class="modal-header">
           <h3>New offer</h3>
           <button
@@ -159,6 +159,34 @@
               v-on:change="recalculatePrice"
             />
           </div>
+          <div
+            class="input-group"
+            style="margin-top: 1rem"
+            v-if="entityType == 'boat'"
+          >
+            <span class="input-group-text" style="width: 9rem"
+              >Owner presence:</span
+            >
+            <div
+              class="form-control"
+              style="display: flex; justify-content: space-around; padding: 0"
+            >
+              <div
+                class="ownerPresence"
+                v-on:click="changeOwnerPresence"
+                id="yesOwnerPresence"
+              >
+                YES
+              </div>
+              <div
+                class="ownerPresence"
+                v-on:click="changeOwnerPresence"
+                id="noOwnerPresence"
+              >
+                NO
+              </div>
+            </div>
+          </div>
 
           <h6 style="color: red; margin-top: 1rem">
             <b>{{ error }}</b>
@@ -211,6 +239,7 @@ export default {
       priceForServices: 0,
       adventureReservationDate: undefined,
       adventureDurationInMins: [],
+      ownerPresence: false,
     };
   },
   mounted: function () {
@@ -223,43 +252,17 @@ export default {
       })
       .then((res) => {
         let loggedInRole = res.data;
-
+        document.getElementById("modalContent").style = "height: 48rem";
         if (loggedInRole == "ROLE_VACATION_HOME_OWNER") {
           this.entityType = "cottage";
-          axios
-            .get("http://localhost:8080/vacationHome/getNamesByUser", {
-              headers: {
-                "Access-Control-Allow-Origin": "http://localhost:8080",
-                Authorization: "Bearer " + localStorage.refreshToken,
-              },
-            })
-            .then((res) => {
-              this.selectData = res.data;
-            });
+          this.getServiceProfileByHomeOwner();
         } else if (loggedInRole == "ROLE_BOAT_OWNER") {
+          document.getElementById("modalContent").style = "height: 53rem";
           this.entityType = "boat";
-          axios
-            .get("http://localhost:8080/boat/getNamesByUser", {
-              headers: {
-                "Access-Control-Allow-Origin": "http://localhost:8080",
-                Authorization: "Bearer " + localStorage.refreshToken,
-              },
-            })
-            .then((res) => {
-              this.selectData = res.data;
-            });
+          this.getServiceProfileByBoatOwner();
         } else if (loggedInRole == "ROLE_FISHING_INSTRUCTOR") {
           this.entityType = "adventure";
-          axios
-            .get("http://localhost:8080/fishingAdventure/getNamesByUser", {
-              headers: {
-                "Access-Control-Allow-Origin": "http://localhost:8080",
-                Authorization: "Bearer " + localStorage.refreshToken,
-              },
-            })
-            .then((res) => {
-              this.selectData = res.data;
-            });
+          this.getServiceProfileByFishingInstructor();
         } else {
           window.location.href = "/";
         }
@@ -341,6 +344,7 @@ export default {
       this.priceForServices = 0;
       this.dateRangeChanged();
     },
+
     dateRangeChanged: function () {
       if (this.dateRange[0] != undefined && this.dateRange[1] != undefined) {
         let duration = this.dateRange[1] - this.dateRange[0];
@@ -358,14 +362,12 @@ export default {
         this.recalculatePrice();
         this.checkAvailability();
       } else if (this.adventureReservationDate != undefined) {
-
         this.priceForPeriod = this.originalPricePerDay;
         this.originalTotalPrice = this.priceForPeriod + this.priceForServices;
         this.priceField = this.originalTotalPrice;
         this.checkAvailability();
         this.recalculatePrice();
       }
-      
     },
     checkAvailability: function () {
       let startDate = [];
@@ -373,14 +375,13 @@ export default {
       if (this.entityType != "adventure") {
         startDate = this.dateRange[0];
         endDate = this.dateRange[1];
-      }
-      else {
+      } else {
         startDate = this.adventureReservationDate;
         endDate = new Date(
           startDate.getTime() + this.adventureDurationInMins * 60000
         );
       }
-      
+
       axios
         .get(
           "http://localhost:8080/serviceProfile/isServiceAvailableForDateRange?id=" +
@@ -401,10 +402,30 @@ export default {
             this.error = "Chosen date is not available.";
             this.available = false;
           } else {
-            this.available = true;
-            this.error = "";
+            if (this.ownerPresence) {
+              this.checkBoatOwnerAvailability();
+            } else {
+              this.available = true;
+              this.error = "";
+            }
           }
         });
+    },
+    changeOwnerPresence: function (event) {
+      let checkedPresence = event.target.innerHTML;
+      if (checkedPresence.includes("YES")) {
+        document.getElementById("noOwnerPresence").classList.remove("active");
+        document.getElementById("yesOwnerPresence").classList.add("active");
+        this.ownerPresence = true;
+        if (this.serviceProfileId != "") {
+          this.checkBoatOwnerAvailability();
+        }
+      } else {
+        document.getElementById("yesOwnerPresence").classList.remove("active");
+        document.getElementById("noOwnerPresence").classList.add("active");
+        this.ownerPresence = false;
+      }
+      this.dateRangeChanged();
     },
     check: function (additionalService) {
       var checkBox = document.getElementById(additionalService.id);
@@ -439,16 +460,18 @@ export default {
       ).toFixed(2);
       this.discount = (100 - percentage).toFixed(2);
 
-      if (this.discount == "NaN")
-        this.discount = 0;
+      if (this.discount == "NaN") this.discount = 0;
     },
     createOffer: function () {
       if (!this.available) {
-        this.error = "Chosen date is not available.";
+        if (this.entityType != "boat") {
+          this.error = "Chosen date is not available.";
+        }
       } else if (
         this.offerEndDate == undefined ||
         (this.dateRange[0] == undefined && this.entityType != "adventure") ||
-        (this.adventureReservationDate == undefined && this.entityType == "adventure") ||
+        (this.adventureReservationDate == undefined &&
+          this.entityType == "adventure") ||
         document.getElementsByTagName("select")[0].value == ""
       ) {
         this.error = "All fields must be filled.";
@@ -457,45 +480,51 @@ export default {
 
         let startDate = [];
         let endDate = [];
-        //let ownerPresence = [];
+        let ownerPresence = true;
         if (this.entityType == "adventure") {
           startDate = this.adventureReservationDate;
-          //ownerPresence = true;
+          ownerPresence = true;
           endDate = new Date(
             startDate.getTime() + this.adventureDurationInMins * 60000
           );
-        }
-        else {
+        } else {
           startDate = this.dateRange[0];
           endDate = this.dateRange[1];
+          if (this.entityType == "cottage") {
+            ownerPresence = true;
+          } else {
+            ownerPresence = this.ownerPresence;
+          }
         }
 
         if (this.offerEndDate > endDate) {
-          this.error = "Offer cannot cannot last longer than the chosen reservation.";
-        }
-        else {
-        let now = new Date();
-        let offerDuration = this.offerEndDate - now;
-        let offerDto = {
-          serviceProfileId: this.serviceProfileId,
-          discount: this.discount,
-          startDate: startDate,
-          endDate: endDate,
-          maxPersons: this.persons,
-          price: this.priceField,
-          chosenServices: this.chosenServices,
-          duration: offerDuration,
-        };
-        axios
-          .post("http://localhost:8080/appointment/create", offerDto, {
-            headers: {
-              "Access-Control-Allow-Origin": "http://localhost:8080",
-              Authorization: "Bearer " + localStorage.refreshToken,
-            },
-          })
-          .then(() => {
-            window.location.reload();
-          });
+          this.error =
+            "Offer cannot cannot last longer than the chosen reservation.";
+        } else {
+          let now = new Date();
+          let offerDuration = this.offerEndDate - now;
+          let offerDto = {
+            serviceProfileId: this.serviceProfileId,
+            discount: this.discount,
+            startDate: startDate,
+            endDate: endDate,
+            maxPersons: this.persons,
+            price: this.priceField,
+            chosenServices: this.chosenServices,
+            duration: offerDuration,
+            ownerPresence: ownerPresence,
+          };
+          console.log(offerDto);
+          axios
+            .post("http://localhost:8080/appointment/create", offerDto, {
+              headers: {
+                "Access-Control-Allow-Origin": "http://localhost:8080",
+                Authorization: "Bearer " + localStorage.refreshToken,
+              },
+            })
+            .then(() => {
+              window.location.reload();
+            });
         }
       }
     },
@@ -515,6 +544,69 @@ export default {
       this.priceForServices = 0;
       this.offerEndDate = undefined;
       this.adventureReservationDate = undefined;
+    },
+    getServiceProfileByHomeOwner: function () {
+      axios
+        .get("http://localhost:8080/vacationHome/getNamesByUser", {
+          headers: {
+            "Access-Control-Allow-Origin": "http://localhost:8080",
+            Authorization: "Bearer " + localStorage.refreshToken,
+          },
+        })
+        .then((res) => {
+          this.selectData = res.data;
+        });
+    },
+    getServiceProfileByBoatOwner: function () {
+      axios
+        .get("http://localhost:8080/boat/getNamesByUser", {
+          headers: {
+            "Access-Control-Allow-Origin": "http://localhost:8080",
+            Authorization: "Bearer " + localStorage.refreshToken,
+          },
+        })
+        .then((res) => {
+          document.getElementById("noOwnerPresence").classList.add("active");
+          this.selectData = res.data;
+        });
+    },
+    getServiceProfileByFishingInstructor: function () {
+      axios
+        .get("http://localhost:8080/fishingAdventure/getNamesByUser", {
+          headers: {
+            "Access-Control-Allow-Origin": "http://localhost:8080",
+            Authorization: "Bearer " + localStorage.refreshToken,
+          },
+        })
+        .then((res) => {
+          this.selectData = res.data;
+        });
+    },
+    checkBoatOwnerAvailability: function () {
+      axios
+        .get(
+          "http://localhost:8080/boatOwner/available/dateRange?id=" +
+            this.serviceProfileId +
+            "&start=" +
+            moment(this.dateRange[0]).format("yyyy-MM-DD HH:mm:ss.SSS") +
+            "&end=" +
+            moment(this.dateRange[1]).format("yyyy-MM-DD HH:mm:ss.SSS"),
+          {
+            headers: {
+              "Access-Control-Allow-Origin": "http://localhost:8080",
+              Authorization: "Bearer " + localStorage.refreshToken,
+            },
+          }
+        )
+        .then((res) => {
+          if (!res.data) {
+            this.error = "Boat owner is not available.";
+            this.available = false;
+          } else {
+            this.available = true;
+            this.error = "";
+          }
+        });
     },
   },
 };
