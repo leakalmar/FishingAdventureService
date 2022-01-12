@@ -14,11 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
-import java.time.Duration;
 import java.util.*;
 
 @RestController
 @RequestMapping(value = "appointment")
+@CrossOrigin
 public class AppointmentController {
 
     @Autowired
@@ -67,6 +67,14 @@ public class AppointmentController {
             retVal = new ResponseEntity<>(dto, HttpStatus.OK);
         }
         return retVal;
+    }
+
+    @DeleteMapping(value = "/{offerId}/{serviceProfileId}")
+    @PreAuthorize("hasRole('ROLE_VACATION_HOME_OWNER') || hasRole('ROLE_BOAT_OWNER') || hasRole('ROLE_FISHING_INSTRUCTOR')")
+    @Transactional
+    public ResponseEntity<String> delete(@PathVariable String offerId, @PathVariable String serviceProfileId) {
+        appointmentService.deleteById(Integer.parseInt(offerId), Integer.parseInt(serviceProfileId));
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

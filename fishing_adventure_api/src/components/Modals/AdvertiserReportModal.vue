@@ -117,7 +117,6 @@ export default {
 
       document.getElementById(elID).classList.add("active");
       this.selectedOption = event.target.innerHTML;
-      console.log(this.selectedOption);
     },
     deselectOption: function () {
       this.selectedOption = undefined;

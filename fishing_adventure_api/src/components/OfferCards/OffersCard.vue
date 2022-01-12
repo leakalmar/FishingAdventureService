@@ -75,6 +75,23 @@
                     {{ offer.maxPersons }}
                   </p>
                 </div>
+                <div class="row shadow-none" v-if="entityType == 'boat'">
+                  <p class="card-text text-left shadow-none col-md-4">
+                    Boat owner present:
+                  </p>
+                  <p class="card-text text-left shadow-none col-md-8">
+                    <i
+                      class="fas fa-check"
+                      style="color: gray"
+                      v-if="offer.ownerPresence"
+                    ></i>
+                    <i
+                      class="fas fa-times"
+                      style="color: gray"
+                      v-if="!offer.ownerPresence"
+                    ></i>
+                  </p>
+                </div>
                 <p class="card-text text-left shadow-none">
                   Additional services:
                 </p>
@@ -98,7 +115,11 @@
               </div>
 
               <div class="manageReservation shadow-none">
-                <button class="btn btn-outline-primary shadow-none mb-2">
+                <button
+                  class="btn btn-outline-primary shadow-none mb-2"
+                  data-bs-toggle="modal"
+                  :data-bs-target="'#questionModal'"
+                >
                   Close offer
                 </button>
               </div>
@@ -108,12 +129,20 @@
       </div>
     </div>
   </div>
+  <YesNoModal
+    question="Are you sure you want to close this offer?"
+    @answer="modalAnswer"
+    id="questionModal"
+  ></YesNoModal>
 </template>
 
 <script>
 import moment from "moment";
+import axios from "axios";
+import YesNoModal from "@/components/Modals/YesNoModal.vue";
 export default {
   props: ["offer", "entityType"],
+  components: { YesNoModal },
   data: function () {
     return {
       date: "12/20/2021 - 12/25/2021",
@@ -138,6 +167,31 @@ export default {
     let minutes = offerDuration / (1000 * 60) - days * 24 * 60 - hours * 60;
     minutes = parseInt(minutes, 10);
     this.durationString = days + "d " + hours + "h " + minutes + "m";
+  },
+  methods: {
+    modalAnswer: function (answer) {
+      if (answer == "yes") {
+        this.closeOffer();
+      }
+    },
+    closeOffer: function () {
+      axios
+        .delete(
+          "http://localhost:8080/appointment/" +
+            this.offer.offerId +
+            "/" +
+            this.offer.serviceProfileId,
+          {
+            headers: {
+              "Access-Control-Allow-Origin": "http://localhost:8080",
+              Authorization: "Bearer " + localStorage.refreshToken,
+            },
+          }
+        )
+        .then(() => {
+          window.location.reload();
+        });
+    },
   },
 };
 </script>

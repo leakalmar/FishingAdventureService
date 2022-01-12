@@ -5,9 +5,11 @@ import isa.FishingAdventure.repository.ServiceProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class ServiceProfileService {
@@ -108,5 +110,18 @@ public class ServiceProfileService {
             isAvailable = adventureService.isInstructorAvailable(adventure.get().getFishingInstructor(), start, end);
         }
         return isAvailable;
+    }
+
+    public void deleteOffer(Integer offerId, Integer serviceProfileId) {
+        ServiceProfile profile = profileRepository.getById(serviceProfileId);
+
+        for (Appointment appointment : profile.getAppointments()) {
+            if (appointment.getAppointmentId().equals(offerId)) {
+                Set<Appointment> appointments = profile.getAppointments();
+                appointments.remove(appointment);
+                profile.setAppointments(appointments);
+                break;
+            }
+        }
     }
 }

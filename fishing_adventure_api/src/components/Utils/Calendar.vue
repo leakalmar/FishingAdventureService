@@ -180,7 +180,6 @@ export default {
                   )
                   .then((res) => {
                     for (let newData of res.data) {
-                      console.log(newData);
                       newData.title = data.label;
                       newData.url = "dateRange";
                       newData.defId = newData.id;
@@ -191,7 +190,6 @@ export default {
                     }
                   });
               }
-              console.log(this.calendarOptions.events);
             });
         } else if (loggedInRole == "ROLE_BOAT_OWNER") {
           this.entityType = "boat";
@@ -403,7 +401,6 @@ export default {
       this.calendarOptions.events.length = 0;
       for (let ev of copyEvents) {
         if (ev.serviceId != profileId) {
-          console.log(ev);
           this.calendarOptions.events.push(ev);
         }
       }

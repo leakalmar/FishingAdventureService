@@ -514,7 +514,6 @@ export default {
             duration: offerDuration,
             ownerPresence: ownerPresence,
           };
-          console.log(offerDto);
           axios
             .post("http://localhost:8080/appointment/create", offerDto, {
               headers: {
