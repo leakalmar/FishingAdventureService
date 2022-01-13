@@ -27,33 +27,14 @@
         src="@/assets/fishing1.png"
       />
     </div>
-    <div
-      style="
-        background-color: #212529;
-        padding: 15px;
-        text-align: -webkit-center;
-      "
-    >
+    <div class="searchBar">
       <div
-        class="container w-100 row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-5"
-        style="justify-content: space-evenly; align-items: center"
+        class="container w-100 row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-2 fields"
       >
-        <div class="col-md-4">
-          <input
-            class="form-control me-2"
-            type="search"
-            placeholder="Search"
-            aria-label="Search"
-          />
-        </div>
-        <div>
+        <div class="col-md-4 col-lg-5 col-xl-3">
           <Datepicker
-            style="
-              width: 100%;
-              margin-right: 10px;
-              border: 1px solid white;
-              border-radius: 5px;
-            "
+            class="datePricker"
+            :format="format"
             dark
             id="picker"
             v-model="date"
@@ -61,7 +42,7 @@
             :enableTimePicker="true"
           ></Datepicker>
         </div>
-        <div class="col-md-5">
+        <div class="col-md-5 col-lg-3 col-xl-2">
           <div class="input-group">
             <span class="input-group-text">Persons</span>
             <input
@@ -73,18 +54,10 @@
             />
           </div>
         </div>
-        <div class="col-md-5">
+        <div class="col-md-5 col-lg-4 col-xl-3">
           <div style="display: flex">
             <span class="input-group-text">Rating</span>
-            <div
-              class="rating-div form-control"
-              style="
-                min-width: fit-content;
-                min-height: fit-content;
-                padding: 3px;
-              "
-              v-on:click="searchCottage"
-            >
+            <div class="rating-div form-control" v-on:click="searchCottage">
               <div class="rating" style="height: 0">
                 <input type="radio" name="star" id="star1" value="5" />
                 <label for="star1"></label>
@@ -100,19 +73,79 @@
             </div>
           </div>
         </div>
-        <button
-          class="btn btn-primary shadow-none mb-2"
-          style="
-            background-color: rgb(0 51 51);
-            border-color: rgb(0 51 51);
-            width: 10%;
-            margin-bottom: 0 !important;
-            min-width: fit-content;
-          "
-          v-on:click="search"
+        <div class="col-md-5 col-lg-4 col-xl-2 flex searchBtn-div">
+          <button
+            class="btn btn-primary advanceSearchBtn checkBtn"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#allAdvencedSearch"
+            aria-expanded="false"
+            aria-controls="advencedSearch filterAndSort"
+            v-on:click="advencedSearch"
+            id="advencedSearchBtn"
+          >
+            <i class="fas fa-search-plus" style="color: white"></i>
+          </button>
+
+          <button class="btn btn-primary searchBtn" v-on:click="search">
+            Search
+          </button>
+        </div>
+      </div>
+      <div id="allAdvencedSearch" class="collapse multi-collapse">
+        <div
+          class="container w-100 row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-6 mt-2"
         >
-          Search
-        </button>
+          <div id="advencedSearch" style="width: 100%">
+            <div style="display: flex; gap: 1rem">
+              <div class="col" style="max-width: 100% !important">
+                <input
+                  class="form-control me-2"
+                  type="search"
+                  placeholder="Search"
+                  aria-label="Search"
+                />
+              </div>
+              <div class="col">
+                <button
+                  class="btn btn-primary shadow-none mb-2 col-md-5 col-xl-2 checkBtn"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#filterAndSort"
+                  aria-expanded="false"
+                  aria-controls="filterAndSort"
+                  v-on:click="filtersCliced"
+                  id="filterAndSortBtn"
+                >
+                  Filter and sort
+                  <i class="fas fa-caret-down"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="container w-100 row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-6 mt-2"
+        >
+          <div class="collapse" id="filterAndSort">
+            <div class="filterAndSort">
+              <div class="filters">
+                <ul>
+                  <li v-on:click="filterOption" id="filter1">Filter 1</li>
+                  <li v-on:click="filterOption" id="filter2">Filter 2</li>
+                  <li v-on:click="filterOption" id="filter3">Filter 3</li>
+                </ul>
+              </div>
+              <div class="sorts">
+                <ul>
+                  <li v-on:click="sortOption" id="sort1">Sort by name</li>
+                  <li v-on:click="sortOption" id="sort2">Sort by place</li>
+                  <li v-on:click="sortOption" id="sort3">Sort by rate</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div v-if="searching == 'cottages'" style="margin-top: 5%">
@@ -161,8 +194,25 @@ export default {
       date.value = [startDate, endDate];
     });
 
+    const format = (date) => {
+      const day0 = date[0].getDate();
+      const month0 = date[0].getMonth() + 1;
+      const year0 = date[0].getFullYear() - 2000;
+      const hour0 = date[0].getHours();
+      const minutes0 = date[0].getMinutes();
+
+      const day1 = date[1].getDate();
+      const year1 = date[1].getFullYear() - 2000;
+      const month1 = date[1].getMonth() + 1;
+      const hour1 = date[1].getHours();
+      const minutes1 = date[1].getMinutes();
+
+      return `${month0}/${day0}/${year0} ${hour0}:${minutes0} - ${month1}/${day1}/${year1} ${hour1}:${minutes1}`;
+    };
+
     return {
       date,
+      format,
     };
   },
   data: function () {
@@ -177,6 +227,8 @@ export default {
       showModal: false,
       object: {},
       reservationInfo: {},
+      chosenSort: "",
+      chosenFilters: [],
     };
   },
   mounted: function () {
@@ -238,6 +290,51 @@ export default {
     }
   },
   methods: {
+    filterOption: function (event) {
+      let filterId = event.target.id;
+      if (this.chosenFilters.includes(filterId)) {
+        for (let i = 0; i < this.chosenFilters.length; i++) {
+          if (this.chosenFilters[i] == filterId) {
+            this.chosenFilters.splice(i, 1);
+            document
+              .getElementById(event.target.id)
+              .classList.remove("activeOption");
+            break;
+          }
+        }
+      } else {
+        this.chosenFilters.push(filterId);
+        document.getElementById(event.target.id).classList.add("activeOption");
+      }
+      console.log(this.chosenFilters);
+    },
+    sortOption: function (event) {
+      let sortId = event.target.id;
+      document.getElementById(sortId).classList.add("activeOption");
+      if (this.chosenSort != "") {
+        document
+          .getElementById(this.chosenSort)
+          .classList.remove("activeOption");
+      }
+      this.chosenSort = sortId;
+      console.log(this.chosenSort);
+    },
+    filtersCliced: function () {
+      let btn = document.getElementById("filterAndSortBtn");
+      if (btn.classList.contains("active")) {
+        btn.classList.remove("active");
+      } else {
+        btn.classList.add("active");
+      }
+    },
+    advencedSearch: function () {
+      let btn = document.getElementById("advencedSearchBtn");
+      if (btn.classList.contains("active")) {
+        btn.classList.remove("active");
+      } else {
+        btn.classList.add("active");
+      }
+    },
     updateReservationInfo: function () {
       let info = {
         date: this.date,
@@ -314,103 +411,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.carousel {
-  position: relative;
-  top: 80%;
-  left: 50%;
-  transform: translate(-50%, 0%);
-  width: 100%;
-}
-
-.title {
-  color: white;
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  padding: 2% 0;
-  background-image: linear-gradient(rgb(33 37 41), rgba(4, 9, 30, 0.527)),
-    url(/img/lake1.08d1171f.jpg);
-}
-
-h1 {
-  color: white !important;
-  font-size: 4rem;
-  font-style: italic;
-  font-family: "Font Awesome 5 Brands";
-  font-weight: bold;
-}
-.form-control {
-  background-color: #393c3f73;
-  color: white;
-}
-
-.form-control:focus {
-  box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.432);
-}
-
-.container {
-  display: flex;
-}
-
-.form-floating > label {
-  color: gray;
-}
-
-.input-group-text {
-  background-color: #393c3f73;
-  color: gray;
-}
-.rating {
-  display: inline-flex;
-  justify-content: center;
-  width: fit-content;
-  transform: rotateY(180deg);
-}
-
-.rating label {
-  display: block;
-  cursor: pointer;
-  background-color: transparent;
-}
-
-.rating label::before {
-  font-family: "Font Awesome 5 Free";
-  font-weight: 900;
-  content: "\f005";
-  position: relative;
-  display: block;
-  color: white;
-  font-size: 3vh;
-}
-
-.rating label::after {
-  font-family: "Font Awesome 5 Free";
-  font-weight: 900;
-  content: "\f005";
-  position: absolute;
-  display: block;
-  color: rgb(255, 217, 0);
-  opacity: 0;
-  font-size: 3vh;
-  top: 0vh;
-  transition: 0.5s;
-  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-}
-
-.rating label:hover:after,
-.rating label:hover ~ label:after,
-.rating input:checked ~ label:after {
-  opacity: 1;
-}
-
-.rating-div label {
-  color: white;
-  font-size: 18px;
-  margin-bottom: 2%;
-}
-
-input[type="radio"] {
-  display: none;
-}
-</style>
+<style scoped src="@/css/search.css"></style>
