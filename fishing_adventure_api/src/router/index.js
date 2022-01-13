@@ -6,7 +6,7 @@ const routes = [{
     component: () =>
         import ('../views/Home.vue'),
     beforeEnter: () => {
-        checkAuthentification();
+        checkAuthentification()
     }
 }, {
     path: '/auth/:id',
@@ -74,17 +74,44 @@ const routes = [{
     path: '/client/currentReservations',
     name: 'ClientCurrentReservations',
     component: () =>
-        import ('../views/ClientCurrentReservations.vue')
+        import ('../views/ClientCurrentReservations.vue'),
+    beforeEnter: (to, from, next) => {
+        checkAuthentification().then(response => {
+            if (response != "ROLE_CLIENT") {
+                next("/")
+            } else {
+                next();
+            }
+        })
+    }
 }, {
     path: '/client/pastReservations',
     name: 'ClientPastReservations',
     component: () =>
-        import ('../views/ClientPastReservations.vue')
+        import ('../views/ClientPastReservations.vue'),
+    beforeEnter: (to, from, next) => {
+        checkAuthentification().then(response => {
+            if (response != "ROLE_CLIENT") {
+                next("/")
+            } else {
+                next();
+            }
+        })
+    }
 }, {
     path: '/client/subscriptions',
     name: 'ClientSubscriptions',
     component: () =>
-        import ('../views/ClientSubscriptions.vue')
+        import ('../views/ClientSubscriptions.vue'),
+    beforeEnter: (to, from, next) => {
+        checkAuthentification().then(response => {
+            if (response != "ROLE_CLIENT") {
+                next("/")
+            } else {
+                next();
+            }
+        })
+    }
 }, {
     path: '/specialOffers',
     name: 'Offers',
@@ -117,17 +144,26 @@ const routes = [{
     path: '/adventure',
     name: 'ProfileAdventure',
     component: () =>
-        import ('../views/ProfileAdventure.vue')
+        import ('../views/ProfileAdventure.vue'),
+    beforeEnter: () => {
+        checkAuthentification()
+    }
 }, {
     path: '/cottage',
     name: 'ProfileCottage',
     component: () =>
-        import ('../views/ProfileCottage.vue')
+        import ('../views/ProfileCottage.vue'),
+    beforeEnter: () => {
+        checkAuthentification()
+    }
 }, {
     path: '/boat',
     name: 'ProfileBoat',
     component: () =>
-        import ('../views/ProfileBoat.vue')
+        import ('../views/ProfileBoat.vue'),
+    beforeEnter: () => {
+        checkAuthentification()
+    }
 }, {
     path: '/admin/profile',
     name: 'AdminProfile',
@@ -137,12 +173,30 @@ const routes = [{
     path: '/users',
     name: 'AllUsers',
     component: () =>
-        import ('../views/AllUsers.vue')
+        import ('../views/AllUsers.vue'),
+    beforeEnter: (to, from, next) => {
+        checkAuthentification().then(response => {
+            if (response != "ROLE_ADMIN") {
+                next("/")
+            } else {
+                next();
+            }
+        })
+    }
 }, {
     path: '/registrationRequests',
     name: 'RegistrationRequests',
     component: () =>
-        import ('../views/RegistrationRequests.vue')
+        import ('../views/RegistrationRequests.vue'),
+    beforeEnter: (to, from, next) => {
+        checkAuthentification().then(response => {
+            if (response != "ROLE_ADMIN") {
+                next("/")
+            } else {
+                next();
+            }
+        })
+    }
 }, {
     path: '/fishingAdventures',
     name: 'MyAdventures',
@@ -235,12 +289,12 @@ async function refreshToken() {
                 "Access-Control-Allow-Origin": "http://localhost:8080",
                 Authorization: "Bearer " + localStorage.refreshToken,
             },
-        }).then(() => {
-            this.$toast.show("Session successfully refreshed.");
+        }).then((res) => {
+            console.log("Session successfully refreshed.");
+            return res;
         })
     } catch {
         localStorage.clear();
-        console.log("Refreshing token failed.")
-        this.$toast.show("Session expired.");
+        console.log("Refreshing token failed.");
     }
 }
