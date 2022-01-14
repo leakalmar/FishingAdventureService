@@ -117,7 +117,7 @@
                   v-on:click="filtersCliced"
                   id="filterAndSortBtn"
                 >
-                  Filter and sort
+                  Sort
                   <i class="fas fa-caret-down"></i>
                 </button>
               </div>
@@ -129,13 +129,13 @@
         >
           <div class="collapse" id="filterAndSort">
             <div class="filterAndSort">
-              <div class="filters">
+              <!--<div class="filters">
                 <ul>
                   <li v-on:click="filterOption" id="filter1">Filter 1</li>
                   <li v-on:click="filterOption" id="filter2">Filter 2</li>
                   <li v-on:click="filterOption" id="filter3">Filter 3</li>
                 </ul>
-              </div>
+              </div>-->
               <div class="sorts">
                 <ul>
                   <li v-on:click="sortOption" id="sort1">Sort by name</li>
@@ -290,7 +290,7 @@ export default {
     }
   },
   methods: {
-    filterOption: function (event) {
+    /*filterOption: function (event) {
       let filterId = event.target.id;
       if (this.chosenFilters.includes(filterId)) {
         for (let i = 0; i < this.chosenFilters.length; i++) {
@@ -307,7 +307,7 @@ export default {
         document.getElementById(event.target.id).classList.add("activeOption");
       }
       console.log(this.chosenFilters);
-    },
+    },*/
     sortOption: function (event) {
       let sortId = event.target.id;
       document.getElementById(sortId).classList.add("activeOption");

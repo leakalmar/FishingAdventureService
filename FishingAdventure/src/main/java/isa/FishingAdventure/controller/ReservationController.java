@@ -99,6 +99,12 @@ public class ReservationController {
             dto.setChosenServices(new ArrayList<>(reservations.get(i).getAppointment().getChosenServices()));
             dto.setServiceId(serviceProfiles.get(i).getId());
             dto.setServiceName(serviceProfiles.get(i).getName());
+            if(serviceProfiles.get(i) instanceof FishingAdventure)
+                dto.setServiceType("adventure");
+            else if(serviceProfiles.get(i) instanceof Boat)
+                dto.setServiceType("boat");
+            else
+                dto.setServiceType("cottage");
             for (Image im : serviceProfiles.get(i).getImages()) {
                 if (im.isCoverImage()) {
                     dto.setImagePath(im.getPath());

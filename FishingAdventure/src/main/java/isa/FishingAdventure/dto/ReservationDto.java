@@ -27,7 +27,9 @@ public class ReservationDto {
 
     private Integer reviewId;
 
-    public ReservationDto(Integer id, Integer serviceId, String imagePath, String serviceName, Date startDate, Date endDate, int persons, List<AdditionalService> chosenServices, double price, Integer reviewId) {
+    private String serviceType;
+
+    public ReservationDto(Integer id, Integer serviceId, String imagePath, String serviceName, Date startDate, Date endDate, int persons, List<AdditionalService> chosenServices, double price, Integer reviewId, String serviceType) {
         this.id = id;
         this.serviceId = serviceId;
         this.imagePath = imagePath;
@@ -38,6 +40,7 @@ public class ReservationDto {
         this.chosenServices = chosenServices;
         this.price = price;
         this.reviewId = reviewId;
+        this.serviceType = serviceType;
     }
 
     public ReservationDto() {
@@ -122,5 +125,13 @@ public class ReservationDto {
 
     public void setReviewId(Integer reviewId) {
         this.reviewId = reviewId;
+    }
+
+    public String getServiceType() {
+        return serviceType;
+    }
+
+    public void setServiceType(String serviceType) {
+        this.serviceType = serviceType;
     }
 }
