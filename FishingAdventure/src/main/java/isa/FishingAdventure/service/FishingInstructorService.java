@@ -6,17 +6,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import isa.FishingAdventure.dto.UserDto;
 import isa.FishingAdventure.model.FishingInstructor;
 import isa.FishingAdventure.model.UserType;
 import isa.FishingAdventure.repository.FishingInstructorRepository;
+import isa.FishingAdventure.security.util.TokenUtils;
 
 @Service
-public class FishingInstructorService{
-	
+public class FishingInstructorService {
+
 	@Autowired
 	private FishingInstructorRepository fishingInstructorRepository;
-	
+
+	@Autowired
+	private TokenUtils tokenUtils;
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
@@ -27,29 +30,19 @@ public class FishingInstructorService{
 		return fishingInstructorRepository.findByEmail(email);
 	}
 
-	public FishingInstructor save(UserDto userDto) {
-		FishingInstructor u = new FishingInstructor();
-		u.setEmail(userDto.getEmail());
-
-		u.setPassword(passwordEncoder.encode(userDto.getPassword()));
-		u.setName(userDto.getName());
-		u.setSurname(userDto.getSurname());
-		u.setPhoneNumber(userDto.getPhoneNumber());
-		u.setEmail(userDto.getEmail());
-		u.setAddress(userDto.getAddress());
-		u.setBiography(userDto.getBiography());
-		u.setDeleted(false);
-		u.setActivated(false);
-
-
+	public void saveNewInstructor(FishingInstructor fishingInstructor) {
+		fishingInstructor.setPassword(passwordEncoder.encode(fishingInstructor.getPassword()));
 		List<UserType> roles = userTypeService.findByName("ROLE_FISHING_INSTRUCTOR");
-		u.setUserType(roles.get(0));
-		u.setPoints(0.0);
-		
-		return this.fishingInstructorRepository.save(u);
+		fishingInstructor.setUserType(roles.get(0));
+		fishingInstructorRepository.save(fishingInstructor);
 	}
 
 	public List<isa.FishingAdventure.model.User> findAll() {
 		return fishingInstructorRepository.findAll();
+	}
+
+	public FishingInstructor findByToken(String token) {
+		String email = tokenUtils.getEmailFromToken(token);
+		return findByEmail(email);
 	}
 }
