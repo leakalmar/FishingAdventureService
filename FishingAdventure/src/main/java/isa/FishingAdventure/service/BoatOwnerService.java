@@ -46,8 +46,10 @@ public class BoatOwnerService {
 		u.setPhoneNumber(userDto.getPhoneNumber());
 		u.setEmail(userDto.getEmail());
 		u.setAddress(userDto.getAddress());
+		u.setBiography(userDto.getBiography());
+		u.setDeleted(false);
+		u.setActivated(false);
 
-		
 		List<UserType> roles = userTypeService.findByName("ROLE_BOAT_OWNER");
 		u.setUserType(roles.get(0));
 		u.setPoints(0.0);
