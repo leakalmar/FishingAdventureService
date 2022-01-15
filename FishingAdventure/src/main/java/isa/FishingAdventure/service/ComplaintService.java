@@ -4,7 +4,6 @@ import isa.FishingAdventure.dto.ReservationInfoDto;
 import isa.FishingAdventure.dto.ReservationIssueDto;
 import isa.FishingAdventure.model.Complaint;
 import isa.FishingAdventure.model.Reservation;
-import isa.FishingAdventure.model.ReservationReport;
 import isa.FishingAdventure.repository.CompliantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,11 +36,10 @@ public class ComplaintService {
     }
 
     public boolean exists(Integer reservationId) {
-        for(Complaint complaint : compliantRepository.findAll()){
-            if(complaint.getReservation().getReservationId().equals(reservationId))
+        for (Complaint complaint : compliantRepository.findAll()) {
+            if (complaint.getReservation().getReservationId().equals(reservationId))
                 return true;
         }
-
         return false;
     }
 
@@ -54,7 +52,6 @@ public class ComplaintService {
         for (Complaint complaint : getUnansweredComplaints()) {
             complaintDtos.add(createReservationIssueDto(complaint));
         }
-
         return complaintDtos;
     }
 
@@ -70,21 +67,22 @@ public class ComplaintService {
 
     private ReservationIssueDto createReservationIssueDto(Complaint complaint) {
         ReservationInfoDto reservationInfoDto = reservationService.getReservationInfo(complaint.getReservation());
-        ReservationIssueDto reportDto = new ReservationIssueDto();
-        reportDto.setId(complaint.getId());
-        reportDto.setContent(complaint.getContent());
-        reportDto.setClientEmail(reservationInfoDto.getClientEmail());
-        reportDto.setAdvertiserEmail(reservationInfoDto.getAdvertiserEmail());
+        return createReservationIssueDto(complaint, reservationInfoDto);
+    }
+
+    private ReservationIssueDto createReservationIssueDto(Complaint complaint, ReservationInfoDto reservationInfoDto) {
+        ReservationIssueDto reportDto = new ReservationIssueDto(complaint.getId(), complaint.getContent(),
+                reservationInfoDto.getClientEmail(), reservationInfoDto.getAdvertiserEmail());
         reportDto.setServiceName(serviceProfileService.getById(reservationInfoDto.getServiceId()).getName());
         reportDto.setAdvertiserFullName(userService.getFullNameByEmail(reservationInfoDto.getAdvertiserEmail()));
         reportDto.setClientFullName(userService.getFullNameByEmail(reservationInfoDto.getClientEmail()));
-
         return reportDto;
     }
 
     public void sendComplaintResponse(String email, String message) {
         try {
-            emailService.sendEmail(email, "Reservation complaint", message);
+            String emailText = emailService.createGenericEmail("Reservation complaint", message);
+            emailService.sendEmail(email, "Reservation complaint", emailText);
         } catch (Exception e) {
             System.out.println("Email could not be sent.");
         }
