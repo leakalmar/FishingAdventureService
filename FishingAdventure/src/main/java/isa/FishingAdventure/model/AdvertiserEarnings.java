@@ -2,11 +2,13 @@ package isa.FishingAdventure.model;
 
 import java.sql.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 @Entity
 public class AdvertiserEarnings {
@@ -15,7 +17,7 @@ public class AdvertiserEarnings {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "reservation", nullable = false)
+    @OneToOne(targetEntity = Reservation.class, cascade = CascadeType.MERGE)
     private Reservation reservation;
 
     @Column(name = "advertiserEmail", nullable = false)
