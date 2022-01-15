@@ -60,9 +60,14 @@ public class ReservationService {
         return repository.findAll();
     }
 
-    public boolean createReservation(String token, Appointment newAppointment, Integer serviceProfileId) {
+    public boolean createReservationForClient(String token, Appointment newAppointment, Integer serviceProfileId) {
+        String clientEmail = tokenUtils.getEmailFromToken(token);
+        return createReservation(clientEmail, newAppointment, serviceProfileId);
+    }
+
+    public boolean createReservation(String clientEmail, Appointment newAppointment, Integer serviceProfileId) {
+        // TODO: calculate earnings (client and advertiser email)
         try {
-            String clientEmail = tokenUtils.getEmailFromToken(token);
             Client client = clientService.findByEmail(clientEmail);
             ServiceProfile serviceProfile = serviceProfileService.getById(serviceProfileId);
             saveNewAppointment(newAppointment, serviceProfile);
@@ -274,4 +279,5 @@ public class ReservationService {
         }
         return false;
     }
+
 }

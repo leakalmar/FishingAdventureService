@@ -29,7 +29,7 @@ public class ReservationController {
     @Transactional
     public ResponseEntity<NewReservationDto> saveNewAppointment(@RequestHeader("Authorization") String token,
             @RequestBody NewReservationDto dto) {
-        boolean success = reservationService.createReservation(token.split(" ")[1], new Appointment(dto),
+        boolean success = reservationService.createReservationForClient(token.split(" ")[1], new Appointment(dto),
                 dto.getServiceId());
         if (!success)
             return new ResponseEntity<>(dto, HttpStatus.BAD_REQUEST);

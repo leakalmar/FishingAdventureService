@@ -36,7 +36,7 @@ public class ComplaintController {
         return new ResponseEntity<>(complaintService.exists(reservationId), HttpStatus.OK);
     }
 
-    @GetMapping(value="getClientComplaints")
+    @GetMapping(value = "getClientComplaints")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Transactional
     public ResponseEntity<List<ReservationIssueDto>> getClientComplaints() {
@@ -47,9 +47,8 @@ public class ComplaintController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Transactional
     public ResponseEntity<String> respondToComplaint(@RequestBody ComplaintResponseDto dto) {
-        System.out.println(dto.getAdvertiserEmail() + "   " + dto.getAdvertiserMessage() + "    " + dto.getClientEmail() + "     " + dto.getClientMessage() + "     " + dto.getComplaintId());
         complaintService.sendComplaintResponse(dto.getClientEmail(), dto.getClientMessage());
-        complaintService.sendComplaintResponse(dto.getAdvertiserEmail(), dto.getAdvertiserEmail());
+        complaintService.sendComplaintResponse(dto.getAdvertiserEmail(), dto.getAdvertiserMessage());
         complaintService.markComplaintAsRepliedTo(complaintService.findById(dto.getComplaintId()));
         return new ResponseEntity<>("ok", HttpStatus.OK);
     }

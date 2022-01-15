@@ -67,8 +67,7 @@ public class AdvertiserReservationDto {
         this.clientName = reservation.getClient().getName();
         this.clientSurname = reservation.getClient().getSurname();
         this.clientEmail = reservation.getClient().getEmail();
-        this.persons = reservation.getAppointment().getMaxPersons(); // TODO: replace with field for the number of
-                                                                     // people
+        this.persons = reservation.getAppointment().getMaxPersons();
         this.startDate = reservation.getAppointment().getStartDate();
         this.endDate = reservation.getAppointment().getEndDate();
         this.price = reservation.getAppointment().getPrice();
