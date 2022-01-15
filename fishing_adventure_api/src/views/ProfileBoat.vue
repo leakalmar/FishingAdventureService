@@ -255,9 +255,9 @@
 
       <div class="special-offers-fa">
         <div class="so-title-fa">
-          <h2>Special Offers</h2>
+          <h2 style="margin-top:10px">Special Offers</h2>
         </div>
-        <p style="font-size: 24px">There are no special offers currently</p>
+         <p v-if="offers.length == 0" style="font-size: 24px">There are no special offers currently</p>
       </div>
 
       <OffersCardNoImage
@@ -401,7 +401,6 @@ export default {
         this.offers = response.data;
       });
   },
-  name: "FishingAdventure",
   methods: {
     refresh: function (reserved) {
       const index = this.offers.indexOf(reserved);

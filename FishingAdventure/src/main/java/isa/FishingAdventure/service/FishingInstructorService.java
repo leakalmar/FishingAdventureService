@@ -37,10 +37,6 @@ public class FishingInstructorService {
 		fishingInstructorRepository.save(fishingInstructor);
 	}
 
-	public List<isa.FishingAdventure.model.User> findAll() {
-		return fishingInstructorRepository.findAll();
-	}
-
 	public FishingInstructor findByToken(String token) {
 		String email = tokenUtils.getEmailFromToken(token);
 		return findByEmail(email);

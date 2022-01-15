@@ -27,7 +27,7 @@ public class ReservationReportService {
 
     public void managePenalties(String option, ReservationReport report) {
         switch (option) {
-            case "sunctionRequest":
+            case "sanctionRequest":
                 report.setWaitingReview(true);
                 reportRepository.save(report);
                 break;

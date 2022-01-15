@@ -168,7 +168,16 @@ const routes = [{
     path: '/deleteRequests',
     name: 'DeleteRequests',
     component: () =>
-        import ('../views/DeleteRequests.vue')
+        import ('../views/DeleteRequests.vue'),
+    beforeEnter: (to, from, next) => {
+        checkAuthentification().then(response => {
+            if (response != "ROLE_ADMIN") {
+                next("/")
+            } else {
+                next();
+            }
+        })
+    }
 }, {
     path: '/users',
     name: 'AllUsers',

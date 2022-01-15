@@ -9,7 +9,7 @@
     v-on:show="closeModal"
   >
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content" style="height: 40rem">
+      <div class="modal-content" style="height: 37rem">
         <div class="modal-header">
           <h3 style="font-size: 23px">Reservation report</h3>
           <button
@@ -31,16 +31,14 @@
           >
             <div class="infoDiv">
               <h6>Reservation name:</h6>
-              <h6>Reservation dates</h6>
               <div>
-                <h6 style="margin-left: 2rem">From:</h6>
-                <h6 style="margin-left: 2rem">To:</h6>
+                <h6 style="text-align:left">From:</h6>
+                <h6 style="text-align:left">To:</h6>
               </div>
               <h6>Client:</h6>
             </div>
             <div class="infoDiv">
-              <h5>{{ reportDto.name }}</h5>
-              <h6><br /></h6>
+              <h6>{{ reportDto.name }}</h6>
               <div>
                 <h6>{{ reportDto.startDate }}</h6>
                 <h6>{{ reportDto.endDate }}</h6>
@@ -54,8 +52,8 @@
             <div class="reportOptions" v-on:click="selectOption" id="pleasant">
               Pleasant appointment
             </div>
-            <div class="reportOptions" v-on:click="selectOption" id="sunction">
-              Sunction for client
+            <div class="reportOptions" v-on:click="selectOption" id="sanction">
+              Request sanction
             </div>
             <div class="reportOptions" v-on:click="selectOption" id="showUp">
               Client didn't show up
@@ -113,7 +111,7 @@ export default {
       let elID = event.currentTarget.id;
       document.getElementById("pleasant").classList.remove("active");
       document.getElementById("showUp").classList.remove("active");
-      document.getElementById("sunction").classList.remove("active");
+      document.getElementById("sanction").classList.remove("active");
 
       document.getElementById(elID).classList.add("active");
       this.selectedOption = event.target.innerHTML;
@@ -135,8 +133,8 @@ export default {
         let optionString = "";
         if (this.selectedOption.toLowerCase().includes("show")) {
           optionString = "didntShowUp";
-        } else if (this.selectedOption.toLowerCase().includes("sunction")) {
-          optionString = "sunctionRequest";
+        } else if (this.selectedOption.toLowerCase().includes("sanction")) {
+          optionString = "sanctionRequest";
         }
 
         let report = {

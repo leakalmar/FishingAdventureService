@@ -247,10 +247,19 @@
 
       <div class="special-offers-fa">
         <div class="so-title-fa">
-          <h2>Special Offers</h2>
+          <h2 style="margin-top:10px">Special Offers</h2>
         </div>
-        <p style="font-size: 24px">There are no special offers currently</p>
+        <p v-if="offers.length == 0" style="font-size: 24px">There are no special offers currently</p>
       </div>
+
+       <OffersCardNoImage
+        v-for="offer of offers"
+        :key="offer.offerId"
+        :offer="offer"
+        :loggedInRole="loggedInRole"
+        :entityType="entityType"
+        v-on:refresh="refresh"
+      ></OffersCardNoImage>
 
       <div class="special-offers-fa">
         <div class="so-title-fa">
@@ -305,12 +314,14 @@
 <script>
 import axios from "axios";
 import ReservationModal from "@/components/Modals/ReservationModal.vue";
+import OffersCardNoImage from "@/components/OfferCards/OffersCardNoImage.vue";
 export default {
-  components: { ReservationModal },
+  components: { ReservationModal, OffersCardNoImage },
   name: "FishingAdventure",
   data() {
     return {
       offers: "",
+      entityType: "adventure",
       subscribed: false,
       loggedInRole: "",
       date: [],

@@ -2,7 +2,7 @@
   <div>
     <div
       class="card mb-3 bg-dark mt-3"
-      style="width: 65%; margin: auto; background-color: #7e000c3d !important"
+      style="width: 61%; margin: auto; background-color: #7e000c3d !important"
     >
       <div class="row g-0">
         <div class="shadow-none" name="main-col">

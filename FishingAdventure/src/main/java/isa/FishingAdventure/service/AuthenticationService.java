@@ -96,7 +96,6 @@ public class AuthenticationService {
         } else {
             homeOwnerService.saveNewHomeOwner(vacationHomeOwner);
         }
-        // TODO: send registration to admin for approval
     }
 
     public void signUpBoatOwner(BoatOwner boatOwner) {
@@ -105,7 +104,6 @@ public class AuthenticationService {
         } else {
             boatOwnerService.saveNewBoatOwner(boatOwner);
         }
-        // TODO: send registration to admin for approval
     }
 
     public void signUpFishingInstructor(FishingInstructor fishingInstructor) {
@@ -114,7 +112,6 @@ public class AuthenticationService {
         } else {
             instructorService.saveNewInstructor(fishingInstructor);
         }
-        // TODO: send registration to admin for approval
     }
 
     public void confirmAccount(String token) {
