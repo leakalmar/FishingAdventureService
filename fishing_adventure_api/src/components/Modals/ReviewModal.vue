@@ -101,6 +101,7 @@
 
 <script>
 import axios from "axios";
+axios.defaults.baseURL = process.env.VUE_APP_URL;
 export default {
   components: {},
   props: ["reservation"],
@@ -132,9 +133,9 @@ export default {
         serviceId: this.reservation.serviceId,
       };
       axios
-        .post("http://localhost:8080/review/new", review, {
+        .post("/review/new", review, {
           headers: {
-            "Access-Control-Allow-Origin": "http://localhost:8080",
+            "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
             Authorization: "Bearer " + localStorage.refreshToken,
           },
         })

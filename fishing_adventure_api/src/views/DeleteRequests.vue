@@ -132,6 +132,7 @@
 <script>
 import ReasonForDeletionModal from "@/components/Admin/ReasonForDeletionModal.vue";
 import axios from "axios";
+axios.defaults.baseURL = process.env.VUE_APP_URL;
 export default {
   components: { "deletion-request": ReasonForDeletionModal },
   data: function () {
@@ -143,9 +144,9 @@ export default {
   },
   mounted: function () {
     axios
-      .get("http://localhost:8080/deleteRequest/getDeleteRequests", {
+      .get("/deleteRequest/getDeleteRequests", {
         headers: {
-          "Access-Control-Allow-Origin": "http://localhost:8080",
+          "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
           Authorization: "Bearer " + localStorage.refreshToken,
         },
       })

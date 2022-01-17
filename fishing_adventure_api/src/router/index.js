@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import axios from 'axios'
+
+axios.defaults.baseURL = process.env.VUE_APP_URL;
 const routes = [{
     path: '/',
     name: 'Home',
@@ -292,7 +294,7 @@ const routes = [{
     }
 }]
 const router = createRouter({
-    history: createWebHistory(process.env.BASE_URL),
+    history: createWebHistory(process.env.VUE_APP_URL),
     routes
 })
 async function checkAuthentification() {
@@ -323,9 +325,9 @@ async function checkAuthentification() {
 export default router
 async function checkRole() {
     try {
-        return await axios.get("http://localhost:8080/users/getRole", {
+        return await axios.get("/users/getRole", {
             headers: {
-                "Access-Control-Allow-Origin": "http://localhost:8080",
+                "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
                 Authorization: "Bearer " + localStorage.jwt,
             },
         })
@@ -335,9 +337,9 @@ async function checkRole() {
 }
 async function refreshToken() {
     try {
-        return await axios.get("http://localhost:8080/auth/refreshToken", {
+        return await axios.get("/auth/refreshToken", {
             headers: {
-                "Access-Control-Allow-Origin": "http://localhost:8080",
+                "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
                 Authorization: "Bearer " + localStorage.refreshToken,
             },
         }).then((res) => {
