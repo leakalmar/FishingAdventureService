@@ -31,9 +31,35 @@ jobs:
           command: mvn -B -DskipTests clean package
       - run:
           name: Test
-          command: mvn test 
+          command: mvn test
+  prepare-for-deploy:
+    docker:
+        - image: cimg/openjdk:11.0
+    working_directory: ~/FishingAdventureService
+    steps:
+      - checkout:
+          path: ~/FishingAdventureService
           
+orbs:
+  heroku: circleci/heroku@1.2.6
 workflows:
-  test:
+  heroku_deploy:
     jobs:
-      - build-and-test
+      - build-and-test:
+          filters:  # using regex filters requires the entire branch to match
+                branches:
+                  only:  # only branches matching the below regex filters will run
+                    - feat(4.7)/deploy-workflow
+      - prepare-for-deploy:
+          filters:  # using regex filters requires the entire branch to match
+                branches:
+                  only:  # only branches matching the below regex filters will run
+                    - feat(4.7)/deploy-workflow
+      - heroku/deploy-via-git:
+          filters:  # using regex filters requires the entire branch to match
+                branches:
+                  only:  # only branches matching the below regex filters will run
+                    - feat(4.7)/deploy-workflow
+          requires:
+            - build-and-test
+            - prepare-for-deploy
