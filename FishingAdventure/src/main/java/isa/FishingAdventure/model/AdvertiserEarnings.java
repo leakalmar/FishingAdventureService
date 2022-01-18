@@ -44,7 +44,7 @@ public class AdvertiserEarnings {
         this.reservation = reservation;
         this.advertiserEmail = advertiserEmail;
         this.amountEarned = amountEarned;
-        this.dateOfTransaction = (Date) reservation.getAppointment().getDateCreated();
+        this.dateOfTransaction = reservation.getAppointment().getDateCreated();
     }
 
     public Integer getId() {
