@@ -35,10 +35,10 @@ jobs:
   prepare-for-deploy:
     docker:
         - image: cimg/openjdk:11.0
-    working_directory: ~/FishingAdventureService/fishing_adventure_api
+    working_directory: ~/FishingAdventureService
     steps:
       - checkout:
-          path: ~/FishingAdventureService/fishing_adventure_api
+          path: ~/FishingAdventureService
           
 orbs:
   heroku: circleci/heroku@1.2.6
