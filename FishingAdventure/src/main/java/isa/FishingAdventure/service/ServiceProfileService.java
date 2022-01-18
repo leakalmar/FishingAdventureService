@@ -38,9 +38,10 @@ public class ServiceProfileService {
 
     public void delete(int id) {
         Optional<ServiceProfile> profile = profileRepository.findById(id);
-        if (profile.isPresent())
+        if (profile.isPresent()) {
             profile.get().setDeleted(true);
-        profileRepository.save(profile.get());
+            profileRepository.save(profile.get());
+        }
     }
 
     public ServiceProfile getById(int id) {

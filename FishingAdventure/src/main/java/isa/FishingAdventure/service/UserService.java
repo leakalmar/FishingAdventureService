@@ -76,8 +76,8 @@ public class UserService implements UserDetailsService {
 		return users;
 	}
 
-	public User findById(Integer id) throws AccessDeniedException, NullPointerException {
-		return repository.findById(id).orElseGet(null);
+	public User findById(Integer id) throws AccessDeniedException {
+		return repository.getById(id);
 	}
 
 	public List<User> findAllNotDeleted() throws AccessDeniedException {
