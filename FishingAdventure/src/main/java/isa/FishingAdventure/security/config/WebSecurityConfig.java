@@ -61,9 +61,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 			.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
-			.authorizeRequests().antMatchers("/**").permitAll()		// /auth/**
-								.antMatchers("/h2-console/**").permitAll()	// /h2-console/** ako se koristi H2 baza)
-								.antMatchers("/api/foo").permitAll()		// /api/foo
+			.authorizeRequests().antMatchers("/api/foo").permitAll()		// /api/foo
+								.antMatchers("/**").permitAll()		// /auth/**
 			.anyRequest().authenticated().and()
 			.cors().and()
 			.addFilterBefore(new TokenAuthenticationFilter(tokenUtils, userService), BasicAuthenticationFilter.class);
