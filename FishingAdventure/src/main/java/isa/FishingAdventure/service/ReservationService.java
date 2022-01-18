@@ -52,6 +52,9 @@ public class ReservationService {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private AdvertiserEarningsService advertiserEarningsService;
+
     public void save(Reservation reservation) {
         repository.save(reservation);
     }
@@ -71,7 +74,9 @@ public class ReservationService {
             Client client = clientService.findByEmail(clientEmail);
             ServiceProfile serviceProfile = serviceProfileService.getById(serviceProfileId);
             saveNewAppointment(newAppointment, serviceProfile);
-            save(new Reservation(false, newAppointment, client, false));
+            Reservation newReservation = new Reservation(false, newAppointment, client, false);
+            save(newReservation);
+            advertiserEarningsService.calculateEarningsForNewReservation(getAdvertiserByServiceId(serviceProfileId).getEmail(), newReservation);
             String text = emailService.createConfirmReservationEmail(client, newAppointment, serviceProfile);
             emailService.sendEmail(clientEmail, "Reservation confirmation", text);
         } catch (Exception e) {
@@ -225,13 +230,16 @@ public class ReservationService {
         return reservationStatus;
     }
 
-    public void reserveSpecialOffer(String token, Integer offerId) {
+    public void reserveSpecialOffer(String token, Integer offerId, Integer serviceProfileId) {
         String email = tokenUtils.getEmailFromToken(token);
         Client client = clientService.findByEmail(email);
         Appointment appointment = appointmentService.findById(offerId);
         appointment.setReserved(true);
+        appointment.setDateCreated(new Date());
         appointmentService.save(appointment);
-        save(new Reservation(false, appointment, client, false));
+        Reservation newReservation = new Reservation(false, appointment, client, false);
+        save(newReservation);
+        advertiserEarningsService.calculateEarningsForNewReservation(getAdvertiserByServiceId(serviceProfileId).getEmail(), newReservation);
     }
 
     public Reservation findById(Integer id) {
@@ -245,10 +253,23 @@ public class ReservationService {
                 r.getAppointment().setCancelled(true);
                 appointmentService.save(r.getAppointment());
                 save(r);
+                ServiceProfile serviceProfile = findServiceProfilesByReservation(r);
+                if(serviceProfile != null)
+                    advertiserEarningsService.calculateEarningsForCancelledReservation(r, serviceProfile.getCancellationRule());
                 return true;
             }
         }
         return false;
+    }
+
+    private ServiceProfile findServiceProfilesByReservation(Reservation reservation) {
+        for(ServiceProfile serviceProfile: serviceProfileService.findAll()){
+            for(Appointment appointment : serviceProfile.getAppointments()){
+                if(appointment.getAppointmentId().equals(reservation.getAppointment().getAppointmentId()))
+                    return serviceProfile;
+            }
+        }
+        return null;
     }
 
     public List<Reservation> getClientReservationsForServiceProfile(String token, Integer serviceId) {
