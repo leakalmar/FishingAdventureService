@@ -35,7 +35,7 @@ jobs:
   prepare-for-deploy:
     docker:
         - image: cimg/openjdk:11.0
-    working_directory: ~/FishingAdventureService
+    working_directory: ~/FishingAdventureService/fishing_adventure_api
     steps:
       - checkout:
           path: ~/FishingAdventureService
