@@ -15,12 +15,12 @@ public class AdvertiserEarningsService {
     private AdvertiserEarningsRepository advertiserEarningsRepository;
 
     public void calculateEarningsForNewReservation(String advertiserEmail, Reservation reservation) {
-        // TODO: implement loyalty program
         Double amountEarned = reservation.getAppointment().getPrice();
         save(new AdvertiserEarnings(reservation, advertiserEmail, amountEarned));
     }
 
     public void calculateEarningsForCancelledReservation(Reservation reservation, Double cancellationRule) {
+        // TODO: implement loyalty program
         Double amountEarned = reservation.getAppointment().getPrice() * cancellationRule / 100;
         AdvertiserEarnings advertiserEarnings = getByReservation(reservation);
         advertiserEarnings.setAmountEarned(amountEarned);
