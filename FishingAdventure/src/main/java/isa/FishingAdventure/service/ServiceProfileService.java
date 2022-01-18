@@ -38,7 +38,8 @@ public class ServiceProfileService {
 
     public void delete(int id) {
         Optional<ServiceProfile> profile = profileRepository.findById(id);
-        profile.get().setDeleted(true);
+        if (profile.isPresent())
+            profile.get().setDeleted(true);
         profileRepository.save(profile.get());
     }
 
@@ -108,13 +109,14 @@ public class ServiceProfileService {
         Optional<VacationHome> home = homeService.findByIdIfExists(id);
         Optional<Boat> boat = boatService.findByIdIfExists(id);
         Optional<FishingAdventure> adventure = adventureService.findByIdIfExists(id);
-        boolean isAvailable;
+        boolean isAvailable = false;
         if (home.isPresent()) {
             isAvailable = homeService.isCottageAvailableForDateRange(id, start, end);
         } else if (boat.isPresent()) {
             isAvailable = boatService.isBoatAvailableForDateRange(id, start, end);
         } else {
-            isAvailable = adventureService.isInstructorAvailable(adventure.get().getFishingInstructor(), start, end);
+            if (adventure.isPresent())
+                isAvailable = adventureService.isInstructorAvailable(adventure.get().getFishingInstructor(), start, end);
         }
         return isAvailable;
     }
