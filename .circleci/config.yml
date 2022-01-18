@@ -38,7 +38,7 @@ jobs:
     working_directory: ~/FishingAdventureService/fishing_adventure_api
     steps:
       - checkout:
-          path: ~/FishingAdventureService
+          path: ~/FishingAdventureService/fishing_adventure_api
           
 orbs:
   heroku: circleci/heroku@1.2.6
