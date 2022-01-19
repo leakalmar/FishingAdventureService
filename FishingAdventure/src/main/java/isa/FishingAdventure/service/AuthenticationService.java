@@ -49,7 +49,7 @@ public class AuthenticationService {
     @Autowired
     private UserService userService;
 
-    private static final String emailExists = "Email already exists";
+    private static final String EMAIL_EXISTS = "Email already exists";
 
     public UserTokenState login(JwtAuthenticationRequest authenticationRequest) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
@@ -86,9 +86,9 @@ public class AuthenticationService {
         return getAuthentication(user);
     }
 
-    public void signUpClient(Client client) throws Exception {
+    public void signUpClient(Client client) throws MessagingException {
         if (userService.isEmailRegistered(client.getEmail()).equals(true)) {
-            throw new ResourceConflictException(emailExists);
+            throw new ResourceConflictException(EMAIL_EXISTS);
         } else {
             clientService.saveNewClient(client);
             sendRegistrationEmail(client);
@@ -97,7 +97,7 @@ public class AuthenticationService {
 
     public void signUpHomeOwner(VacationHomeOwner vacationHomeOwner) {
         if (userService.isEmailRegistered(vacationHomeOwner.getEmail()).equals(true)) {
-            throw new ResourceConflictException(emailExists);
+            throw new ResourceConflictException(EMAIL_EXISTS);
         } else {
             homeOwnerService.saveNewHomeOwner(vacationHomeOwner);
         }
@@ -105,7 +105,7 @@ public class AuthenticationService {
 
     public void signUpBoatOwner(BoatOwner boatOwner) {
         if (userService.isEmailRegistered(boatOwner.getEmail()).equals(true)) {
-            throw new ResourceConflictException(emailExists);
+            throw new ResourceConflictException(EMAIL_EXISTS);
         } else {
             boatOwnerService.saveNewBoatOwner(boatOwner);
         }
@@ -113,7 +113,7 @@ public class AuthenticationService {
 
     public void signUpFishingInstructor(FishingInstructor fishingInstructor) {
         if (userService.isEmailRegistered(fishingInstructor.getEmail()).equals(true)) {
-            throw new ResourceConflictException(emailExists);
+            throw new ResourceConflictException(EMAIL_EXISTS);
         } else {
             instructorService.saveNewInstructor(fishingInstructor);
         }

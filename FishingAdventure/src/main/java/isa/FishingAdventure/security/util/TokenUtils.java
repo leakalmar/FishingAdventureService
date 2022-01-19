@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import isa.FishingAdventure.model.*;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -14,43 +15,31 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// Utility klasa za rad sa JSON Web Tokenima
+
 @Component
 public class TokenUtils {
 
-    // Izdavac tokena
     @Value("spring-security-example")
     private String APP_NAME;
 
-    // Tajna koju samo backend aplikacija treba da zna kako bi mogla da generise i
-    // proveri JWT https://jwt.io/
+
     @Value("somesecret")
     public String SECRET;
 
-    // Period vazenja tokena - 30 minuta
+
     @Value("1800000")
     private int EXPIRES_IN;
 
-    // Naziv headera kroz koji ce se prosledjivati JWT u komunikaciji server-klijent
+
     @Value("Authorization")
     private String AUTH_HEADER;
 
-    // Moguce je generisati JWT za razlicite klijente (npr. web i mobilni klijenti
-    // nece imati isto trajanje JWT,
-    // JWT za mobilne klijente ce trajati duze jer se mozda aplikacija redje koristi
-    // na taj nacin)
-    // Radi jednostavnosti primera, necemo voditi racuna o uređaju sa kojeg zahtev
-    // stiže.
-    // private static final String AUDIENCE_UNKNOWN = "unknown";
-    // private static final String AUDIENCE_MOBILE = "mobile";
-    // private static final String AUDIENCE_TABLET = "tablet";
 
     private static final String AUDIENCE_WEB = "web";
 
-    // Algoritam za potpisivanje JWT
+
     private SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS512;
 
-    // ============= Funkcije za generisanje JWT tokena =============
 
     /**
      * Funkcija za generisanje JWT tokena.
@@ -68,8 +57,6 @@ public class TokenUtils {
                 .setExpiration(generateExpirationDate(isRefreshToken))
                 .signWith(SIGNATURE_ALGORITHM, SECRET).compact();
 
-        // moguce je postavljanje proizvoljnih podataka u telo JWT tokena pozivom
-        // funkcije .claim("key", value), npr. .claim("role", user.getRole())
     }
 
     /**
@@ -79,18 +66,6 @@ public class TokenUtils {
      */
     private String generateAudience() {
 
-        // Moze se iskoristiti org.springframework.mobile.device.Device objekat za
-        // odredjivanje tipa uredjaja sa kojeg je zahtev stigao.
-        // https://spring.io/projects/spring-mobile
-
-        // String audience = AUDIENCE_UNKNOWN;
-        // if (device.isNormal()) {
-        // audience = AUDIENCE_WEB;
-        // } else if (device.isTablet()) {
-        // audience = AUDIENCE_TABLET;
-        // } else if (device.isMobile()) {
-        // audience = AUDIENCE_MOBILE;
-        // }
 
         return AUDIENCE_WEB;
     }
@@ -102,7 +77,7 @@ public class TokenUtils {
      */
     private Date generateExpirationDate(Boolean isRefreshToken) {
         Date date;
-        if (isRefreshToken) {
+        if (isRefreshToken.equals(true)) {
             date = new Date(new Date().getTime() + 3600000);
         } else {
             date = new Date(new Date().getTime() + EXPIRES_IN);
@@ -110,9 +85,6 @@ public class TokenUtils {
         return date;
     }
 
-    // =================================================================
-
-    // ============= Funkcije za citanje informacija iz JWT tokena =============
 
     /**
      * Funkcija za preuzimanje JWT tokena iz zahteva.
@@ -124,12 +96,9 @@ public class TokenUtils {
     public String getToken(HttpServletRequest request) {
         String authHeader = getAuthHeaderFromHeader(request);
 
-        // JWT se prosledjuje kroz header 'Authorization' u formatu:
-        // Bearer
-        // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            return authHeader.substring(7); // preuzimamo samo token (vrednost tokena je nakon "Bearer " prefiksa)
+            return authHeader.substring(7);
         }
 
         return null;
@@ -254,14 +223,10 @@ public class TokenUtils {
             claims = null;
         }
 
-        // Preuzimanje proizvoljnih podataka je moguce pozivom funkcije claims.get(key)
 
         return claims;
     }
 
-    // =================================================================
-
-    // ============= Funkcije za validaciju JWT tokena =============
 
     /**
      * Funkcija za validaciju JWT tokena.
@@ -272,7 +237,7 @@ public class TokenUtils {
      */
     public Boolean validateToken(String token, UserDetails userDetails) {
         List<String> roles = userDetails.getAuthorities().stream()
-                .map(item -> item.getAuthority())
+                .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
         Client userClient = null;
@@ -296,74 +261,34 @@ public class TokenUtils {
             case "ROLE_ADMIN":
                 userAdmin = (Admin) userDetails;
                 break;
+            default:
+                break;
 
         }
         final String username = getEmailFromToken(token);
         final Date created = getIssuedAtDateFromToken(token);
 
         if (userAdmin != null) {
-            return (username != null // korisnicko ime nije null
-                    && username.equals(userDetails.getUsername()) // korisnicko ime iz tokena se podudara sa korisnickom
-                    // imenom koje pise u bazi
-                    && !isCreatedBeforeLastPasswordReset(created, userAdmin.getLastPasswordResetDate())); // nakon
-            // kreiranja
-            // tokena
-            // korisnik
-            // nije
-            // menjao
-            // svoju
-            // lozinku
+            return (username != null
+                    && username.equals(userDetails.getUsername())
+                    && !isCreatedBeforeLastPasswordReset(created, userAdmin.getLastPasswordResetDate()));
         } else if (userClient != null) {
-            return (username != null // korisnicko ime nije null
-                    && username.equals(userDetails.getUsername()) // korisnicko ime iz tokena se podudara sa korisnickom
-                    // imenom koje pise u bazi
-                    && !isCreatedBeforeLastPasswordReset(created, userClient.getLastPasswordResetDate())); // nakon
-            // kreiranja
-            // tokena
-            // korisnik
-            // nije
-            // menjao
-            // svoju
-            // lozinku
+            return (username != null
+                    && username.equals(userDetails.getUsername())
+                    && !isCreatedBeforeLastPasswordReset(created, userClient.getLastPasswordResetDate()));
         } else if (userInstructor != null) {
-            return (username != null // korisnicko ime nije null
-                    && username.equals(userDetails.getUsername()) // korisnicko ime iz tokena se podudara sa korisnickom
-                    // imenom koje pise u bazi
-                    && !isCreatedBeforeLastPasswordReset(created, userInstructor.getLastPasswordResetDate())); // nakon
-            // kreiranja
-            // tokena
-            // korisnik
-            // nije
-            // menjao
-            // svoju
-            // lozinku
+            return (username != null
+                    && username.equals(userDetails.getUsername())
+                    && !isCreatedBeforeLastPasswordReset(created, userInstructor.getLastPasswordResetDate()));
         } else if (userHomeOwner != null) {
-            return (username != null // korisnicko ime nije null
-                    && username.equals(userDetails.getUsername()) // korisnicko ime iz tokena se podudara sa korisnickom
-                    // imenom koje pise u bazi
-                    && !isCreatedBeforeLastPasswordReset(created, userHomeOwner.getLastPasswordResetDate())); // nakon
-            // kreiranja
-            // tokena
-            // korisnik
-            // nije
-            // menjao
-            // svoju
-            // lozinku
+            return (username != null
+                    && username.equals(userDetails.getUsername())
+                    && !isCreatedBeforeLastPasswordReset(created, userHomeOwner.getLastPasswordResetDate()));
         } else if (userBoatOwner != null) {
-            return (username != null // korisnicko ime nije null
-                    && username.equals(userDetails.getUsername()) // korisnicko ime iz tokena se podudara sa korisnickom
-                    // imenom koje pise u bazi
-                    && !isCreatedBeforeLastPasswordReset(created, userBoatOwner.getLastPasswordResetDate())); // nakon
-            // kreiranja
-            // tokena
-            // korisnik
-            // nije
-            // menjao
-            // svoju
-            // lozinku
+            return (username != null
+                    && username.equals(userDetails.getUsername())
+                    && !isCreatedBeforeLastPasswordReset(created, userBoatOwner.getLastPasswordResetDate()));
         }
-
-        // Token je validan kada:
         return null;
     }
 
@@ -379,8 +304,6 @@ public class TokenUtils {
     private Boolean isCreatedBeforeLastPasswordReset(Date created, Date lastPasswordReset) {
         return (lastPasswordReset != null && created.before(lastPasswordReset));
     }
-
-    // =================================================================
 
     /**
      * Funkcija za preuzimanje perioda važenja tokena.

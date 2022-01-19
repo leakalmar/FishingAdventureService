@@ -78,10 +78,9 @@ public class ReservationService {
             save(newReservation);
             advertiserEarningsService.calculateEarningsForNewReservation(
                     getAdvertiserByServiceId(serviceProfileId).getEmail(), newReservation);
-            String text = emailService.createConfirmReservationEmail(client, newAppointment, serviceProfile);
+            String text = emailService.createConfirmReservationEmail(newAppointment, serviceProfile);
             emailService.sendEmail(clientEmail, "Reservation confirmation", text);
         } catch (Exception e) {
-            return;
         }
     }
 

@@ -50,7 +50,7 @@ public abstract class ServiceProfile {
     @Column(name = "price_per_day", nullable = false)
     private double pricePerDay;
 
-    public ServiceProfile(String name, String description, double cancellationRule, double rating, Location location,
+    protected ServiceProfile(String name, String description, double cancellationRule, double rating, Location location,
             Set<Rule> rules, Set<AdditionalService> additionalServices, int persons) {
         this.name = name;
         this.description = description;
@@ -66,7 +66,7 @@ public abstract class ServiceProfile {
         this.pricePerDay = 0;
     }
 
-    public ServiceProfile() {
+    protected ServiceProfile() {
     }
 
     public Boolean getDeleted() {

@@ -57,10 +57,10 @@ public abstract class User implements UserDetails {
 	@Column(name = "last_password_reset_date")
 	private Timestamp lastPasswordResetDate;
 
-	public User() {
+	protected User() {
 	}
 
-	public User(String email, String name, String surname, String password, String phoneNumber, UserType userType,
+	protected User(String email, String name, String surname, String password, String phoneNumber, UserType userType,
 			Address address, Timestamp lastPasswordResetDate) {
 		this.email = email;
 		this.isDeleted = false;

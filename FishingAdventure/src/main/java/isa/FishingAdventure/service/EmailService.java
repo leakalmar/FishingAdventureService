@@ -87,7 +87,7 @@ public class EmailService {
                 return content.toString();
         }
 
-        public String createConfirmReservationEmail(Client client, Appointment newAppointment,
+        public String createConfirmReservationEmail(Appointment newAppointment,
                         ServiceProfile serviceProfile) {
                 StringBuilder content = new StringBuilder();
                 SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm");

@@ -1,6 +1,5 @@
 package isa.FishingAdventure.repository;
 
-import isa.FishingAdventure.model.FishingAdventure;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 

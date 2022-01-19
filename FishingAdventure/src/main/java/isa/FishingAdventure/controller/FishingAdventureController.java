@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 import isa.FishingAdventure.dto.*;
-import isa.FishingAdventure.model.VacationHome;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.format.annotation.DateTimeFormat;
