@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+
 @RestController
 @RequestMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AuthenticationController {
@@ -34,7 +36,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<UserDto> addClient(@RequestBody UserDto userDto) throws Exception {
+    public ResponseEntity<UserDto> addClient(@RequestBody UserDto userDto) throws MessagingException {
         authenticationService.signUpClient(new Client(userDto));
         return new ResponseEntity<>(userDto, HttpStatus.CREATED);
     }

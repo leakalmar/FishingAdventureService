@@ -5,10 +5,13 @@ import isa.FishingAdventure.dto.ReservationInfoDto;
 import isa.FishingAdventure.model.*;
 import isa.FishingAdventure.repository.ReservationRepository;
 import isa.FishingAdventure.security.util.TokenUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -55,6 +58,8 @@ public class ReservationService {
     @Autowired
     private AdvertiserEarningsService advertiserEarningsService;
 
+    protected final Log loggerLog = LogFactory.getLog(getClass());
+
     public void save(Reservation reservation) {
         repository.save(reservation);
     }
@@ -80,7 +85,8 @@ public class ReservationService {
                     getAdvertiserByServiceId(serviceProfileId).getEmail(), newReservation);
             String text = emailService.createConfirmReservationEmail(newAppointment, serviceProfile);
             emailService.sendEmail(clientEmail, "Reservation confirmation", text);
-        } catch (Exception e) {
+        } catch (MessagingException e) {
+            loggerLog.debug("Email could not be sent.");
         }
     }
 

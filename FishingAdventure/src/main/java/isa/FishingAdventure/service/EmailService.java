@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import isa.FishingAdventure.model.AdditionalService;
 import isa.FishingAdventure.model.Appointment;
-import isa.FishingAdventure.model.Client;
 import isa.FishingAdventure.model.ServiceProfile;
 
 import java.text.SimpleDateFormat;
