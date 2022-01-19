@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import isa.FishingAdventure.service.BoatOwnerService;
 
-import java.text.ParseException;
 import java.util.Date;
 
 @RestController
@@ -26,7 +25,7 @@ public class BoatOwnerController {
 	@Transactional
 	public ResponseEntity<Boolean> getIsBoatOwnerAvailable(@RequestParam("id") Integer boatId,
 			@RequestParam("start") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS") Date start,
-			@RequestParam("end") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS") Date end) throws ParseException {
+			@RequestParam("end") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS") Date end) {
 
 		boolean availability = boatOwnerService.isBoatOwnerAvailableForDateRange(boatId, start, end);
 		return new ResponseEntity<>(availability, HttpStatus.OK);

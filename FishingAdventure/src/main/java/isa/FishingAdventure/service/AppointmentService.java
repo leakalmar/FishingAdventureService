@@ -84,7 +84,7 @@ public class AppointmentService {
         String email = tokenUtils.getEmailFromToken(token.split(" ")[1]);
         User advertiser = userService.findByEmail(email);
 
-        List<Appointment> appointments = new ArrayList<>();
+        List<Appointment> appointments;
         switch (advertiser.getUserType().getName()) {
             case "ROLE_VACATION_HOME_OWNER":
                 appointments = getValidAppointements(vacationHomeService.getOffersByAdvertiser(advertiser.getEmail()));

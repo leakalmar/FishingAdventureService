@@ -41,7 +41,7 @@ public class FishingAdventureController {
 	}
 
 	private List<FishingAdventureDto> createFishingAdventureDtos(List<FishingAdventure> fishingAdventures) {
-		List<FishingAdventureDto> fishingAdventureDtos = new ArrayList<FishingAdventureDto>();
+		List<FishingAdventureDto> fishingAdventureDtos = new ArrayList<>();
 		for (FishingAdventure fa : fishingAdventures) {
 			FishingAdventureDto dto = new FishingAdventureDto(fa);
 			fishingAdventureDtos.add(dto);
@@ -90,7 +90,7 @@ public class FishingAdventureController {
 	}
 
 	private List<ServiceNameDto> createServiceNameDtos(FishingInstructor instructor) {
-		List<ServiceNameDto> adventures = new ArrayList<ServiceNameDto>();
+		List<ServiceNameDto> adventures = new ArrayList<>();
 		for (FishingAdventure adventure : adventureService.findByFishingInstructor(instructor)) {
 			adventures.add(new ServiceNameDto(adventure));
 		}

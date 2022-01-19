@@ -81,12 +81,12 @@ public class Appointment {
 
         this.startDate = dto.getStartDate();
         this.endDate = dto.getEndDate();
-        long duration = (dto.getEndDate().getTime() - dto.getStartDate().getTime()) / (1000 * 60 * 60 * 24);
-        if(duration != 0) {
-            this.duration = Duration.ofDays(duration);
+        long appointmentDuration = (dto.getEndDate().getTime() - dto.getStartDate().getTime()) / (1000 * 60 * 60 * 24);
+        if (appointmentDuration != 0) {
+            this.duration = Duration.ofDays(appointmentDuration);
         } else {
-            duration = (dto.getEndDate().getTime() - dto.getStartDate().getTime()) / (1000 * 60);
-            this.duration = Duration.ofMinutes(duration);
+            appointmentDuration = (dto.getEndDate().getTime() - dto.getStartDate().getTime()) / (1000 * 60);
+            this.duration = Duration.ofMinutes(appointmentDuration);
         }
 
         this.chosenServices = new HashSet<>();
@@ -102,16 +102,16 @@ public class Appointment {
         this.dateCreated = new Date();
         this.startDate = dto.getStartDate();
         this.endDate = dto.getEndDate();
-        long duration = (dto.getEndDate().getTime() - dto.getStartDate().getTime()) / (1000 * 60 * 60 * 24);
-        if(duration != 0) {
-            this.duration = Duration.ofDays(duration);
+        long appointmentDuration = (dto.getEndDate().getTime() - dto.getStartDate().getTime()) / (1000 * 60 * 60 * 24);
+        if (appointmentDuration != 0) {
+            this.duration = Duration.ofDays(appointmentDuration);
         } else {
-            duration = (dto.getEndDate().getTime() - dto.getStartDate().getTime()) / (1000 * 60);
-            this.duration = Duration.ofMinutes(duration);
+            appointmentDuration = (dto.getEndDate().getTime() - dto.getStartDate().getTime()) / (1000 * 60);
+            this.duration = Duration.ofMinutes(appointmentDuration);
         }
         this.maxPersons = dto.getPersons();
         if (this.chosenServices == null) {
-            this.chosenServices = new HashSet<AdditionalService>();
+            this.chosenServices = new HashSet<>();
         }
         this.chosenServices.addAll(dto.getChosenServices());
         this.price = dto.getPrice();

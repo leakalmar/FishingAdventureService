@@ -17,9 +17,9 @@ public class FishingAdventureDto {
 
 	private Location location;
 
-	public String imagePath;
+	private String imagePath;
 
-	public FishingInstructor fishingInstructor;
+	private FishingInstructor fishingInstructor;
 
 	public FishingAdventureDto(int id, String name, String description, double rating, Location location,
 			String imagePath, FishingInstructor fishingInstructor) {

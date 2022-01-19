@@ -78,7 +78,11 @@ public class NewBoatDto {
         this.navigationEquipments = boat.getNavigationEquipment();
     }
 
-    public NewBoatDto(Integer id, String name, String description, double cancellationRule, double rating, Location location, Set<Rule> rules, Set<AdditionalService> additionalServices, Set<Image> images, Set<FishingEquipment> fishingEquipments, Set<NavigationEquipment> navigationEquipments, BoatOwner boatOwner, String imagePath, int persons, double pricePerDay, String type, int length, int motorNumber, double motorPower, double maxSpeed) {
+    public NewBoatDto(Integer id, String name, String description, double cancellationRule, double rating,
+            Location location, Set<Rule> rules, Set<AdditionalService> additionalServices, Set<Image> images,
+            Set<FishingEquipment> fishingEquipments, Set<NavigationEquipment> navigationEquipments, BoatOwner boatOwner,
+            String imagePath, int persons, double pricePerDay, String type, int length, int motorNumber,
+            double motorPower, double maxSpeed) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -180,15 +184,6 @@ public class NewBoatDto {
     public void setImages(Set<Image> images) {
         this.images = images;
     }
-
-    public BoatOwner getVacationHomeOwner() {
-        return boatOwner;
-    }
-
-    public void setVacationHomeOwner(BoatOwner boatOwner) {
-        this.boatOwner = boatOwner;
-    }
-
 
     public int getPersons() {
         return persons;

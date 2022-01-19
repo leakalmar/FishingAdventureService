@@ -22,9 +22,10 @@ public class DeleteRequestController {
     private DeleteRequestService deleteRequestService;
 
     @PostMapping(value = "/create")
-    public ResponseEntity<String> createDeleteRequest(@RequestHeader("Authorization") String token, @RequestBody DeleteRequestDto requestDto) {
+    public ResponseEntity<String> createDeleteRequest(@RequestHeader("Authorization") String token,
+            @RequestBody DeleteRequestDto requestDto) {
         deleteRequestService.createDeleteRequest(token, requestDto.getContent());
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        return new ResponseEntity<>("ok", HttpStatus.OK);
     }
 
     @GetMapping(value = "/isRequested")
@@ -32,9 +33,10 @@ public class DeleteRequestController {
         return new ResponseEntity<>(deleteRequestService.checkIfRequestExist(token), HttpStatus.OK);
     }
 
-    @GetMapping(value="getDeleteRequests")
+    @GetMapping(value = "getDeleteRequests")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<List<DeleteRequestForAdminDto>> getAllRegistrationRequests(@RequestHeader("Authorization") String token) {
+    public ResponseEntity<List<DeleteRequestForAdminDto>> getAllRegistrationRequests(
+            @RequestHeader("Authorization") String token) {
         List<DeleteRequestForAdminDto> requestDtos = new ArrayList<>();
         for (DeleteRequest request : deleteRequestService.getDeleteRequests(token)) {
             DeleteRequestForAdminDto requestDto = new DeleteRequestForAdminDto(request);
@@ -47,7 +49,8 @@ public class DeleteRequestController {
     @GetMapping(value = "/approveDeletion")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Transactional
-    public ResponseEntity<String> approveDeletionRequest(@RequestParam("id") Integer id, @RequestParam("response") String response) {
+    public ResponseEntity<String> approveDeletionRequest(@RequestParam("id") Integer id,
+            @RequestParam("response") String response) {
         deleteRequestService.approveRequest(id, response);
         return new ResponseEntity<>("ok", HttpStatus.OK);
     }
@@ -55,7 +58,8 @@ public class DeleteRequestController {
     @GetMapping(value = "/rejectDeletion")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Transactional
-    public ResponseEntity<String> rejectDeletionRequest(@RequestParam("id") Integer id, @RequestParam("response") String response) {
+    public ResponseEntity<String> rejectDeletionRequest(@RequestParam("id") Integer id,
+            @RequestParam("response") String response) {
         deleteRequestService.rejectRequest(id, response);
         return new ResponseEntity<>("ok", HttpStatus.OK);
     }

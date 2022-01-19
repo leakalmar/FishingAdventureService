@@ -5,6 +5,7 @@ import isa.FishingAdventure.exception.ResourceConflictException;
 import isa.FishingAdventure.model.*;
 import isa.FishingAdventure.security.util.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,6 +16,8 @@ import isa.FishingAdventure.dto.JwtAuthenticationRequest;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import javax.mail.MessagingException;
 
 @Service
 public class AuthenticationService {
@@ -45,6 +48,8 @@ public class AuthenticationService {
 
     @Autowired
     private UserService userService;
+
+    private static final String emailExists = "Email already exists";
 
     public UserTokenState login(JwtAuthenticationRequest authenticationRequest) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
@@ -82,8 +87,8 @@ public class AuthenticationService {
     }
 
     public void signUpClient(Client client) throws Exception {
-        if (userService.isEmailRegistered(client.getEmail())) {
-            throw new ResourceConflictException("Email already exists");
+        if (userService.isEmailRegistered(client.getEmail()).equals(true)) {
+            throw new ResourceConflictException(emailExists);
         } else {
             clientService.saveNewClient(client);
             sendRegistrationEmail(client);
@@ -91,24 +96,24 @@ public class AuthenticationService {
     }
 
     public void signUpHomeOwner(VacationHomeOwner vacationHomeOwner) {
-        if (userService.isEmailRegistered(vacationHomeOwner.getEmail())) {
-            throw new ResourceConflictException("Email already exists");
+        if (userService.isEmailRegistered(vacationHomeOwner.getEmail()).equals(true)) {
+            throw new ResourceConflictException(emailExists);
         } else {
             homeOwnerService.saveNewHomeOwner(vacationHomeOwner);
         }
     }
 
     public void signUpBoatOwner(BoatOwner boatOwner) {
-        if (userService.isEmailRegistered(boatOwner.getEmail())) {
-            throw new ResourceConflictException("Email already exists");
+        if (userService.isEmailRegistered(boatOwner.getEmail()).equals(true)) {
+            throw new ResourceConflictException(emailExists);
         } else {
             boatOwnerService.saveNewBoatOwner(boatOwner);
         }
     }
 
     public void signUpFishingInstructor(FishingInstructor fishingInstructor) {
-        if (userService.isEmailRegistered(fishingInstructor.getEmail())) {
-            throw new ResourceConflictException("Email already exists");
+        if (userService.isEmailRegistered(fishingInstructor.getEmail()).equals(true)) {
+            throw new ResourceConflictException(emailExists);
         } else {
             instructorService.saveNewInstructor(fishingInstructor);
         }
@@ -122,7 +127,7 @@ public class AuthenticationService {
         confirmationTokenService.delete(confirmationToken);
     }
 
-    private void sendRegistrationEmail(Client client) throws Exception {
+    private void sendRegistrationEmail(Client client) throws MailException, MessagingException {
         String token = generateRegistrationToken(client.getEmail());
         String html = emailService.createConfirmRegistrationEmail(token);
         emailService.sendEmail(client.getEmail(), "Confirm registration", html);

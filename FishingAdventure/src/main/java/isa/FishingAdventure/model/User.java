@@ -52,7 +52,7 @@ public abstract class User implements UserDetails {
 	private boolean activated;
 
 	@OneToOne(targetEntity = Address.class, cascade = CascadeType.ALL)
-	public Address address;
+	private Address address;
 
 	@Column(name = "last_password_reset_date")
 	private Timestamp lastPasswordResetDate;
@@ -60,7 +60,8 @@ public abstract class User implements UserDetails {
 	public User() {
 	}
 
-	public User(String email, String name, String surname, String password, String phoneNumber, UserType userType, Address address, Timestamp lastPasswordResetDate) {
+	public User(String email, String name, String surname, String password, String phoneNumber, UserType userType,
+			Address address, Timestamp lastPasswordResetDate) {
 		this.email = email;
 		this.isDeleted = false;
 		this.name = name;
@@ -189,7 +190,7 @@ public abstract class User implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		ArrayList<UserType> userTypes = new ArrayList<UserType>();
+		ArrayList<UserType> userTypes = new ArrayList<>();
 		userTypes.add(userType);
 		return userTypes;
 	}

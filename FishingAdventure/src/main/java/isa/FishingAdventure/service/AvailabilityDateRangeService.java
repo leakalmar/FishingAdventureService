@@ -42,10 +42,13 @@ public class AvailabilityDateRangeService {
         return createAvailabilityDateRangeDtos(getAllByServiceProfileId(serviceProfile.getId()), serviceProfile);
     }
 
-    private void createDateRangeForExistingAppointments(ServiceProfile serviceProfile, AvailabilityDateRange oldDateRange) {
+    private void createDateRangeForExistingAppointments(ServiceProfile serviceProfile,
+            AvailabilityDateRange oldDateRange) {
         for (Appointment appointment : serviceProfile.getAppointments()) {
-            if ((appointment.getStartDate().equals(oldDateRange.getStartDate()) || appointment.getStartDate().after(oldDateRange.getStartDate())) &&
-                    (appointment.getEndDate().equals(oldDateRange.getEndDate()) || appointment.getEndDate().before(oldDateRange.getEndDate()))) {
+            if ((appointment.getStartDate().equals(oldDateRange.getStartDate())
+                    || appointment.getStartDate().after(oldDateRange.getStartDate())) &&
+                    (appointment.getEndDate().equals(oldDateRange.getEndDate())
+                            || appointment.getEndDate().before(oldDateRange.getEndDate()))) {
                 save(new AvailabilityDateRange(appointment.getStartDate(), appointment.getEndDate(), serviceProfile));
             }
         }
@@ -59,11 +62,14 @@ public class AvailabilityDateRangeService {
         return repository.findById(id);
     }
 
-    public List<AvailablityDateRangeDto> updateAvailabilityDate(AvailabilityDateRange oldDateRange, Date newStartDate, Date newEndDate, Integer serviceId) {
+    public List<AvailablityDateRangeDto> updateAvailabilityDate(AvailabilityDateRange oldDateRange, Date newStartDate,
+            Date newEndDate, Integer serviceId) {
         ServiceProfile serviceProfile = serviceProfileService.getById(serviceId);
         List<AvailabilityDateRange> dateRanges = getAllByServiceProfileId(serviceProfile.getId());
-        List<AvailabilityDateRange> updatedDateRanges = checkScheduledAppointments(dateRanges, serviceProfile, newStartDate, newEndDate);
-        AvailabilityDateRange newDateRange = mergeOverlapingAvailabilityDates(updatedDateRanges, newStartDate, newEndDate, serviceProfile);
+        List<AvailabilityDateRange> updatedDateRanges = checkScheduledAppointments(dateRanges, serviceProfile,
+                newStartDate, newEndDate);
+        AvailabilityDateRange newDateRange = mergeOverlapingAvailabilityDates(updatedDateRanges, newStartDate,
+                newEndDate, serviceProfile);
         if (findById(oldDateRange.getId()).isPresent()) {
             repository.deleteById(oldDateRange.getId());
         }
@@ -71,15 +77,18 @@ public class AvailabilityDateRangeService {
         return createAvailabilityDateRangeDtos(getAllByServiceProfileId(serviceProfile.getId()), serviceProfile);
     }
 
-    private List<AvailablityDateRangeDto> createAvailabilityDateRangeDtos(List<AvailabilityDateRange> dateRanges, ServiceProfile profile) {
+    private List<AvailablityDateRangeDto> createAvailabilityDateRangeDtos(List<AvailabilityDateRange> dateRanges,
+            ServiceProfile profile) {
         List<AvailablityDateRangeDto> dateRangeDtos = new ArrayList<>();
         for (AvailabilityDateRange dateRange : dateRanges) {
-            dateRangeDtos.add(new AvailablityDateRangeDto(dateRange.getId(), profile.getName(), dateRange.getStartDate(), dateRange.getEndDate()));
+            dateRangeDtos.add(new AvailablityDateRangeDto(dateRange.getId(), profile.getName(),
+                    dateRange.getStartDate(), dateRange.getEndDate()));
         }
         return dateRangeDtos;
     }
 
-    private AvailabilityDateRange mergeOverlapingAvailabilityDates(List<AvailabilityDateRange> dateRanges, Date newStartDate, Date newEndDate, ServiceProfile serviceProfile) {
+    private AvailabilityDateRange mergeOverlapingAvailabilityDates(List<AvailabilityDateRange> dateRanges,
+            Date newStartDate, Date newEndDate, ServiceProfile serviceProfile) {
         AvailabilityDateRange newDateRange = new AvailabilityDateRange();
         for (AvailabilityDateRange dateRange : dateRanges) {
             if (newStartDate.before(dateRange.getStartDate()) && newEndDate.after(dateRange.getEndDate())) {
@@ -98,32 +107,41 @@ public class AvailabilityDateRangeService {
         return newDateRange;
     }
 
-    private List<AvailabilityDateRange> checkScheduledAppointments(List<AvailabilityDateRange> dateRanges, ServiceProfile serviceProfile, Date newStartDate, Date newEndDate) {
+    private List<AvailabilityDateRange> checkScheduledAppointments(List<AvailabilityDateRange> dateRanges,
+            ServiceProfile serviceProfile, Date newStartDate, Date newEndDate) {
         for (Appointment appointment : serviceProfile.getAppointments()) {
             if (newStartDate.after(appointment.getStartDate()) || newEndDate.before(appointment.getEndDate())) {
                 boolean foundMatch = false;
-                for (AvailabilityDateRange dateRange : dateRanges) {
-                    if (appointment.getEndDate().equals(dateRange.getStartDate())) {
-                        dateRange.setStartDate(appointment.getStartDate());
-                        foundMatch = true;
-                        break;
-                    } else if (appointment.getStartDate().equals(dateRange.getEndDate())) {
-                        dateRange.setEndDate(appointment.getEndDate());
-                        foundMatch = true;
-                        break;
-                    } else if (appointment.getStartDate().equals(dateRange.getStartDate()) && appointment.getEndDate().equals(dateRange.getEndDate())) {
-                        foundMatch = true;
-                        break;
-                    }
-                }
+                foundMatch = checkEdgeCasesForDateRanges(dateRanges, appointment, foundMatch);
                 if (!foundMatch) {
-                    AvailabilityDateRange newRange = save(new AvailabilityDateRange(appointment.getStartDate(), appointment.getEndDate(), serviceProfile));
+                    AvailabilityDateRange newRange = save(new AvailabilityDateRange(appointment.getStartDate(),
+                            appointment.getEndDate(), serviceProfile));
                     dateRanges.add(newRange);
                 }
             }
         }
 
         return dateRanges;
+    }
+
+    private boolean checkEdgeCasesForDateRanges(List<AvailabilityDateRange> dateRanges, Appointment appointment,
+            boolean foundMatch) {
+        for (AvailabilityDateRange dateRange : dateRanges) {
+            if (appointment.getEndDate().equals(dateRange.getStartDate())) {
+                dateRange.setStartDate(appointment.getStartDate());
+                foundMatch = true;
+            } else if (appointment.getStartDate().equals(dateRange.getEndDate())) {
+                dateRange.setEndDate(appointment.getEndDate());
+                foundMatch = true;
+            } else if (appointment.getStartDate().equals(dateRange.getStartDate())
+                    && appointment.getEndDate().equals(dateRange.getEndDate())) {
+                foundMatch = true;
+            }
+            if (foundMatch) {
+                break;
+            }
+        }
+        return foundMatch;
     }
 
     public AvailabilityDateRange saveNewAvailabilityDateRange(String id, AvailablityDateRangeDto dto) {

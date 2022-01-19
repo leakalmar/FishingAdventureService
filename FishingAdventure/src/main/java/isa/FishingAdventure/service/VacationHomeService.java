@@ -33,7 +33,7 @@ public class VacationHomeService {
     public List<VacationHome> findAllNonDeleted() {
         List<VacationHome> homes = new ArrayList<>();
         for (VacationHome home : homeRepository.findAll()) {
-            if (!home.getDeleted()) {
+            if (home.getDeleted().equals(false)) {
                 homes.add(home);
             }
         }
@@ -43,7 +43,7 @@ public class VacationHomeService {
     public List<VacationHome> findByVacationHomeOwner(VacationHomeOwner owner) {
         List<VacationHome> homes = new ArrayList<>();
         for (VacationHome home : homeRepository.findByVacationHomeOwner(owner)) {
-            if (!home.getDeleted()) {
+            if (home.getDeleted().equals(false)) {
                 homes.add(home);
             }
         }
@@ -74,9 +74,11 @@ public class VacationHomeService {
     public List<VacationHome> findAllAvailableVacationHomes(Date start, Date end, int persons) {
         ArrayList<VacationHome> availableVacationHomes = new ArrayList<>();
         for (VacationHome vh : findAllNonDeleted()) {
-            if (vh.getPersons() < persons) continue;
+            if (vh.getPersons() < persons)
+                continue;
             boolean available = isCottageAvailableForDateRange(vh.getId(), start, end);
-            if (available) availableVacationHomes.add(vh);
+            if (available)
+                availableVacationHomes.add(vh);
         }
         return availableVacationHomes;
     }
@@ -84,19 +86,20 @@ public class VacationHomeService {
     public boolean isCottageAvailableForDateRange(Integer id, Date start, Date end) {
         VacationHome vacationHome = findById(id);
         boolean available = checkAvailabilityDateRanges(start, end, vacationHome);
-        if (!available) return false;
+        if (!available)
+            return false;
         return checkAppointments(start, end, vacationHome);
     }
 
     private boolean checkAppointments(Date start, Date end, VacationHome vacationHome) {
         boolean available = true;
         for (Appointment ap : vacationHome.getAppointments()) {
-            if (ap.getCancelled()) continue;
-            if (start.equals(ap.getStartDate()) || end.equals(ap.getEndDate()) ||
+            if ((start.equals(ap.getStartDate()) || end.equals(ap.getEndDate()) ||
                     end.equals(ap.getStartDate()) || start.equals(ap.getEndDate())
                     || (start.after(ap.getStartDate()) && start.before(ap.getEndDate()))
                     || (end.after(ap.getStartDate()) && end.before(ap.getEndDate()))
-                    || (start.before(ap.getStartDate()) && end.after(ap.getEndDate()))) {
+                    || (start.before(ap.getStartDate()) && end.after(ap.getEndDate())))
+                    && ap.getCancelled().equals(false)) {
                 available = false;
                 break;
             }
@@ -151,6 +154,6 @@ public class VacationHomeService {
     }
 
     public List<ServiceProfile> findVacationHomesByVacationHomeOwner(VacationHomeOwner homeOwner) {
-       return  homeRepository.findVacationHomesByVacationHomeOwner(homeOwner);
+        return homeRepository.findVacationHomesByVacationHomeOwner(homeOwner);
     }
 }

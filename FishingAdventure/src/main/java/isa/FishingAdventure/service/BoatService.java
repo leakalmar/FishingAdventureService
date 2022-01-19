@@ -40,9 +40,9 @@ public class BoatService {
     }
 
     public List<Boat> findByBoatOwner(BoatOwner owner) {
-        List<Boat> boats = new ArrayList<Boat>();
+        List<Boat> boats = new ArrayList<>();
         for (Boat boat : boatRepository.findByBoatOwner(owner)) {
-            if (!boat.getDeleted()) {
+            if (boat.getDeleted().equals(false)) {
                 boats.add(boat);
             }
         }
@@ -83,9 +83,11 @@ public class BoatService {
     public List<Boat> findAllAvailableBoats(Date start, Date end, int persons) {
         ArrayList<Boat> availableBoats = new ArrayList<>();
         for (Boat boat : findAll()) {
-            if (boat.getPersons() < persons) continue;
+            if (boat.getPersons() < persons)
+                continue;
             boolean available = isBoatAvailableForDateRange(boat.getId(), start, end);
-            if (available) availableBoats.add(boat);
+            if (available)
+                availableBoats.add(boat);
         }
         return availableBoats;
     }
@@ -93,20 +95,20 @@ public class BoatService {
     public boolean isBoatAvailableForDateRange(Integer id, Date start, Date end) {
         Boat boat = findById(id);
         boolean available = checkAvailabilityDateRanges(start, end, boat);
-        if (!available) return false;
+        if (!available)
+            return false;
         return checkAppointmentsByBoat(start, end, boat);
     }
 
     private boolean checkAppointmentsByBoat(Date start, Date end, Boat boat) {
         boolean available = true;
         for (Appointment ap : boat.getAppointments()) {
-            if (ap.getCancelled().equals(true))
-                continue;
-            if (start.equals(ap.getStartDate()) || end.equals(ap.getEndDate()) ||
+            if ((start.equals(ap.getStartDate()) || end.equals(ap.getEndDate()) ||
                     end.equals(ap.getStartDate()) || start.equals(ap.getEndDate())
                     || (start.after(ap.getStartDate()) && start.before(ap.getEndDate()))
                     || (end.after(ap.getStartDate()) && end.before(ap.getEndDate()))
-                    || (start.before(ap.getStartDate()) && end.after(ap.getEndDate()))) {
+                    || (start.before(ap.getStartDate()) && end.after(ap.getEndDate()))) && ap.getCancelled()
+                            .equals(false)) {
                 available = false;
                 break;
             }
@@ -133,12 +135,10 @@ public class BoatService {
         return boatRepository.findById(id);
     }
 
-
-
     public List<Boat> findAllNonDeleted() {
-        List<Boat> boats = new ArrayList<Boat>();
+        List<Boat> boats = new ArrayList<>();
         for (Boat boat : boatRepository.findAll()) {
-            if (!boat.getDeleted()) {
+            if (boat.getDeleted().equals(false)) {
                 boats.add(boat);
             }
         }

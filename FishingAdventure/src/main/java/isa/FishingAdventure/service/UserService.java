@@ -8,6 +8,8 @@ import java.util.List;
 import isa.FishingAdventure.repository.UserRepository;
 import isa.FishingAdventure.security.util.TokenUtils;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,6 +28,8 @@ public class UserService implements UserDetailsService {
 
 	@Autowired
 	private TokenUtils tokenUtils;
+
+	protected final Log loggerLog = LogFactory.getLog(getClass());
 
 	public String getRoleIfActivated(String token) {
 		String email = tokenUtils.getEmailFromToken(token);
@@ -83,7 +87,7 @@ public class UserService implements UserDetailsService {
 	public List<User> findAllNotDeleted() throws AccessDeniedException {
 		List<User> users = new ArrayList<>();
 		for (User user : repository.findAll()) {
-			if (!user.getDeleted()) {
+			if (user.getDeleted().equals(false)) {
 				users.add(user);
 			}
 		}
@@ -132,7 +136,7 @@ public class UserService implements UserDetailsService {
 		try {
 			emailService.sendEmail(email, subject, emailText);
 		} catch (Exception e) {
-			System.out.println("Email could not be sent.");
+			loggerLog.debug("Email could not be sent.");
 		}
 	}
 }

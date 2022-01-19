@@ -29,10 +29,8 @@ public class ReservationController {
     @Transactional
     public ResponseEntity<NewReservationDto> saveNewAppointment(@RequestHeader("Authorization") String token,
             @RequestBody NewReservationDto dto) {
-        boolean success = reservationService.createReservationForClient(token.split(" ")[1], new Appointment(dto),
+        reservationService.createReservationForClient(token.split(" ")[1], new Appointment(dto),
                 dto.getServiceId());
-        if (!success)
-            return new ResponseEntity<>(dto, HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
@@ -49,10 +47,8 @@ public class ReservationController {
     @PreAuthorize("hasAnyRole('ROLE_FISHING_INSTRUCTOR', 'ROLE_VACATION_HOME_OWNER', 'ROLE_BOAT_OWNER')")
     @Transactional
     public ResponseEntity<NewReservationDto> saveNewAppointmentByAdvertiser(@RequestBody NewReservationDto dto) {
-        boolean success = reservationService.createReservation(dto.getClientEmail(), new Appointment(dto),
+        reservationService.createReservation(dto.getClientEmail(), new Appointment(dto),
                 dto.getServiceId());
-        if (!success)
-            return new ResponseEntity<>(dto, HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 

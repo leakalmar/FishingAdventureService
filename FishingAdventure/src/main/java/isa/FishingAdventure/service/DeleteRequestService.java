@@ -5,6 +5,9 @@ import isa.FishingAdventure.model.DeleteRequest;
 import isa.FishingAdventure.model.User;
 import isa.FishingAdventure.repository.DeleteRequestRepository;
 import isa.FishingAdventure.security.util.TokenUtils;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +32,8 @@ public class DeleteRequestService {
 
     @Autowired
     private EmailService emailService;
+
+    protected final Log loggerLog = LogFactory.getLog(getClass());
 
     public List<DeleteRequest> findAllUnreviewed() {
         List<DeleteRequest> requests = new ArrayList<>();
@@ -60,7 +65,7 @@ public class DeleteRequestService {
         List<DeleteRequest> deleteRequests;
         String email = tokenUtils.getEmailFromToken(token.split(" ")[1]);
         Admin admin = adminService.findByEmail(email);
-        if (admin.getHeadAdmin())
+        if (admin.getHeadAdmin().equals(true))
             deleteRequests = findAllUnreviewed();
         else
             deleteRequests = findAllExceptAdmin();
@@ -97,7 +102,7 @@ public class DeleteRequestService {
         try {
             emailService.sendEmail(request.getEmail(), "Request for account deletion", emailText);
         } catch (Exception e) {
-            System.out.println("Email could not be sent.");
+            loggerLog.debug("Email could not be sent.");
         }
     }
 

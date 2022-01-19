@@ -4,6 +4,9 @@ import isa.FishingAdventure.dto.ReservationIssueDto;
 import isa.FishingAdventure.dto.ReservationInfoDto;
 import isa.FishingAdventure.model.*;
 import isa.FishingAdventure.repository.ReservationReportRepository;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +33,8 @@ public class ReservationReportService {
 
     @Autowired
     private EmailService emailService;
+
+    protected final Log loggerLog = LogFactory.getLog(getClass());
 
     public ReservationReport save(Integer reservationId, String content) {
         Reservation reservation = reservationService.getById(reservationId);
@@ -77,7 +82,7 @@ public class ReservationReportService {
     private List<ReservationReport> getAllReportsAwaitingReview() {
         List<ReservationReport> reports = new ArrayList<>();
         for (ReservationReport report : reportRepository.findAll()) {
-            if (report.getWaitingReview()) {
+            if (report.getWaitingReview().equals(true)) {
                 reports.add(report);
             }
         }
@@ -96,29 +101,32 @@ public class ReservationReportService {
 
     private void sendEmailAboutReport(String email, ReservationReport report, boolean isSanctioned) {
         String emailText;
+        String emailTitle = "Reservation report";
         if (report.getReservation().getClient().getEmail().equals(email)) {
-            emailText = emailService.createGenericEmail("Reservation report",
+            emailText = emailService.createGenericEmail(
+                    emailTitle,
                     "You have received one penalty because of a complained filed against you. If you receive 3" +
                             "penalties you will not be able to make any new reservation until the end of the month.");
         } else {
             User user = report.getReservation().getClient();
             if (isSanctioned) {
-                emailText = emailService.createGenericEmail("Reservation report",
+                emailText = emailService.createGenericEmail(
+                        emailTitle,
                         "Your complaint against " + user.getName() + " " + user.getSurname() + " has been " +
                                 "approved. They have been sanctioned and will be receiving a penalty.");
             } else {
-                emailText = emailService.createGenericEmail("Reservation report",
+                emailText = emailService.createGenericEmail(
+                        emailTitle,
                         "Your complaint against " + user.getName() + " " + user.getSurname() + " has not been " +
                                 "approved. They will not be sanctioned at this time.");
 
             }
         }
         try {
-            emailService.sendEmail(email, "Reservation report", emailText);
+            emailService.sendEmail(email, emailTitle, emailText);
         } catch (Exception e) {
-            System.out.println("Email could not be sent.");
+            loggerLog.debug("Email could not be sent.");
         }
-
     }
 
 }

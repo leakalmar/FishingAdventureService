@@ -14,7 +14,7 @@ public class Image {
     @Column(name = "is_cover_image", nullable = false)
     private boolean isCoverImage;
 
-    public Image(Integer id, String path, ServiceProfile serviceProfile, boolean isCoverImage) {
+    public Image(Integer id, String path, boolean isCoverImage) {
         this.id = id;
         this.path = path;
         this.isCoverImage = isCoverImage;

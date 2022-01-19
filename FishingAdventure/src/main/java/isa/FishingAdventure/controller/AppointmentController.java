@@ -39,8 +39,8 @@ public class AppointmentController {
     @PreAuthorize("hasRole('ROLE_VACATION_HOME_OWNER') || hasRole('ROLE_BOAT_OWNER') || hasRole('ROLE_FISHING_INSTRUCTOR')")
     @Transactional
     public ResponseEntity<AppointmentDto> create(@RequestBody AppointmentDto dto)
-            throws InterruptedException, MessagingException {
-        ResponseEntity<AppointmentDto> retVal = new ResponseEntity<AppointmentDto>(dto, HttpStatus.BAD_REQUEST);
+            throws MessagingException {
+        ResponseEntity<AppointmentDto> retVal = new ResponseEntity<>(dto, HttpStatus.BAD_REQUEST);
         Appointment savedAppointment = new Appointment(dto);
         Integer appointmentId = appointmentService.createAppointment(savedAppointment, dto.getDuration(),
                 dto.getServiceProfileId());
