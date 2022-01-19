@@ -46,11 +46,10 @@ public class BoatOwnerService {
 	private boolean checkAppointmentsForOwnerBoats(Integer boatId, Date start, Date end, BoatOwner boatOwner) {
 		boolean available = true;
 		for (Boat b : boatService.findAllNonDeleted()) {
-			if (b.getId().equals(boatId))
-				continue;
-			if (b.getBoatOwner().getUserId().equals(boatOwner.getUserId())) {
+			if (b.getBoatOwner().getUserId().equals(boatOwner.getUserId()) && !b.getId().equals(boatId)) {
 				available = checkAppointmentsByBoat(start, end, b);
-				if(!available) break;
+				if (!available)
+					break;
 			}
 		}
 		return available;
@@ -59,13 +58,12 @@ public class BoatOwnerService {
 	private boolean checkAppointmentsByBoat(Date start, Date end, Boat boat) {
 		boolean available = true;
 		for (Appointment ap : boat.getAppointments()) {
-			if ((start.after(ap.getStartDate()) && start.before(ap.getEndDate()))
+			if (((start.after(ap.getStartDate()) && start.before(ap.getEndDate()))
 					|| (end.after(ap.getStartDate()) && end.before(ap.getEndDate()))
-					|| (start.before(ap.getStartDate()) && end.after(ap.getEndDate()))) {
-				if (ap.getOwnerPresence().equals(true)) {
-					available = false;
-					break;
-				}
+					|| (start.before(ap.getStartDate()) && end.after(ap.getEndDate()))) && ap.getOwnerPresence()
+							.equals(true)) {
+				available = false;
+				break;
 			}
 		}
 		return available;

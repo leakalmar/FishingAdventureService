@@ -72,7 +72,8 @@ public class FishingAdventureService {
                         break;
                     }
                 }
-                if (available) break;
+                if (available)
+                    break;
             }
         }
         return available;
@@ -81,15 +82,14 @@ public class FishingAdventureService {
     private boolean areAdventuresOverlapping(Date start, Date end, List<Appointment> appointments) {
         boolean isOverlapping = false;
         for (Appointment appointment : appointments) {
-            if(appointment.getCancelled().equals(true)) continue;
-            if (!reservationService.isReservationCanceled(appointment.getAppointmentId())) {
-                if (checkIfOverlaps(start, end, appointment)) {
-                    isOverlapping = true;
-                    break;
-                }
+            if (!reservationService.isReservationCanceled(appointment.getAppointmentId())
+                    && appointment.getCancelled().equals(false) && checkIfOverlaps(start, end, appointment)) {
+                isOverlapping = true;
+                break;
             }
         }
         return isOverlapping;
+
     }
 
     private boolean checkIfOverlaps(Date start, Date end, Appointment appointment) {
@@ -107,7 +107,8 @@ public class FishingAdventureService {
         List<AppointmentDto> appointmentDtos = new ArrayList<>();
         for (Appointment appointment : adventure.getAppointments()) {
             if (!appointment.isReserved()
-                    && Date.from(appointment.getDateCreated().toInstant().plusMillis(appointment.getDuration().toMillis() / 1000)).after(new Date())) {
+                    && Date.from(appointment.getDateCreated().toInstant()
+                            .plusMillis(appointment.getDuration().toMillis() / 1000)).after(new Date())) {
                 appointmentDtos.add(new AppointmentDto(appointment, adventure));
             }
         }

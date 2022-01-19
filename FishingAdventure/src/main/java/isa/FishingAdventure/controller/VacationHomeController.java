@@ -16,7 +16,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -49,21 +48,20 @@ public class VacationHomeController {
     public ResponseEntity<List<VacationHomeDto>> getSearchedVacationHomes(
             @RequestParam("start") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS") Date start,
             @RequestParam("end") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS") Date end,
-            @RequestParam("persons") int persons) throws ParseException {
+            @RequestParam("persons") int persons) {
         List<VacationHome> vacationHomes = homeService.findAllAvailableVacationHomes(start, end, persons);
         return new ResponseEntity<>(createVacationHomeDtos(vacationHomes), HttpStatus.OK);
     }
 
     @GetMapping(value = "/additionalServices/{id}")
-    public ResponseEntity<List<AdditionalServiceDto>> getAdditionalServices(@PathVariable Integer id)
-            throws ParseException {
+    public ResponseEntity<List<AdditionalServiceDto>> getAdditionalServices(@PathVariable Integer id) {
         List<AdditionalService> additionalServices = homeService.findAdditionalServicesByVacationHomeId(id);
         List<AdditionalServiceDto> additionalServiceDtos = createAdditionalServiceDtos(additionalServices);
         return new ResponseEntity<>(additionalServiceDtos, HttpStatus.OK);
     }
 
     private List<AdditionalServiceDto> createAdditionalServiceDtos(List<AdditionalService> additionalServices) {
-        List<AdditionalServiceDto> additionalServiceDtos = new ArrayList<AdditionalServiceDto>();
+        List<AdditionalServiceDto> additionalServiceDtos = new ArrayList<>();
         for (AdditionalService as : additionalServices) {
             AdditionalServiceDto dto = new AdditionalServiceDto(as);
             additionalServiceDtos.add(dto);
@@ -80,7 +78,7 @@ public class VacationHomeController {
     @GetMapping(value = "/available/dateRange")
     public ResponseEntity<Boolean> getIsCottageAvailable(@RequestParam("id") Integer id,
             @RequestParam("start") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS") Date start,
-            @RequestParam("end") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS") Date end) throws ParseException {
+            @RequestParam("end") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS") Date end) {
         return new ResponseEntity<>(homeService.isCottageAvailableForDateRange(id, start, end), HttpStatus.OK);
     }
 
@@ -91,7 +89,7 @@ public class VacationHomeController {
     }
 
     private List<NewHomeDto> createNewHomeDtos(String token) {
-        List<NewHomeDto> vacationHomes = new ArrayList<NewHomeDto>();
+        List<NewHomeDto> vacationHomes = new ArrayList<>();
         for (VacationHome home : homeService.findByVacationHomeOwnerToken(token)) {
             vacationHomes.add(new NewHomeDto(home));
         }
@@ -105,7 +103,7 @@ public class VacationHomeController {
     }
 
     private List<ServiceNameDto> createServiceNameDtos(String token) {
-        List<ServiceNameDto> vacationHomes = new ArrayList<ServiceNameDto>();
+        List<ServiceNameDto> vacationHomes = new ArrayList<>();
         for (VacationHome home : homeService.findByVacationHomeOwnerToken(token)) {
             vacationHomes.add(new ServiceNameDto(home));
         }

@@ -5,6 +5,8 @@ import isa.FishingAdventure.model.Reservation;
 import isa.FishingAdventure.model.Review;
 import isa.FishingAdventure.repository.ReviewRepository;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,8 @@ public class ReviewService {
 
     @Autowired
     private EmailService emailService;
+
+    protected final Log loggerLog = LogFactory.getLog(getClass());
 
     public void addNewReview(Review newReview, Integer reservationId) {
         Reservation reservation = reservationService.findById(reservationId);
@@ -75,7 +79,8 @@ public class ReviewService {
                 review.getDatePosted());
         reviewDto.setClientFullName(review.getReservation().getClient().getName() + " "
                 + review.getReservation().getClient().getSurname());
-        reviewDto.setAdvertiserEmail(reservationService.getReservationInfo(review.getReservation()).getAdvertiserEmail());
+        reviewDto.setAdvertiserEmail(
+                reservationService.getReservationInfo(review.getReservation()).getAdvertiserEmail());
         reviewDto.setServiceName(profileService.getById(review.getServiceId()).getName());
 
         return reviewDto;
@@ -103,9 +108,9 @@ public class ReviewService {
         String emailText = emailService.createGenericEmail("Review posted", "A review has been posted for" +
                 serviceName + ".");
         try {
-            emailService.sendEmail(advertiserEmail,"New review posted for " + serviceName, emailText);
+            emailService.sendEmail(advertiserEmail, "New review posted for " + serviceName, emailText);
         } catch (Exception e) {
-            System.out.println("Email could not be sent.");
+            loggerLog.debug("Email could not be sent.");
         }
     }
 

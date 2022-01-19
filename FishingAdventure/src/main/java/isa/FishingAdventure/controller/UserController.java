@@ -29,22 +29,22 @@ public class UserController {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	@RequestMapping(value = "get", method = RequestMethod.GET)
+	@GetMapping(value = "get")
 	public @ResponseBody UserInfoDto getUserInfo(@RequestHeader("Authorization") String token) {
 		return new UserInfoDto(userService.findByToken(token.split(" ")[1]));
 	}
 
-	@RequestMapping(value = "getRole", method = RequestMethod.GET)
+	@GetMapping(value = "getRole")
 	public @ResponseBody String getRole(@RequestHeader("Authorization") String token) {
 		return userService.getRoleFromToken(token.split(" ")[1]);
 	}
 
-	@RequestMapping(value = "getRoleIfActivated", method = RequestMethod.GET)
+	@GetMapping(value = "getRoleIfActivated")
 	public @ResponseBody String getRoleIfActivated(@RequestHeader("Authorization") String token) {
 		return userService.getRoleIfActivated(token.split(" ")[1]);
 	}
 
-	@RequestMapping(value = "update", method = RequestMethod.PUT)
+	@PutMapping(value = "update")
 	public @ResponseBody UserInfoDto update(@RequestBody UserInfoDto dto) {
 		userService.save(updateUser(dto));
 		return dto;
@@ -62,7 +62,7 @@ public class UserController {
 		return user;
 	}
 
-	@RequestMapping(value = "changePassword", method = RequestMethod.PUT)
+	@PutMapping(value = "changePassword")
 	public @ResponseBody ChangePasswordDto changePassword(@RequestHeader("Authorization") String token,
 			@RequestBody ChangePasswordDto dto) {
 		User user = userService.findByToken(token.split(" ")[1]);

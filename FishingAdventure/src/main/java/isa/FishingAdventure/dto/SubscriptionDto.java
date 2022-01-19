@@ -16,11 +16,12 @@ public class SubscriptionDto {
 
     private double rating;
 
-    public Location location;
+    private Location location;
 
-    public String imagePath;
+    private String imagePath;
 
-    public SubscriptionDto(Integer id, String name, Boolean isDeleted, String description, double cancellationRule, double rating, Location location, String imagePath) {
+    public SubscriptionDto(Integer id, String name, Boolean isDeleted, String description, double cancellationRule,
+            double rating, Location location, String imagePath) {
         this.id = id;
         this.name = name;
         this.isDeleted = isDeleted;

@@ -30,7 +30,7 @@ public abstract class ServiceProfile {
     private double rating;
 
     @OneToOne(targetEntity = Location.class, cascade = CascadeType.ALL)
-    public Location location;
+    private Location location;
 
     @OneToMany(targetEntity = Appointment.class, cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     private Set<Appointment> appointments;
@@ -50,7 +50,8 @@ public abstract class ServiceProfile {
     @Column(name = "price_per_day", nullable = false)
     private double pricePerDay;
 
-    public ServiceProfile(String name, String description, double cancellationRule, double rating, Location location, Set<Rule> rules, Set<AdditionalService> additionalServices, int persons) {
+    public ServiceProfile(String name, String description, double cancellationRule, double rating, Location location,
+            Set<Rule> rules, Set<AdditionalService> additionalServices, int persons) {
         this.name = name;
         this.description = description;
         this.cancellationRule = cancellationRule;

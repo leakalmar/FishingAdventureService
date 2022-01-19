@@ -13,7 +13,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -143,7 +142,7 @@ public class BoatController {
     public ResponseEntity<List<BoatDto>> getSearchedVacationHomes(
             @RequestParam("start") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS") Date start,
             @RequestParam("end") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS") Date end,
-            @RequestParam("persons") int persons) throws ParseException {
+            @RequestParam("persons") int persons) {
         List<Boat> boats = boatService.findAllAvailableBoats(start, end, persons);
         return new ResponseEntity<>(createBoatDtos(boats), HttpStatus.OK);
     }
@@ -157,7 +156,7 @@ public class BoatController {
     @GetMapping(value = "/available/dateRange")
     public ResponseEntity<Boolean> getIsCottageAvailable(@RequestParam("id") Integer id,
             @RequestParam("start") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS") Date start,
-            @RequestParam("end") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS") Date end) throws ParseException {
+            @RequestParam("end") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS") Date end) {
         boolean availability = boatService.isBoatAvailableForDateRange(id, start, end);
         return new ResponseEntity<>(availability, HttpStatus.OK);
     }

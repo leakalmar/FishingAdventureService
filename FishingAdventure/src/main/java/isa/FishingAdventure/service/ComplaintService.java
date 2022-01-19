@@ -5,6 +5,9 @@ import isa.FishingAdventure.dto.ReservationIssueDto;
 import isa.FishingAdventure.model.Complaint;
 import isa.FishingAdventure.model.Reservation;
 import isa.FishingAdventure.repository.CompliantRepository;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +31,8 @@ public class ComplaintService {
 
     @Autowired
     private EmailService emailService;
+
+    protected final Log loggerLog = LogFactory.getLog(getClass());
 
     public void addNewCompliant(Complaint newComplaint, Integer reservationId) {
         Reservation reservation = reservationService.findById(reservationId);
@@ -84,7 +89,7 @@ public class ComplaintService {
             String emailText = emailService.createGenericEmail("Reservation complaint", message);
             emailService.sendEmail(email, "Reservation complaint", emailText);
         } catch (Exception e) {
-            System.out.println("Email could not be sent.");
+            loggerLog.debug("Email could not be sent.");
         }
     }
 

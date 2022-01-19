@@ -63,12 +63,12 @@ public class ReservationService {
         return repository.findAll();
     }
 
-    public boolean createReservationForClient(String token, Appointment newAppointment, Integer serviceProfileId) {
+    public void createReservationForClient(String token, Appointment newAppointment, Integer serviceProfileId) {
         String clientEmail = tokenUtils.getEmailFromToken(token);
-        return createReservation(clientEmail, newAppointment, serviceProfileId);
+        createReservation(clientEmail, newAppointment, serviceProfileId);
     }
 
-    public boolean createReservation(String clientEmail, Appointment newAppointment, Integer serviceProfileId) {
+    public void createReservation(String clientEmail, Appointment newAppointment, Integer serviceProfileId) {
         // TODO: calculate earnings (client and advertiser email)
         try {
             Client client = clientService.findByEmail(clientEmail);
@@ -76,13 +76,13 @@ public class ReservationService {
             saveNewAppointment(newAppointment, serviceProfile);
             Reservation newReservation = new Reservation(false, newAppointment, client, false);
             save(newReservation);
-            advertiserEarningsService.calculateEarningsForNewReservation(getAdvertiserByServiceId(serviceProfileId).getEmail(), newReservation);
+            advertiserEarningsService.calculateEarningsForNewReservation(
+                    getAdvertiserByServiceId(serviceProfileId).getEmail(), newReservation);
             String text = emailService.createConfirmReservationEmail(client, newAppointment, serviceProfile);
             emailService.sendEmail(clientEmail, "Reservation confirmation", text);
         } catch (Exception e) {
-            return true;
+            return;
         }
-        return true;
     }
 
     private void saveNewAppointment(Appointment newAppointment, ServiceProfile serviceProfile) {
@@ -205,11 +205,10 @@ public class ReservationService {
     public boolean isReservationCanceled(int appointmentId) {
         boolean isCanceled = false;
         for (Reservation reservation : findAll()) {
-            if (reservation.getAppointment().getAppointmentId().equals(appointmentId)) {
-                if (reservation.getCanceled()) {
-                    isCanceled = true;
-                    break;
-                }
+            if (reservation.getAppointment().getAppointmentId().equals(appointmentId)
+                    && reservation.getCanceled().equals(true)) {
+                isCanceled = true;
+                break;
             }
         }
         return isCanceled;
@@ -220,9 +219,9 @@ public class ReservationService {
         Date today = new Date(System.currentTimeMillis());
         if (startDate.after(today))
             reservationStatus = "Upcoming";
-        else if (endDate.before(today) && !isReportFilled)
+        else if (endDate.before(today) && isReportFilled.equals(false))
             reservationStatus = "Finished";
-        else if (endDate.before(today) && isReportFilled)
+        else if (endDate.before(today) && isReportFilled.equals(true))
             reservationStatus = "Report filled";
         else
             reservationStatus = "Current";
@@ -239,7 +238,8 @@ public class ReservationService {
         appointmentService.save(appointment);
         Reservation newReservation = new Reservation(false, appointment, client, false);
         save(newReservation);
-        advertiserEarningsService.calculateEarningsForNewReservation(getAdvertiserByServiceId(serviceProfileId).getEmail(), newReservation);
+        advertiserEarningsService.calculateEarningsForNewReservation(
+                getAdvertiserByServiceId(serviceProfileId).getEmail(), newReservation);
     }
 
     public Reservation findById(Integer id) {
@@ -254,8 +254,9 @@ public class ReservationService {
                 appointmentService.save(r.getAppointment());
                 save(r);
                 ServiceProfile serviceProfile = findServiceProfilesByReservation(r);
-                if(serviceProfile != null)
-                    advertiserEarningsService.calculateEarningsForCancelledReservation(r, serviceProfile.getCancellationRule());
+                if (serviceProfile != null)
+                    advertiserEarningsService.calculateEarningsForCancelledReservation(r,
+                            serviceProfile.getCancellationRule());
                 return true;
             }
         }
@@ -263,9 +264,9 @@ public class ReservationService {
     }
 
     private ServiceProfile findServiceProfilesByReservation(Reservation reservation) {
-        for(ServiceProfile serviceProfile: serviceProfileService.findAll()){
-            for(Appointment appointment : serviceProfile.getAppointments()){
-                if(appointment.getAppointmentId().equals(reservation.getAppointment().getAppointmentId()))
+        for (ServiceProfile serviceProfile : serviceProfileService.findAll()) {
+            for (Appointment appointment : serviceProfile.getAppointments()) {
+                if (appointment.getAppointmentId().equals(reservation.getAppointment().getAppointmentId()))
                     return serviceProfile;
             }
         }
@@ -289,7 +290,7 @@ public class ReservationService {
 
     public boolean overlapsWithDateRange(List<Reservation> reservations, Date start, Date end) {
         for (Reservation r : reservations) {
-            if (!r.getCanceled())
+            if (r.getCanceled().equals(false))
                 continue;
             if (start.equals(r.getAppointment().getStartDate()) || end.equals(r.getAppointment().getEndDate()) ||
                     end.equals(r.getAppointment().getStartDate()) || start.equals(r.getAppointment().getEndDate())

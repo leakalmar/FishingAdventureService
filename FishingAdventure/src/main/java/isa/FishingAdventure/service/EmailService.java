@@ -1,5 +1,7 @@
 package isa.FishingAdventure.service;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.MailException;
@@ -28,6 +30,8 @@ public class EmailService {
         @Autowired
         private Environment env;
 
+        protected final Log loggerLog = LogFactory.getLog(getClass());
+
         @Async
         public void sendEmail(String email, String subject, String text) throws MailException, MessagingException {
                 MimeMessage mailMessage = javaMailSender.createMimeMessage();
@@ -38,7 +42,7 @@ public class EmailService {
                 mailMessage.setContent(text, "text/html");
                 javaMailSender.send(mailMessage);
 
-                System.out.println("Email sent!");
+                loggerLog.debug("Email sent!");
         }
 
         public String createGenericEmail(String title, String body) {

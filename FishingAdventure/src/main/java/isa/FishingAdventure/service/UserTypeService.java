@@ -14,8 +14,7 @@ public class UserTypeService {
 	private UserTypeRepository userTypeRepository;
 
 	public List<UserType> findByName(String name) {
-		List<UserType> roles = userTypeRepository.findByName(name);
-		return roles;
+		return userTypeRepository.findByName(name);
 	}
 
 }

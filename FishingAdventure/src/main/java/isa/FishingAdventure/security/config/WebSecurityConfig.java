@@ -20,11 +20,6 @@ import isa.FishingAdventure.security.auth.TokenAuthenticationFilter;
 import isa.FishingAdventure.security.util.TokenUtils;
 import isa.FishingAdventure.service.UserService;
 
-/*
-import rs.ac.uns.ftn.informatika.spring.security.security.auth.TokenAuthenticationFilter;
-import rs.ac.uns.ftn.informatika.spring.security.service.impl.CustomUserDetailsService;
-import rs.ac.uns.ftn.informatika.spring.security.util.TokenUtils;*/
-
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -49,8 +44,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		auth
-			.userDetailsService(userService)
-			.passwordEncoder(passwordEncoder());
+				.userDetailsService(userService)
+				.passwordEncoder(passwordEncoder());
 	}
 
 	@Autowired
@@ -59,13 +54,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-			.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
-			.authorizeRequests().antMatchers("/api/foo").permitAll()		// /api/foo
-								.antMatchers("/**").permitAll()		// /auth/**
-			.anyRequest().authenticated().and()
-			.cors().and()
-			.addFilterBefore(new TokenAuthenticationFilter(tokenUtils, userService), BasicAuthenticationFilter.class);
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+				.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
+				.authorizeRequests().antMatchers("/api/foo").permitAll()
+				.antMatchers("/**").permitAll()
+				.anyRequest().authenticated().and()
+				.cors().and()
+				.addFilterBefore(new TokenAuthenticationFilter(tokenUtils, userService),
+						BasicAuthenticationFilter.class);
 		http.csrf().disable();
 	}
 
