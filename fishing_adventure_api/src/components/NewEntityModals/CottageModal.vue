@@ -96,6 +96,18 @@
               class="form-control"
             />
           </div>
+
+          <div class="input-group" style="margin-top: 2rem">
+            <span class="input-group-text">Cancellation rule</span>
+            <input
+              type="number"
+              min="0"
+              step="0.5"
+              v-model="cancellationRule"
+              class="form-control"
+            />
+            <span class="input-group-text">%</span>
+          </div>
           <label class="error" :id="'cottageNameErr' + cottageId" name="labels">
           </label>
         </div>
@@ -258,12 +270,14 @@ export default {
       persons: "",
       pricePerDay: "",
       date: "",
+      cancellationRule: 0.0,
     };
   },
   mounted: function () {
     var element = document.getElementById("logIn-btn");
     element.classList.add("active");
     if (this.cottage) {
+      console.log(this.cottage);
       this.mode = "0";
       this.cottageId = this.cottage.id;
       this.cottageName = this.cottage.name;
@@ -279,6 +293,7 @@ export default {
       this.lat = this.cottage.location.latitude;
       this.lng = this.cottage.location.longitude;
       this.persons = this.cottage.persons;
+      this.cancellationRule = this.cottage.cancellationRule;
       this.pricePerDay = this.cottage.pricePerDay;
       const startDate = new Date(this.cottage.availabilityStart);
       const endDate = new Date(this.cottage.availabilityEnd);
@@ -366,6 +381,7 @@ export default {
         this.rooms = [];
         this.rules = [];
         this.priceList = [];
+        this.cancellationRule = 0;
       }
       let container = document.getElementsByClassName("pac-container")[0];
       if (container) {
@@ -452,19 +468,16 @@ export default {
           rules: rulesFinal,
           additionalServices: additionalServices,
           persons: this.persons,
+          cancellationRule: this.cancellationRule,
         };
 
         axios
-          .put(
-            "/vacationHome/update/" + this.cottageId,
-            home,
-            {
-              headers: {
-                "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
-                Authorization: "Bearer " + localStorage.refreshToken,
-              },
-            }
-          )
+          .put("/vacationHome/update/" + this.cottageId, home, {
+            headers: {
+              "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
+              Authorization: "Bearer " + localStorage.refreshToken,
+            },
+          })
           .then(window.location.reload());
       }
     },
@@ -476,16 +489,12 @@ export default {
       };
 
       axios
-        .put(
-          "/vacationHome/smallUpdate/" + this.cottageId,
-          dto,
-          {
-            headers: {
-              "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
-              Authorization: "Bearer " + localStorage.refreshToken,
-            },
-          }
-        )
+        .put("/vacationHome/smallUpdate/" + this.cottageId, dto, {
+          headers: {
+            "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
+            Authorization: "Bearer " + localStorage.refreshToken,
+          },
+        })
         .then(window.location.reload());
     },
     createCottage: function () {
@@ -528,6 +537,7 @@ export default {
           rules: rulesFinal,
           additionalServices: additionalServices,
           persons: this.persons,
+          cancellationRule: this.cancellationRule,
         };
 
         axios

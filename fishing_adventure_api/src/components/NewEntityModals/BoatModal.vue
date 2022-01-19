@@ -96,6 +96,18 @@
               class="form-control"
             />
           </div>
+
+          <div class="input-group" style="margin-top: 2rem">
+            <span class="input-group-text">Cancellation rule</span>
+            <input
+              type="number"
+              min="0"
+              step="0.5"
+              v-model="cancellationRule"
+              class="form-control"
+            />
+            <span class="input-group-text">%</span>
+          </div>
           <label class="error" :id="'boatNameErr' + boatId" name="labels">
           </label>
         </div>
@@ -282,6 +294,7 @@ export default {
       motorNumber: "",
       motorPower: "",
       maxSpeed: "",
+      cancellationRule: 0.0,
     };
   },
   mounted: function () {
@@ -302,6 +315,7 @@ export default {
       this.city = this.boat.location.address.city;
       this.country = this.boat.location.address.country;
       this.postal_code = this.boat.location.address.zipCode;
+      this.cancellationRule = this.boat.cancellationRule;
       this.rules = this.boat.rules;
       this.priceList = this.boat.additionalServices;
       this.lat = this.boat.location.latitude;
@@ -434,6 +448,7 @@ export default {
         this.navEquipment = [];
         this.rules = [];
         this.priceList = [];
+        this.cancellationRule = 0;
       }
       let container = document.getElementsByClassName("pac-container")[0];
       if (container) {
@@ -544,6 +559,7 @@ export default {
           rules: rulesFinal,
           additionalServices: additionalServices,
           persons: this.persons,
+          cancellationRule: this.cancellationRule,
         };
 
         axios
@@ -619,12 +635,12 @@ export default {
               zipCode: this.postal_code,
             },
           },
-          cancellationRule: 0,
           fishingEquipments: fishingEqFinal,
           navigationEquipments: navigationEqFinal,
           rules: rulesFinal,
           additionalServices: additionalServices,
           persons: this.persons,
+          cancellationRule: this.cancellationRule,
         };
 
         console.log(boat);
@@ -636,7 +652,7 @@ export default {
               Authorization: "Bearer " + localStorage.refreshToken,
             },
           })
-          .then();
+          .then(window.location.reload());
       }
     },
   },
