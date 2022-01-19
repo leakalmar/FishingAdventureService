@@ -29,7 +29,12 @@
     </div>
     <div class="searchBar">
       <div
-        class="container w-100 row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-2 fields"
+        class="
+          container
+          w-100
+          row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-2
+          fields
+        "
       >
         <div class="col-md-4 col-lg-5 col-xl-3">
           <Datepicker
@@ -59,15 +64,45 @@
             <span class="input-group-text">Rating</span>
             <div class="rating-div form-control" v-on:click="searchCottage">
               <div class="rating" style="height: 0">
-                <input type="radio" name="star" id="star1" value="5" />
+                <input
+                  type="radio"
+                  v-on:click="rateService('star1')"
+                  name="star"
+                  id="star1"
+                  value="5"
+                />
                 <label for="star1"></label>
-                <input type="radio" name="star" id="star2" value="4" />
+                <input
+                  type="radio"
+                  v-on:click="rateService('star2')"
+                  name="star"
+                  id="star2"
+                  value="4"
+                />
                 <label for="star2"></label>
-                <input type="radio" name="star" id="star3" value="3" />
+                <input
+                  type="radio"
+                  v-on:click="rateService('star3')"
+                  name="star"
+                  id="star3"
+                  value="3"
+                />
                 <label for="star3"></label>
-                <input type="radio" name="star" id="star4" value="2" />
+                <input
+                  type="radio"
+                  v-on:click="rateService('star4')"
+                  name="star"
+                  id="star4"
+                  value="2"
+                />
                 <label for="star4"></label>
-                <input type="radio" name="star" id="star5" value="1" />
+                <input
+                  type="radio"
+                  v-on:click="rateService('star5')"
+                  name="star"
+                  id="star5"
+                  value="1"
+                />
                 <label for="star5"></label>
               </div>
             </div>
@@ -94,7 +129,17 @@
       </div>
       <div id="allAdvencedSearch" class="collapse multi-collapse">
         <div
-          class="container w-100 row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-6 mt-2"
+          class="
+            container
+            w-100
+            row
+            row-cols-1
+            row-cols-sm-1
+            row-cols-md-2
+            row-cols-lg-2
+            row-cols-xl-6
+            mt-2
+          "
         >
           <div id="advencedSearch" style="width: 100%">
             <div style="display: flex; gap: 1rem">
@@ -102,13 +147,20 @@
                 <input
                   class="form-control me-2"
                   type="search"
-                  placeholder="Search"
+                  v-model="input"
+                  placeholder="Search by name, address or advertiser..."
                   aria-label="Search"
                 />
               </div>
               <div class="col">
                 <button
-                  class="btn btn-primary shadow-none mb-2 col-md-5 col-xl-2 checkBtn"
+                  class="
+                    btn btn-primary
+                    shadow-none
+                    mb-2
+                    col-md-5 col-xl-2
+                    checkBtn
+                  "
                   type="button"
                   data-bs-toggle="collapse"
                   data-bs-target="#filterAndSort"
@@ -125,7 +177,17 @@
           </div>
         </div>
         <div
-          class="container w-100 row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-6 mt-2"
+          class="
+            container
+            w-100
+            row
+            row-cols-1
+            row-cols-sm-1
+            row-cols-md-2
+            row-cols-lg-2
+            row-cols-xl-6
+            mt-2
+          "
         >
           <div class="collapse" id="filterAndSort">
             <div class="filterAndSort">
@@ -219,6 +281,7 @@ export default {
   data: function () {
     return {
       numberOfPersons: 0,
+      rating: 0,
       searching: "",
       homeEntities: [],
       boatEntities: [],
@@ -230,6 +293,7 @@ export default {
       reservationInfo: {},
       chosenSort: "",
       chosenFilters: [],
+      input:""
     };
   },
   mounted: function () {
@@ -270,7 +334,7 @@ export default {
           },
         })
         .then((res) => {
-          console.log(res.data)
+          console.log(res.data);
           this.adventureEntities = res.data;
           for (let adventure of this.adventureEntities) {
             adventure.rating = Number(adventure.rating).toFixed(2);
@@ -311,6 +375,10 @@ export default {
       }
       console.log(this.chosenFilters);
     },*/
+    rateService: function (id) {
+      var ele = document.getElementById(id);
+      this.rating = ele.value;
+    },
     sortOption: function (event) {
       let sortId = event.target.id;
       document.getElementById(sortId).classList.add("activeOption");
@@ -357,16 +425,21 @@ export default {
       if (window.location.href.includes("/search/cottages")) {
         this.searching = "cottages";
         if (this.date[0] != undefined && this.date[1] != undefined) {
-          this.searchCottagesByDateAndPersons();
+          this.searchCottages();
         }
       } else if (window.location.href.includes("/search/boats")) {
         this.searching = "boats";
         if (this.date[0] != undefined && this.date[1] != undefined) {
-          this.searchBoatsByDateAndPersons();
+          this.searchBoats();
+        }
+      } else {
+        this.searching = "boats";
+        if (this.date[0] != undefined && this.date[1] != undefined) {
+          this.searchAdventures();
         }
       }
     },
-    searchCottagesByDateAndPersons: function () {
+    searchCottages: function () {
       axios
         .get(
           "/vacationHome/search?start=" +
@@ -374,7 +447,9 @@ export default {
             "&end=" +
             moment(this.date[1]).format("yyyy-MM-DD HH:mm:ss.SSS") +
             "&persons=" +
-            this.numberOfPersons,
+            this.numberOfPersons +
+            "&rating=" +
+            this.rating + "&input=" + this.input,
           {
             headers: {
               "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
@@ -388,7 +463,7 @@ export default {
           }
         });
     },
-    searchBoatsByDateAndPersons: function () {
+    searchBoats: function () {
       axios
         .get(
           "/boat/search?start=" +
@@ -396,7 +471,9 @@ export default {
             "&end=" +
             moment(this.date[1]).format("yyyy-MM-DD HH:mm:ss.SSS") +
             "&persons=" +
-            this.numberOfPersons,
+            this.numberOfPersons +
+            "&rating=" +
+            this.rating + "&input=" + this.input,
           {
             headers: {
               "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
@@ -410,6 +487,30 @@ export default {
           }
         });
     },
+    searchAdventures : function() {
+      axios
+        .get(
+          "/fishingAdventure/search?start=" +
+            moment(this.date[0]).format("yyyy-MM-DD HH:mm:ss.SSS") +
+            "&end=" +
+            moment(this.date[1]).format("yyyy-MM-DD HH:mm:ss.SSS") +
+            "&persons=" +
+            this.numberOfPersons +
+            "&rating=" +
+            this.rating + "&input=" + this.input,
+          {
+            headers: {
+              "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
+            },
+          }
+        )
+        .then((res) => {
+          this.adventureEntities = res.data;
+          for (let e of this.adventureEntities) {
+            e.rating = Number(e.rating).toFixed(2);
+          }
+        });
+    }
   },
 };
 </script>

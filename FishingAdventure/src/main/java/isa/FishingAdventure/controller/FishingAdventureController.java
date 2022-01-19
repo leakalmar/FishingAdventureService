@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import isa.FishingAdventure.dto.AppointmentDto;
-import isa.FishingAdventure.dto.NewAdventureDto;
-import isa.FishingAdventure.dto.ServiceNameDto;
+import isa.FishingAdventure.dto.*;
+import isa.FishingAdventure.model.VacationHome;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -17,7 +16,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import isa.FishingAdventure.dto.FishingAdventureDto;
 import isa.FishingAdventure.model.FishingAdventure;
 import isa.FishingAdventure.model.FishingInstructor;
 import isa.FishingAdventure.service.FishingAdventureService;
@@ -49,6 +47,22 @@ public class FishingAdventureController {
 			fishingAdventureDtos.add(dto);
 		}
 		return fishingAdventureDtos;
+	}
+
+	@GetMapping(value = "/search")
+	public ResponseEntity<List<FishingAdventureDto>> getSearchedVFishingAdventures(
+			@RequestParam("start") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS") Date start,
+			@RequestParam("end") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS") Date end,
+			@RequestParam("persons") int persons, @RequestParam("rating") double rating, @RequestParam("input") String input) {
+		List<FishingAdventure> fishingAdventures = new ArrayList<>();
+		for (FishingAdventure fa : adventureService.findAllAvailableAdventures(start, end, persons))
+			if (fa.getRating() >= rating && (searchByAddress(fa, input) || fa.getFishingInstructor().getName().contains(input) || fa.getFishingInstructor().getSurname().contains(input)))
+				fishingAdventures.add(fa);
+		return new ResponseEntity<>(createFishingAdventureDtos(fishingAdventures), HttpStatus.OK);
+	}
+
+	private boolean searchByAddress(FishingAdventure fa, String input) {
+		return fa.getName().contains(input) || fa.getLocation().getAddress().getStreet().contains(input) || fa.getLocation().getAddress().getCity().contains(input) || fa.getLocation().getAddress().getCountry().contains(input);
 	}
 
 	@Transactional
