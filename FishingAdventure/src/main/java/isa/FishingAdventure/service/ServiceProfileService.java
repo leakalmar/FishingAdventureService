@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.transaction.Transactional;
+
 @Service
 public class ServiceProfileService {
 
@@ -44,6 +46,7 @@ public class ServiceProfileService {
         }
     }
 
+    @Transactional
     public ServiceProfile getById(int id) {
         return profileRepository.getById(id);
     }
@@ -117,7 +120,8 @@ public class ServiceProfileService {
             isAvailable = boatService.isBoatAvailableForDateRange(id, start, end);
         } else {
             if (adventure.isPresent())
-                isAvailable = adventureService.isInstructorAvailable(adventure.get().getFishingInstructor(), start, end);
+                isAvailable = adventureService.isInstructorAvailable(adventure.get().getFishingInstructor(), start,
+                        end);
         }
         return isAvailable;
     }
@@ -155,5 +159,11 @@ public class ServiceProfileService {
 
         return rating;
     }
-}
 
+    @Transactional
+    public void addAppointment(Integer id, Appointment newAppointment) {
+        ServiceProfile serviceProfile = getById(id);
+        serviceProfile.getAppointments().add(newAppointment);
+        save(serviceProfile);
+    }
+}

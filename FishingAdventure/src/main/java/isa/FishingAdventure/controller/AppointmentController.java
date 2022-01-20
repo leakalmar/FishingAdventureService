@@ -41,8 +41,7 @@ public class AppointmentController {
     public ResponseEntity<AppointmentDto> create(@RequestBody AppointmentDto dto)
             throws MessagingException {
         ResponseEntity<AppointmentDto> retVal = new ResponseEntity<>(dto, HttpStatus.BAD_REQUEST);
-        Appointment savedAppointment = new Appointment(dto);
-        Integer appointmentId = appointmentService.createAppointment(savedAppointment, dto.getDuration(),
+        Integer appointmentId = appointmentService.createAppointment(new Appointment(dto), dto.getDuration(),
                 dto.getServiceProfileId());
         if (appointmentId != null) {
             dto.setOfferId(appointmentId);

@@ -39,7 +39,6 @@ public class AvailabilityDateRangeController {
 
     @PutMapping(value = "/update/{dateRangeId}/{serviceId}")
     @PreAuthorize("hasAnyRole('ROLE_VACATION_HOME_OWNER','ROLE_BOAT_OWNER')")
-    @Transactional
     public ResponseEntity<List<AvailablityDateRangeDto>> update(@PathVariable String dateRangeId,
             @PathVariable String serviceId, @RequestBody AvailablityDateRangeDto dto) {
         AvailabilityDateRange date = availabilityDateRangeService.getById(Integer.parseInt(dateRangeId));

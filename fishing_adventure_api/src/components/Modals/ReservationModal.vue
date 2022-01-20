@@ -539,7 +539,8 @@ export default {
         this.maxPersons >= this.numOfPersons &&
         this.availableForDateRange &&
         this.boatOwnerAvailable &&
-        !this.cancelled && this.adventureAvailability
+        !this.cancelled &&
+        this.adventureAvailability
       ) {
         let startDate = {};
         let endDate = {};
@@ -569,7 +570,11 @@ export default {
               Authorization: "Bearer " + localStorage.refreshToken,
             },
           })
-          .then(window.location.reload());
+          .then((res) => {
+            window.location.reload();
+            if (!res.data)
+              this.$toast.show("Something went wrong, please try again.");
+          });
       } else {
         if (this.maxPersons < this.numOfPersons)
           this.error = "Maximum number of people is " + this.maxPersons + ".";

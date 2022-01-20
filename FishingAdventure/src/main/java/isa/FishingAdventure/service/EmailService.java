@@ -19,6 +19,7 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.transaction.Transactional;
 
 @Service
 public class EmailService {
@@ -28,6 +29,9 @@ public class EmailService {
 
         @Autowired
         private Environment env;
+
+        @Autowired
+        private ServiceProfileService serviceProfileService;
 
         protected final Log loggerLog = LogFactory.getLog(getClass());
 
@@ -86,8 +90,10 @@ public class EmailService {
                 return content.toString();
         }
 
+        @Transactional
         public String createConfirmReservationEmail(Appointment newAppointment,
-                        ServiceProfile serviceProfile) {
+                        Integer serviceProfileId) {
+                ServiceProfile serviceProfile = serviceProfileService.getById(serviceProfileId);
                 StringBuilder content = new StringBuilder();
                 SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm");
                 content.append(createHeaderForEmail());

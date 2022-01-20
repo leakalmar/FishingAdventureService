@@ -5,6 +5,10 @@ import isa.FishingAdventure.model.Appointment;
 import isa.FishingAdventure.model.AvailabilityDateRange;
 import isa.FishingAdventure.model.ServiceProfile;
 import isa.FishingAdventure.repository.AvailabilityDateRangeRepository;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hibernate.dialect.lock.PessimisticEntityLockException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
+import javax.transaction.Transactional;
 
 @Service
 public class AvailabilityDateRangeService {
@@ -22,6 +28,9 @@ public class AvailabilityDateRangeService {
     @Autowired
     private ServiceProfileService serviceProfileService;
 
+    protected final Log loggerLog = LogFactory.getLog(getClass());
+
+    @Transactional
     public List<AvailabilityDateRange> getAllByServiceProfileId(int id) {
         return repository.getAllByServiceProfileId(id);
     }
@@ -54,14 +63,16 @@ public class AvailabilityDateRangeService {
         }
     }
 
+    @Transactional
     public List<AvailabilityDateRange> findByServiceProfile(ServiceProfile serviceProfile) {
-        return repository.findByServiceProfile(serviceProfile);
+        return repository.getAllByServiceProfileId(serviceProfile.getId());
     }
 
     public Optional<AvailabilityDateRange> findById(Integer id) {
         return repository.findById(id);
     }
 
+    @Transactional
     public List<AvailablityDateRangeDto> updateAvailabilityDate(AvailabilityDateRange oldDateRange, Date newStartDate,
             Date newEndDate, Integer serviceId) {
         ServiceProfile serviceProfile = serviceProfileService.getById(serviceId);
@@ -109,16 +120,20 @@ public class AvailabilityDateRangeService {
 
     private List<AvailabilityDateRange> checkScheduledAppointments(List<AvailabilityDateRange> dateRanges,
             ServiceProfile serviceProfile, Date newStartDate, Date newEndDate) {
-        for (Appointment appointment : serviceProfile.getAppointments()) {
-            if (newStartDate.after(appointment.getStartDate()) || newEndDate.before(appointment.getEndDate())) {
-                boolean foundMatch = false;
-                foundMatch = checkEdgeCasesForDateRanges(dateRanges, appointment, foundMatch);
-                if (!foundMatch) {
-                    AvailabilityDateRange newRange = save(new AvailabilityDateRange(appointment.getStartDate(),
-                            appointment.getEndDate(), serviceProfile));
-                    dateRanges.add(newRange);
+        try {
+            for (Appointment appointment : serviceProfile.getAppointments()) {
+                if (newStartDate.after(appointment.getStartDate()) || newEndDate.before(appointment.getEndDate())) {
+                    boolean foundMatch = false;
+                    foundMatch = checkEdgeCasesForDateRanges(dateRanges, appointment, foundMatch);
+                    if (!foundMatch) {
+                        AvailabilityDateRange newRange = save(new AvailabilityDateRange(appointment.getStartDate(),
+                                appointment.getEndDate(), serviceProfile));
+                        dateRanges.add(newRange);
+                    }
                 }
             }
+        } catch (PessimisticEntityLockException e) {
+            loggerLog.debug("Pessimistic lock exception!");
         }
 
         return dateRanges;

@@ -14,6 +14,10 @@ public abstract class ServiceProfile {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenV1")
     private Integer id;
 
+    @Version
+    @Column(nullable = false)
+    private Integer version;
+
     @Column(name = "name", nullable = false)
     private String name;
 

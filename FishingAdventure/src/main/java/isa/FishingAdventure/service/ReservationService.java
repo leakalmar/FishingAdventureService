@@ -9,8 +9,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.dialect.lock.OptimisticEntityLockException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
@@ -71,37 +73,41 @@ public class ReservationService {
     }
 
     public boolean createReservationForClient(String token, Appointment newAppointment, Integer serviceProfileId) {
-        if(serviceProfileService.isServiceAvailableForDateRange(serviceProfileId, newAppointment.getStartDate(), newAppointment.getEndDate())) {
-            String clientEmail = tokenUtils.getEmailFromToken(token);
-            return createReservation(clientEmail, newAppointment, serviceProfileId);
-        }
-        return false;
+        String clientEmail = tokenUtils.getEmailFromToken(token);
+        return createReservation(clientEmail, newAppointment, serviceProfileId);
     }
 
+    @Transactional
     public boolean createReservation(String clientEmail, Appointment newAppointment, Integer serviceProfileId) {
         // TODO: calculate earnings (client and advertiser email)
+        boolean status = true;
         try {
-            Client client = clientService.findByEmail(clientEmail);
-            ServiceProfile serviceProfile = serviceProfileService.getById(serviceProfileId);
-            saveNewAppointment(newAppointment, serviceProfile);
-            Reservation newReservation = new Reservation(false, newAppointment, client, false);
-            save(newReservation);
-            advertiserEarningsService.calculateEarningsForNewReservation(
-                    getAdvertiserByServiceId(serviceProfileId).getEmail(), newReservation);
-            String text = emailService.createConfirmReservationEmail(newAppointment, serviceProfile);
-            emailService.sendEmail(clientEmail, "Reservation confirmation", text);
+            if (serviceProfileService.isServiceAvailableForDateRange(serviceProfileId, newAppointment.getStartDate(),
+                    newAppointment.getEndDate())) {
+                Client client = clientService.findByEmail(clientEmail);
+                saveNewAppointment(newAppointment, serviceProfileId);
+                Reservation newReservation = new Reservation(false, newAppointment, client, false);
+                save(newReservation);
+                advertiserEarningsService.calculateEarningsForNewReservation(
+                        getAdvertiserByServiceId(serviceProfileId).getEmail(), newReservation);
+                String text = emailService.createConfirmReservationEmail(newAppointment, serviceProfileId);
+                emailService.sendEmail(clientEmail, "Reservation confirmation", text);
+            } else {
+                status = false;
+            }
         } catch (MessagingException e) {
             loggerLog.debug("Email could not be sent.");
         } catch (OptimisticEntityLockException e) {
-            return false;
+            loggerLog.debug("Optimistic lock exception.");
+            status = false;
         }
-        return true;
+        return status;
     }
 
-    private void saveNewAppointment(Appointment newAppointment, ServiceProfile serviceProfile) {
+    @Transactional
+    private void saveNewAppointment(Appointment newAppointment, Integer serviceProfileId) {
         appointmentService.save(newAppointment);
-        serviceProfile.getAppointments().add(newAppointment);
-        serviceProfileService.save(serviceProfile);
+        serviceProfileService.addAppointment(serviceProfileId, newAppointment);
     }
 
     public Reservation getById(Integer id) {
