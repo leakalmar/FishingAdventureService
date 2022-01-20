@@ -1,10 +1,12 @@
 package isa.FishingAdventure.service;
 
+import isa.FishingAdventure.dto.UserPointsDto;
 import isa.FishingAdventure.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import isa.FishingAdventure.model.UserCategory;
 import isa.FishingAdventure.repository.UserRepository;
 import isa.FishingAdventure.security.util.TokenUtils;
 
@@ -25,6 +27,9 @@ public class UserService implements UserDetailsService {
 
 	@Autowired
 	private EmailService emailService;
+
+	@Autowired
+	private UserCategoryService categoryService;
 
 	@Autowired
 	private TokenUtils tokenUtils;
@@ -80,6 +85,11 @@ public class UserService implements UserDetailsService {
 		return users;
 	}
 
+	public UserPointsDto getUserPointsInfo(User user) {
+		UserCategory category = findByEmail(user.getEmail()).getCategory();
+		return new UserPointsDto(category.getName(), user.getPoints(), category.getPercentage());
+	}
+
 	public User findById(Integer id) throws AccessDeniedException {
 		return repository.getById(id);
 	}
@@ -105,6 +115,10 @@ public class UserService implements UserDetailsService {
 		save(user);
 	}
 
+	public UserCategory getUserCategory(String email) {
+		return findByEmail(email).getCategory();
+	}
+
 	public Boolean isEmailRegistered(String email) {
 		return findByEmail(email) != null;
 	}
@@ -113,14 +127,16 @@ public class UserService implements UserDetailsService {
 		User user = findByEmail(email);
 		user.setDeleted(true);
 		save(user);
-		sendRegistrationRequestEmail(email, "Reservation approved", reason);
+		sendRegistrationRequestEmail(email, "Reservation rejected", reason);
 	}
 
 	public void approveRegistrationRequest(String email) {
 		User user = findByEmail(email);
 		user.setActivated(true);
+		user.setBiography("");
+		user.setCategory(categoryService.getUserCategoryByName("REGULAR_ADVERTISER"));
 		save(user);
-		sendRegistrationRequestEmail(email, "Reservation rejected", "");
+		sendRegistrationRequestEmail(email, "Reservation approved", "");
 	}
 
 	private void sendRegistrationRequestEmail(String email, String subject, String reason) {
