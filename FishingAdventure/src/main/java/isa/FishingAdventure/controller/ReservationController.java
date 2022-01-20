@@ -27,11 +27,11 @@ public class ReservationController {
     @PostMapping(value = "/new")
     @PreAuthorize("hasRole('ROLE_CLIENT')")
     @Transactional
-    public ResponseEntity<NewReservationDto> saveNewAppointment(@RequestHeader("Authorization") String token,
+    public ResponseEntity<Boolean> saveNewReservation(@RequestHeader("Authorization") String token,
             @RequestBody NewReservationDto dto) {
-        reservationService.createReservationForClient(token.split(" ")[1], new Appointment(dto),
+        boolean success = reservationService.createReservationForClient(token.split(" ")[1], new Appointment(dto),
                 dto.getServiceId());
-        return new ResponseEntity<>(dto, HttpStatus.OK);
+        return new ResponseEntity<>(success, HttpStatus.OK);
     }
 
     @PostMapping(value = "/new/specialOffer")

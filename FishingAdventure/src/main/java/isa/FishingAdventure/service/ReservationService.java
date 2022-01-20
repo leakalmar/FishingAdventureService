@@ -7,6 +7,7 @@ import isa.FishingAdventure.repository.ReservationRepository;
 import isa.FishingAdventure.security.util.TokenUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.dialect.lock.OptimisticEntityLockException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
@@ -69,12 +70,15 @@ public class ReservationService {
         return repository.findAll();
     }
 
-    public void createReservationForClient(String token, Appointment newAppointment, Integer serviceProfileId) {
-        String clientEmail = tokenUtils.getEmailFromToken(token);
-        createReservation(clientEmail, newAppointment, serviceProfileId);
+    public boolean createReservationForClient(String token, Appointment newAppointment, Integer serviceProfileId) {
+        if(serviceProfileService.isServiceAvailableForDateRange(serviceProfileId, newAppointment.getStartDate(), newAppointment.getEndDate())) {
+            String clientEmail = tokenUtils.getEmailFromToken(token);
+            return createReservation(clientEmail, newAppointment, serviceProfileId);
+        }
+        return false;
     }
 
-    public void createReservation(String clientEmail, Appointment newAppointment, Integer serviceProfileId) {
+    public boolean createReservation(String clientEmail, Appointment newAppointment, Integer serviceProfileId) {
         // TODO: calculate earnings (client and advertiser email)
         try {
             Client client = clientService.findByEmail(clientEmail);
@@ -88,7 +92,10 @@ public class ReservationService {
             emailService.sendEmail(clientEmail, "Reservation confirmation", text);
         } catch (MessagingException e) {
             loggerLog.debug("Email could not be sent.");
+        } catch (OptimisticEntityLockException e) {
+            return false;
         }
+        return true;
     }
 
     private void saveNewAppointment(Appointment newAppointment, ServiceProfile serviceProfile) {
