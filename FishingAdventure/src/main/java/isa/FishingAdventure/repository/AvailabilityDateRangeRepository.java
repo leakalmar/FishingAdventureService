@@ -16,5 +16,5 @@ public interface AvailabilityDateRangeRepository extends JpaRepository<Availabil
 
     @Lock(LockModeType.PESSIMISTIC_READ)
     @QueryHints({ @QueryHint(name = "javax.persistence.lock.timeout", value = "0") })
-    public List<AvailabilityDateRange> getAllByServiceProfileId(Integer id);
+    List<AvailabilityDateRange> getAllByServiceProfileId(Integer id);
 }
