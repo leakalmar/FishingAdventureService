@@ -9,10 +9,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.dialect.lock.OptimisticEntityLockException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
@@ -104,7 +102,7 @@ public class ReservationService {
     }
 
     @Transactional
-    private void saveNewAppointment(Appointment newAppointment, Integer serviceProfileId) {
+    public void saveNewAppointment(Appointment newAppointment, Integer serviceProfileId) {
         appointmentService.save(newAppointment);
         serviceProfileService.addAppointment(serviceProfileId, newAppointment);
     }

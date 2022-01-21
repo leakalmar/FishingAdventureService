@@ -1,6 +1,6 @@
 package isa.FishingAdventure.service;
 
-import isa.FishingAdventure.model.Reservation;
+
 import isa.FishingAdventure.model.ReservationPoints;
 import isa.FishingAdventure.model.User;
 import isa.FishingAdventure.repository.ReservationPointsRepository;

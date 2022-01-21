@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Locale;
 
 @Service
 public class UserCategoryService {
@@ -49,8 +48,6 @@ public class UserCategoryService {
 					&& category.getPoints() < user.getPoints())
 				user.setCategory(category);
 		}
-		System.out.println("OVDEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
-		System.out.println(user.getPoints());
 		userService.save(user);
 	}
 

@@ -9,8 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping(value = "userCategory")
 @CrossOrigin
@@ -34,7 +32,7 @@ public class UserCategoryController {
 		categoryService.updateCategoryPoints("GOLD_ADVERTISER", dto.getAdvertiserGoldPoints());
 		categoryService.updateAdvertiserCuts(dto.getAdvertiserBaseCut());
 
-		return new ResponseEntity("ok", HttpStatus.OK);
+		return new ResponseEntity<>("ok", HttpStatus.OK);
 	}
 
 

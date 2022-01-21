@@ -54,6 +54,8 @@ public class LoyaltyProgramDto {
                 case "GOLD_ADVERTISER":
                     this.advertiserGoldPoints = category.getPoints();
                     break;
+                default:
+                    break;
             }
         }
     }

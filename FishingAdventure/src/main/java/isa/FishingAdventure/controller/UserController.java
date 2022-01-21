@@ -120,7 +120,7 @@ public class UserController {
 	@GetMapping(value = "/getUserPointsInfo")
 	public ResponseEntity<UserPointsDto> getUserPointsInfo(@RequestHeader("Authorization") String token) {
 		User user = userService.findByToken(token.split(" ")[1]);
-		return new ResponseEntity(userService.getUserPointsInfo(user), HttpStatus.OK);
+		return new ResponseEntity<>(userService.getUserPointsInfo(user), HttpStatus.OK);
 	}
 
 }
