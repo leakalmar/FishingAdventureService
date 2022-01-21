@@ -23,6 +23,7 @@
             type="button"
             class="btn btn-outline-primary text-nowrap me-2"
             data-bs-toggle="modal"
+            data-bs-target="#AddAdminModal"
             v-if="isHeadAdmin == true"
           >
             Add new admin
@@ -115,8 +116,8 @@
                     <td>{{user.surname}}</td>
                     <td>{{user.email}}</td>
                     <td>
-                         <button class="black-btn" v-if="user.role =='ROLE_ADMIN' && isHeadAdmin == false"  disabled ><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
-                        <button class="black-btn" v-else ><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
+                         <button class="black-btn" v-if="(user.role =='ROLE_ADMIN' && isHeadAdmin == false) || user.email == adminEmail"  disabled ><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
+                        <button class="black-btn" v-else  v-on:click="deleteUser(user)" ><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
                     </td>
                 </tr>
                 <!-- <tr v-if="searchResults.length == 0">
@@ -136,22 +137,25 @@
     id="loyalty-program-modal">
     </loyalty-program-modal>
 
+    <add-new-admin-modal></add-new-admin-modal>
   </div>
  
 </template>
 
 <script>
 import LoyaltyProgramModal from "@/components/Admin/LoyaltyProgramModal.vue"
+import AddNewAdminModal from "@/components/Admin/AddNewAdminModal.vue";
 import axios from "axios";
 axios.defaults.baseURL = process.env.VUE_APP_URL;
 export default {
-  components: { "loyalty-program-modal": LoyaltyProgramModal },
+  components: { "loyalty-program-modal": LoyaltyProgramModal,  "add-new-admin-modal": AddNewAdminModal },
   data: function () {
     return {
       searchText: "",
       searchResults: [],
       users: [],
       isHeadAdmin: false,
+      adminEmail: [],
     };
   },
   mounted: function () {
@@ -176,10 +180,38 @@ export default {
       .then((res) => {
         this.isHeadAdmin = res.data;
       });
+
+    axios
+      .get("/users/get", {
+        headers: {
+          "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
+          Authorization: "Bearer " + localStorage.refreshToken,
+        },
+      })
+      .then((res) => {
+        this.adminEmail = res.data.email;
+      });
   },
   methods: {
     searchUsers: function () {
 
+    },
+    deleteUser: function (user) {
+      console.log(user)
+       axios
+        .put("users/deleteUser", user.email, {
+          headers: {
+            "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
+            Authorization: "Bearer " + localStorage.refreshToken,
+          },
+        })
+        .then(() => {
+          this.users.splice(this.users.indexOf(user), 1);
+          this.$toast.show("User has been deleted.",
+          {
+            duration: 3000,
+          });
+        });
     },
   },
 };
