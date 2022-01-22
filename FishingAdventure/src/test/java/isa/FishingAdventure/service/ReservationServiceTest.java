@@ -32,22 +32,26 @@ public class ReservationServiceTest {
     @Test
     public void testCancelReservation() throws ParseException {
 
-        Appointment appointment = new Appointment(1, 0.0, true, new SimpleDateFormat("dd/MM/yyyy").parse("02/02/2022"), new SimpleDateFormat("dd/MM/yyyy").parse("04/02/2022"), Duration.ofDays(2), 2, 200, new HashSet<>(), false, false);
+        Appointment appointment = new Appointment(1, 0.0, true, new SimpleDateFormat("dd/MM/yyyy").parse("02/02/2022"),
+                new SimpleDateFormat("dd/MM/yyyy").parse("04/02/2022"), Duration.ofDays(2), 2, 200, new HashSet<>(),
+                false, false);
         Reservation reservation = new Reservation(1, appointment, new Client());
 
         when(reservationRepositoryMock.findAll()).thenReturn(Arrays.asList(reservation));
 
         boolean cancelledSuccess = reservationService.cancelReservation(1);
 
-        assertThat(cancelledSuccess).isEqualTo(true);
-        assertThat(reservation.getCanceled()).isEqualTo(true);
-        assertThat(appointment.getCancelled()).isEqualTo(true);
+        assertThat(cancelledSuccess).isTrue();
+        assertThat(reservation.getCanceled()).isTrue();
+        assertThat(appointment.getCancelled()).isTrue();
     }
 
     @Test
     public void testIsReservationCancelled() throws ParseException {
 
-        Appointment appointment = new Appointment(1, 0.0, true, new SimpleDateFormat("dd/MM/yyyy").parse("02/02/2022"), new SimpleDateFormat("dd/MM/yyyy").parse("04/02/2022"), Duration.ofDays(2), 2, 200, new HashSet<>(), false, true);
+        Appointment appointment = new Appointment(1, 0.0, true, new SimpleDateFormat("dd/MM/yyyy").parse("02/02/2022"),
+                new SimpleDateFormat("dd/MM/yyyy").parse("04/02/2022"), Duration.ofDays(2), 2, 200, new HashSet<>(),
+                false, true);
         Reservation reservation = new Reservation(1, appointment, new Client());
         reservation.setCanceled(true);
 
@@ -55,8 +59,8 @@ public class ReservationServiceTest {
 
         boolean cancelled = reservationService.cancelReservation(1);
 
-        assertThat(cancelled).isEqualTo(true);
-        assertThat(reservation.getCanceled()).isEqualTo(true);
-        assertThat(appointment.getCancelled()).isEqualTo(true);
+        assertThat(cancelled).isTrue();
+        assertThat(reservation.getCanceled()).isTrue();
+        assertThat(appointment.getCancelled()).isTrue();
     }
 }

@@ -11,7 +11,7 @@ import java.util.Set;
 public class FishingInstructor extends User {
 
     @OneToMany(targetEntity = InstructorAvailability.class, cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    public Set<InstructorAvailability> instructorAvailabilities;
+    private Set<InstructorAvailability> instructorAvailabilities;
 
     public FishingInstructor(String email, String name, String surname, String password, String phoneNumber,
             UserType userType, Address address, Timestamp lastPasswordResetDate) {
