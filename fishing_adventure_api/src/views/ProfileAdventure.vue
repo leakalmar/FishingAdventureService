@@ -216,7 +216,7 @@
             :key="image.id"
           >
             <img
-              :src="require('@/assets/' + image.path)"
+              :src="env + '/downloadFile/' + image.path"
               class="d-block w-100"
               alt="..."
               style="object-fit: contain; height: 450px"
@@ -247,12 +247,14 @@
 
       <div class="special-offers-fa">
         <div class="so-title-fa">
-          <h2 style="margin-top:10px">Special Offers</h2>
+          <h2 style="margin-top: 10px">Special Offers</h2>
         </div>
-        <p v-if="offers.length == 0" style="font-size: 24px">There are no special offers currently</p>
+        <p v-if="offers.length == 0" style="font-size: 24px">
+          There are no special offers currently
+        </p>
       </div>
 
-       <OffersCardNoImage
+      <OffersCardNoImage
         v-for="offer of offers"
         :key="offer.offerId"
         :offer="offer"
@@ -266,9 +268,9 @@
           <h2>Past experiences</h2>
         </div>
         <Review
-         v-for="review of reviews"
-         :key="review.id"
-         :review="review"
+          v-for="review of reviews"
+          :key="review.id"
+          :review="review"
         ></Review>
       </div>
     </div>
@@ -319,9 +321,11 @@ export default {
           },
         },
       ],
+      env: undefined,
     };
   },
   mounted() {
+    this.env = process.env.VUE_APP_URL;
     window.scrollTo(0, 0);
     axios
       .get("/fishingAdventure/" + this.$route.query.id, {
@@ -354,31 +358,23 @@ export default {
       this.persons = this.$route.query.persons;
     }
     axios
-      .get(
-        "/appointment/getOffersByServiceId/" +
-          this.$route.query.id,
-        {
-          headers: {
-            "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
-            Authorization: "Bearer " + localStorage.refreshToken,
-          },
-        }
-      )
+      .get("/appointment/getOffersByServiceId/" + this.$route.query.id, {
+        headers: {
+          "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
+          Authorization: "Bearer " + localStorage.refreshToken,
+        },
+      })
       .then((response) => {
         this.offers = response.data;
       });
 
     axios
-      .get(
-        "/review/getReviewsForService/" +
-          this.$route.query.id,
-        {
-          headers: {
-            "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
-            Authorization: "Bearer " + localStorage.refreshToken,
-          },
-        }
-      )
+      .get("/review/getReviewsForService/" + this.$route.query.id, {
+        headers: {
+          "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
+          Authorization: "Bearer " + localStorage.refreshToken,
+        },
+      })
       .then((response) => {
         this.reviews = response.data;
       });
@@ -386,9 +382,9 @@ export default {
   methods: {
     refresh: function (reserved) {
       const index = this.offers.indexOf(reserved);
-        if (index > -1) {
-          this.offers.splice(index, 1);
-        }
+      if (index > -1) {
+        this.offers.splice(index, 1);
+      }
     },
     isSubscribed: function () {
       axios
@@ -404,15 +400,12 @@ export default {
         .finally(() => {
           if (this.loggedInRole == "ROLE_CLIENT") {
             axios
-              .get(
-                "/client/isSubscribed/" + this.entity.id,
-                {
-                  headers: {
-                    "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
-                    Authorization: "Bearer " + localStorage.refreshToken,
-                  },
-                }
-              )
+              .get("/client/isSubscribed/" + this.entity.id, {
+                headers: {
+                  "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
+                  Authorization: "Bearer " + localStorage.refreshToken,
+                },
+              })
               .then((res) => {
                 this.subscribed = res.data;
               });
