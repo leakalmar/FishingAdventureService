@@ -602,7 +602,7 @@ INSERT INTO appointment
 VALUES (104, '2022-01-11 15:44:00', 10, 604779299000000000, '2022-01-13 15:44:00', false, false, 2, false, '', 44,
         '2022-01-11 15:44:00', 0);
 INSERT INTO appointment
-VALUES (105, '2022-01-05 15:43:20.716', 20, 604779299000000000, '2022-01-15 15:43:00', false, false, 2, false, '', 40,
+VALUES (105, '2022-05-05 15:43:20.716', 20, 604779299000000000, '2022-05-15 15:43:00', false, false, 2, false, '', 40,
         '2022-01-14 15:43:00', 0);
 
 --
@@ -635,4 +635,4 @@ VALUES (103, false, false, 103, 104);
 --
 INSERT INTO delete_request
 VALUES (101, '2022-01-05 15:43:20.716', 'client3@gmail.com', 'Not interested in new adventures anymore.', false,
-        'ROLE_CLIENT');
+        'ROLE_CLIENT', 0);

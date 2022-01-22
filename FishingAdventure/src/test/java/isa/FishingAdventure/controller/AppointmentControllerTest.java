@@ -3,17 +3,18 @@ package isa.FishingAdventure.controller;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -21,9 +22,9 @@ import org.springframework.web.context.WebApplicationContext;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class VacationHomeControllerTest {
+public class AppointmentControllerTest {
 
-    private static final String URL_PREFIX = "/vacationHome";
+    private static final String URL_PREFIX = "/appointment";
 
     private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
             MediaType.APPLICATION_JSON.getSubtype());
@@ -39,14 +40,19 @@ public class VacationHomeControllerTest {
     }
 
     @Test
-    public void testGetAllVacationHomes() throws Exception {
-        mockMvc.perform(get(URL_PREFIX + "/all")).andExpect(status().isOk())
-                .andExpect(content().contentType(contentType)).andExpect(jsonPath("$", hasSize(6)))
-                .andExpect(jsonPath("$.[*].id").value(hasItem(101)))
-                .andExpect(jsonPath("$.[*].name").value(hasItem("Lakeview Cottage")))
-                .andExpect(jsonPath("$.[*].description").value(hasItem(
-                        " Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).")))
-                .andExpect(jsonPath("$.[*].persons").value(hasItem(2)));
+    public void testGetOffersByServiceId() throws Exception {
+        mockMvc.perform(get(URL_PREFIX + "/getOffersByServiceId/" + 113)).andExpect(status().isOk())
+                .andExpect(content().contentType(contentType)).andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$.[*].offerId").value(hasItem(105)))
+                .andExpect(jsonPath("$.[*].price").value(hasItem(40.0)))
+                .andExpect(jsonPath("$.[*].maxPersons").value(hasItem(2)));
+    }
+
+    @Test
+    @WithMockUser(authorities = "ROLE_VACATION_HOME_OWNER")
+    public void testDelete() throws Exception {
+        mockMvc.perform(
+                delete(URL_PREFIX + "/" + 105 + "/" + 113)).andExpect(status().isOk());
     }
 
 }
