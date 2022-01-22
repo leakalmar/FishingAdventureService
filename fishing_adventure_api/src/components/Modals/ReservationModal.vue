@@ -42,6 +42,7 @@
             v-on:click="selectDate"
             range
             :enableTimePicker="true"
+            :minDate="new Date()"
           ></Datepicker>
 
           <Datepicker
@@ -58,6 +59,7 @@
             range
             calendar-button="false"
             :enableTimePicker="true"
+            :minDate="new Date()"
           ></Datepicker>
 
           <Datepicker

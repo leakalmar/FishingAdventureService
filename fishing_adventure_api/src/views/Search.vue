@@ -45,6 +45,7 @@
             v-model="date"
             range
             :enableTimePicker="true"
+            :minDate="new Date()"
           ></Datepicker>
         </div>
         <div class="col-md-5 col-lg-3 col-xl-2">

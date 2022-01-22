@@ -72,6 +72,7 @@
               @closed="dateRangeChanged"
               placeholder="Select date.."
               :enableTimePicker="true"
+              :minDate="new Date()"
             ></Datepicker>
           </span>
 
