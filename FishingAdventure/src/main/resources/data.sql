@@ -638,7 +638,7 @@ VALUES (101, '2022-01-05 15:43:20.716', 'client3@gmail.com', 'Not interested in 
         'ROLE_CLIENT', 0);
 
 INSERT INTO instructor_availability
-VALUES (150, '2022-02-05 15:43:00','2022-01-31 15:43:20.716')
+VALUES (150, '2022-02-05 15:43:00','2022-01-31 15:43:20.716');
 
-INSERT INTO fishing_instructor_instructor_availability
-VALUES (107, 150)
+INSERT INTO fishing_instructor_instructor_availabilities
+VALUES (107, 150);
